@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-:root {}
-
 .App {
   background-color: #fffffe;
   box-shadow: 1px 1px 30px -10px rgba(109, 109, 109, 1);
@@ -17,7 +15,7 @@
   /* justify-content: center; */
   align-items: center;
   padding: 10px 0px 10px 20px;
-  margin: 0px 30px 10px 30px;
+  margin: 0px 50px 0px 50px;
   border-radius: 30px;
   box-shadow: 1px 1px 30px -1px rgba(109, 109, 109, 0.5);
   -webkit-box-shadow: 1px 1px 30px -1px rgba(109, 109, 109, 0.5);
