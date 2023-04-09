@@ -1,12 +1,9 @@
 import './App.css';
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import SearchIcon from './assets/icons8-search-32.png';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from './pages/Account/Login';
-import Register from './pages/Account/Register';
+import Login from './pages/account/Login';
+import Register from './pages/account/Register';
 import OrderConfirmation from './pages/order/OrderConfirmation';
 import OrderDetail from './pages/order/OrderDetail';
 import MyAccount from './pages/profile/MyAccount';
@@ -14,7 +11,7 @@ import SearchPage from './pages/search/SearchPage';
 import ListTenant from './pages/search/ListTenant';
 import DetailTenant from './pages/tenant/DetailTenant';
 import ListCart from './pages/cart/ListCart';
-
+import History from './pages/transaction/History';
 
 function App() {
 

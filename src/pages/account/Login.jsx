@@ -1,10 +1,11 @@
-import { Box, Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Link as LinkMaterial, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, InputAdornment, Link as LinkMaterial, TextField, Typography } from "@mui/material";
 import Background from "../../assets/background-login.png"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import BASE_URL from "../../config/BASE_URL";
 import Eye from "../../assets/eye.png";
 import Invisible from "../../assets/invisible.png"
+import { red } from "@mui/material/colors";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -14,6 +15,8 @@ const Login = () => {
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+    const [errorMessage, setErrorMessage] = useState('');
+
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
@@ -21,24 +24,32 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const data = { email, password };
+        const data = { email, password };
 
-            const response = await fetch(BASE_URL + "/account/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
+        const response = await fetch(BASE_URL + "/account/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // "Authorization": "Bearar "
+            },
+            body: JSON.stringify(data),
+        })
+            .then(
+                res => res.json()
+            ).then(
+                message => {
+                    if (message.status == "404") {
+                        throw new Error(message.error)
+                    }
+                }
+            )
+            .catch(error => {
+                setErrorMessage('*' + error.message);
+                document.getElementById("Email").value = "";
+                document.getElementById("Password").value = "";
             })
 
-            const respData = await response.json()
-
-            console.log(respData);
-        } catch (error) {
-            console.log(error.json());
-        }
-
+        console.log(response);
     }
 
     return (
@@ -78,7 +89,6 @@ const Login = () => {
                                     backgroundColor: "white",
                                     width: { sm: "450px", xs: "350px" },
                                     marginBottom: "30px",
-
                                 }
                             }}
                             type="email"
@@ -104,7 +114,8 @@ const Login = () => {
                             }}
                             id="Password" />
                     </Box>
-                    <Box sx={{ textAlign: "right" }}>
+                    <Box sx={{ display: "flex" }}>
+                        <Typography variant="p" color={"red"} sx={{ marginRight: "auto" }}>{errorMessage}</Typography>
                         <LinkMaterial component={Link} to={'/account/register'} underline="none" color='white' sx={{ ":hover": { textDecoration: "underline" } }}>forgot password?</LinkMaterial>
                     </Box>
                     <Box sx={{ textAlign: "center" }} mt={"30px"}>
