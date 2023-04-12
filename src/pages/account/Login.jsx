@@ -1,11 +1,10 @@
 import { Box, Button, IconButton, InputAdornment, Link as LinkMaterial, TextField, Typography } from "@mui/material";
 import Background from "../../assets/background-login.png"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import BASE_URL from "../../config/BASE_URL";
 import Eye from "../../assets/eye.png";
 import Invisible from "../../assets/invisible.png"
-import { red } from "@mui/material/colors";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -16,6 +15,8 @@ const Login = () => {
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const [errorMessage, setErrorMessage] = useState('');
+
+    const navigate = useNavigate('');
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -39,7 +40,10 @@ const Login = () => {
             ).then(
                 message => {
                     if (message.status == "404") {
+                        console.log("sini");
                         throw new Error(message.error)
+                    } else {
+                        navigate("/")
                     }
                 }
             )
