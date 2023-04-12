@@ -6,8 +6,7 @@ import BASE_URL from "../../config/BASE_URL";
 import Eye from "../../assets/eye.png";
 import Invisible from "../../assets/invisible.png"
 
-const Login = () => {
-    const [email, setEmail] = useState('');
+const ResetPassword = () => {
     const [password, setPassword] = useState('');
 
     const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +24,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = { email, password };
+        const data = { password };
 
         const response = await fetch(BASE_URL + "/account/login", {
             method: "POST",
@@ -77,30 +76,36 @@ const Login = () => {
                     backgroundColor: "#094067",
                     width: "fit-content",
                     height: "fit-content",
-                    padding: { sm: "20px 70px", xs: "20px 40px" },
+                    padding: { sm: "20px 70px 80px 70px", xs: "20px 40px" },
                     borderRadius: "20px",
                 }}>
                     <h1 style={{
                         fontSize: "48px",
                         textAlign: "center"
-                    }} >LOGIN</h1>
-                    <Box>
-                        <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Username</Typography>
-                        <TextField
-                            placeholder="Username"
-                            onChange={(e) => setEmail(e.target.value)}
-                            InputProps={{
-                                sx: {
-                                    backgroundColor: "white",
-                                    width: { sm: "450px", xs: "350px" },
-                                    marginBottom: "30px",
-                                }
-                            }}
-                            type="email"
-                            id="Email" />
-                    </Box>
+                    }} >Reset Password</h1>
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Password</Typography>
+                        <TextField
+                            placeholder="Password"
+                            onChange={(e) => setPassword(e.target.value)}
+                            type={showPassword ? 'text' : 'password'}
+                            InputProps={{
+                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "350px" }, marginBottom: "30px" },
+                                endAdornment:
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            <img width="32xpx" src={showPassword ? Invisible : Eye} alt="" />
+                                        </IconButton>
+                                    </InputAdornment>
+                            }}
+                            id="Password" />
+                    </Box>
+                    <Box>
+                        <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Confirm Password</Typography>
                         <TextField
                             placeholder="Password"
                             onChange={(e) => setPassword(e.target.value)}
@@ -122,17 +127,13 @@ const Login = () => {
                     </Box>
                     <Box sx={{ display: "flex" }}>
                         <Typography variant="p" color={"red"} sx={{ marginRight: "auto" }}>{errorMessage}</Typography>
-                        <LinkMaterial component={Link} to={'/account/request-reset-password'} underline="none" color='white' sx={{ ":hover": { textDecoration: "underline" } }}>forgot password?</LinkMaterial>
                     </Box>
                     <Box sx={{ textAlign: "center" }} mt={"30px"}>
                         <Button type="submit" variant="contained" sx={{
                             borderRadius: "40px",
                             padding: "15px 60px",
                             fontSize: "16px"
-                        }}>Login</Button>
-                    </Box>
-                    <Box>
-                        <Typography textAlign={"center"} sx={{ mt: "80px", mb: "80px" }} component="p">or sign up Using <br /> <Typography color={"white"} component={Link} to="/account/register" >Sign Up</Typography> </Typography>
+                        }}>Reset Password</Button>
                     </Box>
                 </Box>
             </Box>
@@ -140,4 +141,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default ResetPassword;

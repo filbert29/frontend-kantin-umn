@@ -13,6 +13,9 @@ import DetailTenant from './pages/tenant/DetailTenant';
 import ListCart from './pages/cart/ListCart';
 import History from './pages/transaction/History';
 import Home from './pages/Home';
+import RequestResetPassword from './pages/account/RequestResetPassword';
+import EmailConfirmation from './pages/account/EmailConfirmation';
+import ResetPassword from './pages/account/ResetPassword';
 
 function App() {
 
@@ -26,6 +29,9 @@ function App() {
           <Route path='/account'>
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
+            <Route path='request-reset-password' element={<RequestResetPassword />} />
+            <Route path='email-confirmation' element={<EmailConfirmation />} />
+            <Route path='reset-password' element={<ResetPassword />} />
           </Route>
           <Route path='/cart'>
             <Route path='listcart' element={<ListCart />} />
