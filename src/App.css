@@ -7,27 +7,27 @@
 }
 
 .App {
-  background-color: #fffffe;
+  /* background-color: #fffffe;
   box-shadow: 1px 1px 30px -10px rgba(109, 109, 109, 1);
   -webkit-box-shadow: 1px 1px 30px -10px rgba(109, 109, 109, 1);
   -moz-box-shadow: 1px 1px 30px -10px rgba(109, 109, 109, 1);
-  height: 100vh;
+  height: 100vh; */
 }
 
 .search-section {
-  display: flex;
+  /* display: flex; */
   /* justify-content: center; */
-  align-items: center;
+  /* align-items: center;
   padding: 10px 0px 10px 20px;
   margin: 0px 50px 0px 50px;
   border-radius: 30px;
   box-shadow: 1px 1px 30px -1px rgba(109, 109, 109, 0.5);
   -webkit-box-shadow: 1px 1px 30px -1px rgba(109, 109, 109, 0.5);
-  -moz-box-shadow: 1px 1px 30px -1px rgba(109, 109, 109, 0.5);
+  -moz-box-shadow: 1px 1px 30px -1px rgba(109, 109, 109, 0.5); */
 }
 
 .search-section a {
-  text-decoration: none;
+  /* text-decoration: none;
   color: #5f6c7b;
-  font-size: 14px;
+  font-size: 14px; */
 }

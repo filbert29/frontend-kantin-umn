@@ -12,6 +12,7 @@ import ListTenant from './pages/search/ListTenant';
 import DetailTenant from './pages/tenant/DetailTenant';
 import ListCart from './pages/cart/ListCart';
 import History from './pages/transaction/History';
+import Home from './pages/Home';
 
 function App() {
 
@@ -19,6 +20,9 @@ function App() {
     <Box className='App'>
       <BrowserRouter>
         <Routes>
+          <Route path='/'>
+            <Route index element={<Home />} />
+          </Route>
           <Route path='/account'>
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
