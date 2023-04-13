@@ -6,9 +6,7 @@ import HomeBanner from "../assets/home-banner1.png"
 import IconTenant from "../assets/icon-tenant.png"
 import IconFood from "../assets/icon-food.png"
 import IconRandom from "../assets/icon-random.png"
-import PicTenant from "../assets/pic-tenant.png"
-import Star from "../assets/star.png"
-import PicFood from "../assets/pic-food.png"
+import TenantCardComponent from "../component/TenantCardComponent";
 
 // Import Swiper styles
 import "swiper/css";
@@ -18,6 +16,7 @@ import "swiper/css/pagination";
 // import required modules
 import { Navigation, Pagination, Autoplay } from "swiper";
 import { Link } from "react-router-dom";
+import FoodCardComponent from "../component/FoodCardComponent";
 
 function Home() {
 
@@ -159,94 +158,10 @@ function Home() {
                                 justifyContent: "center",
                                 gap: "3%"
                             }}>
-                            <Box
-                                className="card-tenant"
-                                sx={{
-                                    display: "grid",
-                                    width: "23%",
-                                    boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                                    borderRadius: "15px"
-                                }}>
-                                <img src={PicTenant} alt="" width={"100%"} />
-                                <Box sx={{
-                                    display: "grid",
-                                    padding: "10px 15px",
-                                    gap: "1px"
-                                }}>
-                                    <Typography variant="p" fontSize={"16px"} fontWeight={"bold"}>Kedai Nasi Goreng</Typography>
-                                    <Typography variant="p" fontSize={"14px"}>Aneka Nasi Goreng</Typography>
-                                    <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                                        <img src={Star} alt="" width={"20px"} />
-                                        <Typography variant="p" fontSize={"14px"}>4.7 (12)</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box
-                                className="card-tenant"
-                                sx={{
-                                    display: "grid",
-                                    width: "23%",
-                                    boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                                    borderRadius: "15px"
-                                }}>
-                                <img src={PicTenant} alt="" width={"100%"} />
-                                <Box sx={{
-                                    display: "grid",
-                                    padding: "10px 15px",
-                                    gap: "1px"
-                                }}>
-                                    <Typography variant="p" fontSize={"16px"} fontWeight={"bold"}>Kedai Nasi Goreng</Typography>
-                                    <Typography variant="p" fontSize={"14px"}>Aneka Nasi Goreng</Typography>
-                                    <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                                        <img src={Star} alt="" width={"20px"} />
-                                        <Typography variant="p" fontSize={"14px"}>4.7 (12)</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box
-                                className="card-tenant"
-                                sx={{
-                                    display: "grid",
-                                    width: "23%",
-                                    boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                                    borderRadius: "15px"
-                                }}>
-                                <img src={PicTenant} alt="" width={"100%"} />
-                                <Box sx={{
-                                    display: "grid",
-                                    padding: "10px 15px",
-                                    gap: "1px"
-                                }}>
-                                    <Typography variant="p" fontSize={"16px"} fontWeight={"bold"}>Kedai Nasi Goreng</Typography>
-                                    <Typography variant="p" fontSize={"14px"}>Aneka Nasi Goreng</Typography>
-                                    <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                                        <img src={Star} alt="" width={"20px"} />
-                                        <Typography variant="p" fontSize={"14px"}>4.7 (12)</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box
-                                className="card-tenant"
-                                sx={{
-                                    display: "grid",
-                                    width: "23%",
-                                    boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                                    borderRadius: "15px"
-                                }}>
-                                <img src={PicTenant} alt="" width={"100%"} />
-                                <Box sx={{
-                                    display: "grid",
-                                    padding: "10px 15px",
-                                    gap: "1px"
-                                }}>
-                                    <Typography variant="p" fontSize={"16px"} fontWeight={"bold"}>Kedai Nasi Goreng</Typography>
-                                    <Typography variant="p" fontSize={"14px"}>Aneka Nasi Goreng</Typography>
-                                    <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                                        <img src={Star} alt="" width={"20px"} />
-                                        <Typography variant="p" fontSize={"14px"}>4.7 (12)</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
+                            <TenantCardComponent />
+                            <TenantCardComponent />
+                            <TenantCardComponent />
+                            <TenantCardComponent />
                         </Box>
                     </Box>
 
@@ -271,90 +186,10 @@ function Home() {
                                 justifyContent: "center",
                                 gap: "3%"
                             }}>
-                            <Box
-                                className="card-food"
-                                sx={{
-                                    display: "grid",
-                                    width: "23%",
-                                    boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                                    borderRadius: "15px"
-                                }}>
-                                <img src={PicFood} alt="" width={"100%"} />
-                                <Box sx={{
-                                    display: "grid",
-                                    padding: "10px 0px 10px 15px",
-                                    gap: "1px"
-                                }}>
-                                    <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Nasi Goreng Kampung</Typography>
-                                    <Typography variant="p" fontSize={"12px"}>nasi goreng dari kampung</Typography>
-                                    <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                                        <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Rp. 15.000</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box
-                                className="card-food"
-                                sx={{
-                                    display: "grid",
-                                    width: "23%",
-                                    boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                                    borderRadius: "15px"
-                                }}>
-                                <img src={PicFood} alt="" width={"100%"} />
-                                <Box sx={{
-                                    display: "grid",
-                                    padding: "10px 0px 10px 15px",
-                                    gap: "1px"
-                                }}>
-                                    <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Nasi Goreng Kampung</Typography>
-                                    <Typography variant="p" fontSize={"12px"}>nasi goreng dari kampung</Typography>
-                                    <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                                        <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Rp. 15.000</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box
-                                className="card-food"
-                                sx={{
-                                    display: "grid",
-                                    width: "23%",
-                                    boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                                    borderRadius: "15px"
-                                }}>
-                                <img src={PicFood} alt="" width={"100%"} />
-                                <Box sx={{
-                                    display: "grid",
-                                    padding: "10px 0px 10px 15px",
-                                    gap: "1px"
-                                }}>
-                                    <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Nasi Goreng Kampung</Typography>
-                                    <Typography variant="p" fontSize={"12px"}>nasi goreng dari kampung</Typography>
-                                    <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                                        <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Rp. 15.000</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box
-                                className="card-food"
-                                sx={{
-                                    display: "grid",
-                                    width: "23%",
-                                    boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                                    borderRadius: "15px"
-                                }}>
-                                <img src={PicFood} alt="" width={"100%"} />
-                                <Box sx={{
-                                    display: "grid",
-                                    padding: "10px 0px 10px 15px",
-                                    gap: "1px"
-                                }}>
-                                    <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Nasi Goreng Kampung</Typography>
-                                    <Typography variant="p" fontSize={"12px"}>nasi goreng dari kampung</Typography>
-                                    <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                                        <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Rp. 15.000</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
+                            <FoodCardComponent />
+                            <FoodCardComponent />
+                            <FoodCardComponent />
+                            <FoodCardComponent />
                         </Box>
                     </Box>
                 </Box>
