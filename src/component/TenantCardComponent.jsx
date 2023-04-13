@@ -1,16 +1,21 @@
 import { Box, Typography } from "@mui/material";
 import PicTenant from "../assets/pic-tenant.png"
 import Star from "../assets/star.png"
+import { Link } from "react-router-dom";
 
 const TenantCardComponent = () => {
     return (
         <Box
+            component={Link}
+            to={"/tenant/detailtenant"}
             className="card-tenant"
             sx={{
                 display: "grid",
                 width: "23%",
-                boxShadow: "0px 0px 9px 3px rgba(0,0,0,0.25)",
-                borderRadius: "15px"
+                boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
+                borderRadius: "15px",
+                textDecoration: "none",
+                color: "#5F6C7B"
             }}>
             <img src={PicTenant} alt="" width={"100%"} />
             <Box sx={{
