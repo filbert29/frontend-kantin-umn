@@ -32,7 +32,8 @@ function Home() {
                     boxShadow: { md: "1px 1px 20px -10px rgba(109, 109, 109, 0.5)" },
                     minHeight: "97.5vh",
                     paddingTop: "20px",
-                    color: "#5F6C7B"
+                    color: "#5F6C7B",
+                    paddingBottom: "100px"
                 }}>
                 <Box
                     component={Link}

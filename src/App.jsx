@@ -22,8 +22,8 @@ function App() {
 
   return (
     <Box className='App'>
-      <NavBar />
       <BrowserRouter>
+        <NavBar />
         <Routes>
           <Route path='/'>
             <Route index element={<Home />} />

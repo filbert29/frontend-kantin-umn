@@ -121,7 +121,7 @@ function DetailTenant() {
                         paddingLeft: "20px"
                     }}>
                         <img src={SearchIcon} alt="" width={"50px"} height={"50px"} />
-                        <TextField placeholder="Cari">Cari</TextField>
+                        <TextField className="search-detail" placeholder="Cari">Cari</TextField>
                     </Box>
                 </Box>
                 <Box className="foods" mt={"10px"}>

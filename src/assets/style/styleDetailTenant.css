@@ -12,10 +12,18 @@
     width: 80px !important;
 }
 
-.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+.search-detail .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
     font-size: 32px !important;
     font-weight: bold !important;
     font-family: "Poppins" !important;
+}
+
+.search-page .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    /* margin-left: 30px; */
+    padding: 0px 0px 0px 30px;
+    font-family: "Poppins" !important;
+    color: #626262 !important;
+    width: 600px;
 }
 
 .css-1d3z3hw-MuiOutlinedInput-notchedOutline {

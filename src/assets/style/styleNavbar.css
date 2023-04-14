@@ -1,0 +1,11 @@
+.css-co5tlx-MuiButtonBase-root-MuiBottomNavigationAction-root svg {
+    fill: white;
+}
+
+.css-co5tlx-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
+    background-color: white;
+}
+
+.css-co5tlx-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected svg {
+    fill: #2F64F9;
+}
