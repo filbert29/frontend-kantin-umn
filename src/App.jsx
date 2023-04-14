@@ -16,11 +16,13 @@ import Home from './pages/Home';
 import RequestResetPassword from './pages/account/RequestResetPassword';
 import EmailConfirmation from './pages/account/EmailConfirmation';
 import ResetPassword from './pages/account/ResetPassword';
+import NavBar from './component/NavBar';
 
 function App() {
 
   return (
     <Box className='App'>
+      <NavBar />
       <BrowserRouter>
         <Routes>
           <Route path='/'>
