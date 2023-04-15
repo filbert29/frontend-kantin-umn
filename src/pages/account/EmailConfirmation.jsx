@@ -47,13 +47,13 @@ const EmailConfirmation = () => {
                             fontSize: "48px",
                             textAlign: "center",
                             margin: "10px 0px"
-                        }} >{location.state.title}</h1>
+                        }} >{location?.state?.title}</h1>
                         <Typography
                             variant="p"
                             component={"p"}
                             maxWidth={"500px"}
                             textAlign={"center"}
-                            margin={"0px auto"}>{location.state.message}</Typography>
+                            margin={"0px auto"}>{location?.state?.message}</Typography>
                     </Box>
                 </Box>
             </Box>

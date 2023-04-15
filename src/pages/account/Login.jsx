@@ -5,8 +5,12 @@ import { useState } from "react";
 import BASE_URL from "../../config/BASE_URL";
 import Eye from "../../assets/eye.png";
 import Invisible from "../../assets/invisible.png"
+import { useDispatch } from "react-redux";
+import { setLogin } from "../../store/Auth";
 
 const Login = () => {
+    const dispatch = useDispatch()
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -38,12 +42,12 @@ const Login = () => {
             .then(
                 res => res.json()
             ).then(
-                message => {
-                    if (message.status == "404") {
+                data => {
+                    if (data.status == "404") {
                         console.log("sini");
-                        throw new Error(message.error)
+                        throw new Error(data.error)
                     } else {
-                        navigate("/")
+                        dispatch(setLogin(data.data))
                     }
                 }
             )

@@ -5,12 +5,16 @@ import { useState } from "react";
 import IconEdit from "../../assets/icon-edit.png"
 import IconPlus from "../../assets/icon-plus.png"
 import IconLogout from "../../assets/icon-logout.png"
+import { useDispatch, useSelector } from "react-redux";
+import { setLogout } from "../../store/Auth";
 
 const MyAccount = () => {
     const title = "My Account"
 
     const [name, setName] = useState('Najim Rizky')
     const [email, setEmail] = useState('najimrizky@najim.com')
+
+    const dispatch = useDispatch()
 
     return (
         <Container
@@ -109,14 +113,16 @@ const MyAccount = () => {
                     </Box>
                 </Box>
                 <Box width={"auto"} display={"flex"}>
-                    <Button sx={{
-                        marginX: "auto",
-                        backgroundColor: "#EF4565",
-                        borderRadius: "12px",
-                        padding: "10px 20px 10px 30px",
-                        borderRadius: "30px",
-                        ":hover": { backgroundColor: "#ff0030" }
-                    }}>  <span style={{ marginRight: "10px", fontWeight: "bold", color: "white" }}>Top up</span><img src={IconLogout} alt="" width={"40px"} /></Button>
+                    <Button
+                        onClick={() => dispatch(setLogout())}
+                        sx={{
+                            marginX: "auto",
+                            backgroundColor: "#EF4565",
+                            borderRadius: "12px",
+                            padding: "10px 20px 10px 30px",
+                            borderRadius: "30px",
+                            ":hover": { backgroundColor: "#ff0030" }
+                        }}>  <span style={{ marginRight: "10px", fontWeight: "bold", color: "white" }}>Top up</span><img src={IconLogout} alt="" width={"40px"} /></Button>
                 </Box>
             </Box>
         </Container>

@@ -1,7 +1,7 @@
 import './App.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Login from './pages/account/Login';
 import Register from './pages/account/Register';
 import OrderConfirmation from './pages/order/OrderConfirmation';
@@ -17,43 +17,64 @@ import RequestResetPassword from './pages/account/RequestResetPassword';
 import EmailConfirmation from './pages/account/EmailConfirmation';
 import ResetPassword from './pages/account/ResetPassword';
 import NavBar from './component/NavBar';
+import { useSelector } from 'react-redux';
+import CustomerLayout from './layout/CustomerLayout';
 
 function App() {
+  const { isLoggedin, accountData } = useSelector((state) => state.auth)
+  console.log(accountData)
+
+  const checkRole = () => {
+    if (isLoggedin == true) {
+      switch (accountData?.role) {
+        case "customer":
+          return <Navigate to={"/customer"} />
+        case "tenant":
+          return <Navigate to={"/tenant"} />
+        case "admin":
+          return <Navigate to={"/admin"} />
+        default:
+          return <Navigate to={"/404"} />
+      }
+    } else {
+      <Navigate to={"/account/login"} />
+    }
+  }
 
   return (
     <Box className='App'>
       <BrowserRouter>
-        <NavBar />
         <Routes>
-          <Route path='/'>
-            <Route index element={<Home />} />
-          </Route>
-          <Route path='/account'>
+          <Route path='/' element={checkRole} />
+          <Route path='/account' element={!isLoggedin ? <Outlet /> : <Navigate to={"/customer"} />}>
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
             <Route path='request-reset-password' element={<RequestResetPassword />} />
             <Route path='email-confirmation' element={<EmailConfirmation />} />
             <Route path='reset-password' element={<ResetPassword />} />
           </Route>
-          <Route path='/cart'>
-            <Route path='listcart' element={<ListCart />} />
-          </Route>
-          <Route path='/order'>
-            <Route path='orderconfirmation' element={<OrderConfirmation />} />
-            <Route path='orderdetail' element={<OrderDetail />} />
-          </Route>
-          <Route path='/profile'>
-            <Route path='myaccount' element={<MyAccount />} />
-          </Route>
-          <Route path='/search'>
-            <Route path='searchpage' element={<SearchPage />} />
-            <Route path='listtenant' element={<ListTenant />} />
-          </Route>
-          <Route path='/tenant'>
-            <Route path='detailtenant' element={<DetailTenant />} />
-          </Route>
-          <Route path='/transaction'>
-            <Route path='history' element={<History />} />
+          <Route path='/customer' element={accountData?.role === "customer" ? <CustomerLayout /> : <Navigate to={"/account/login"} />}>
+            <Route index element={<Home />} />
+            <Route path='cart'>
+              <Route path='listcart' element={<ListCart />} />
+            </Route>
+            <Route path='order'>
+              <Route path='orderconfirmation' element={<OrderConfirmation />} />
+              <Route path='orderdetail' element={<OrderDetail />} />
+            </Route>
+            <Route path='profile'>
+              <Route path='myaccount' element={<MyAccount />} />
+            </Route>
+            <Route path='search'>
+              <Route path='searchpage' element={<SearchPage />} />
+              <Route path='listtenant' element={<ListTenant />} />
+            </Route>
+            <Route path='tenant'>
+              <Route path='detailtenant' element={<DetailTenant />} />
+            </Route>
+            <Route path='transaction'>
+              <Route path='history' element={<History />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
