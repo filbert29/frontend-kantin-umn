@@ -97,7 +97,7 @@ function OrderDetail() {
           minHeight: "97.5vh",
           padding: "20px 20px",
           color: "#5F6C7B",
-          paddingBottom: "180px"
+          paddingBottom: "120px"
         }}>
         <Header title={title} />
         <Box className="status-order" display={"grid"} gap={"15px"}>
