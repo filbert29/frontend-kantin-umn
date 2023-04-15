@@ -16,16 +16,14 @@ import Home from './pages/Home';
 import RequestResetPassword from './pages/account/RequestResetPassword';
 import EmailConfirmation from './pages/account/EmailConfirmation';
 import ResetPassword from './pages/account/ResetPassword';
-import NavBar from './component/NavBar';
 import { useSelector } from 'react-redux';
 import CustomerLayout from './layout/CustomerLayout';
 
 function App() {
   const { isLoggedin, accountData } = useSelector((state) => state.auth)
-  console.log(accountData)
 
   const checkRole = () => {
-    if (isLoggedin == true) {
+    if (isLoggedin) {
       switch (accountData?.role) {
         case "customer":
           return <Navigate to={"/customer"} />
@@ -37,7 +35,7 @@ function App() {
           return <Navigate to={"/404"} />
       }
     } else {
-      <Navigate to={"/account/login"} />
+      return <Navigate to={"/account/login"} />
     }
   }
 
@@ -45,8 +43,8 @@ function App() {
     <Box className='App'>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={checkRole} />
-          <Route path='/account' element={!isLoggedin ? <Outlet /> : <Navigate to={"/customer"} />}>
+          <Route path='/' element={checkRole()} />
+          <Route path='/account' element={!isLoggedin ? <Outlet /> : checkRole()}>
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
             <Route path='request-reset-password' element={<RequestResetPassword />} />
