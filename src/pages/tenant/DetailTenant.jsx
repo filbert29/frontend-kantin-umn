@@ -1,5 +1,5 @@
 import { Box, Button, Container, FormControl, InputBase, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import Header from "../../component/Header"
 import { useState } from "react"
 import YellowStar from "../../assets/yellow-star.png"
@@ -10,6 +10,10 @@ import FoodCardComponent from "../../component/FoodCardComponent"
 import BoxReview from "../../assets/box-review.png"
 import JusJeruk from "../../assets/jus-jeruk.png"
 import BgBanner from "../../assets/bg-banner-detail.png"
+import useSWR from 'swr'
+import fetcher from "../../helper/fetcher"
+import BASE_URL from "../../config/BASE_URL"
+
 
 function DetailTenant() {
     const title = "Detail Tenant"
@@ -21,6 +25,15 @@ function DetailTenant() {
     const handleChange = (event) => {
         setAge(event.target.value);
     };
+
+    const { id } = useParams();
+
+    const url = `${BASE_URL}/tenant/${id}`
+
+    const { data: tenant, isLoading, error } = useSWR(url, (url) => fetcher(url, undefined))
+
+    if (error) return <div>failed to load</div>
+    if (isLoading) return <div>loading...</div>
 
     const BootstrapInput = styled(InputBase)(({ theme }) => ({
         'label + &': {
@@ -59,7 +72,7 @@ function DetailTenant() {
                 }}>
                 <Header title={title} />
                 <Box sx={{
-                    backgroundImage: `url(${BgBanner})`,
+                    backgroundImage: `url(${tenant?.profile_image})`,
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                     borderRadius: "10px"
@@ -73,8 +86,8 @@ function DetailTenant() {
                             borderRadius: "10px",
                             padding: "40px 60px"
                         }}>
-                        <Typography variant="p" fontSize={"36px"} fontWeight={"bold"}>{tenantname}</Typography>
-                        <Typography variant="p" fontSize={"24px"}>{deskripsi}</Typography>
+                        <Typography variant="p" fontSize={"36px"} fontWeight={"bold"}>{tenant?.full_name}</Typography>
+                        <Typography variant="p" fontSize={"24px"}>{tenant?.description}</Typography>
                         <Box sx={{
                             display: "flex",
                             alignItems: "center",

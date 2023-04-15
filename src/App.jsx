@@ -68,7 +68,7 @@ function App() {
               <Route path='listtenant' element={<ListTenant />} />
             </Route>
             <Route path='tenant'>
-              <Route path='detailtenant' element={<DetailTenant />} />
+              <Route path='detailtenant/:id' element={<DetailTenant />} />
             </Route>
             <Route path='transaction'>
               <Route path='history' element={<History />} />
