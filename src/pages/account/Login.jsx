@@ -70,7 +70,8 @@ const Login = () => {
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Username</Typography>
                         <TextField
-                            placeholder="Username"
+                            value={email}
+                            placeholder="Email"
                             onChange={(e) => setEmail(e.target.value)}
                             InputProps={{
                                 sx: {
@@ -85,6 +86,7 @@ const Login = () => {
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Password</Typography>
                         <TextField
+                            value={password}
                             placeholder="Password"
                             onChange={(e) => setPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
