@@ -7,7 +7,7 @@ const TenantCardComponent = () => {
     return (
         <Box
             component={Link}
-            to={"/tenant/detailtenant"}
+            to={"/customer/tenant/detailtenant"}
             className="card-tenant"
             sx={{
                 display: "grid",
