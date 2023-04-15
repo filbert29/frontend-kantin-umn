@@ -172,22 +172,7 @@ function OrderDetail() {
             flexWrap: "wrap",
             gap: "30px"
           }}>
-            <Box className="card-lebar shadow-box"
-              sx={{
-                padding: "30px",
-                borderRadius: "10px",
-                display: "flex",
-                alignItems: "center",
-                width: "45%",
-                flex: "50"
-              }}>
-              <img src={NasiGoreng} alt="" width={"150px"} />
-              <Box className="deskripsi" ml={"25px"} display={"grid"}>
-                <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Nasi Goreng Kampung</Typography>
-                <Typography variant="p" fontSize={"14px"}>nasi goreng dari kampung</Typography>
-                <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp.15.000</Typography>
-              </Box>
-            </Box>
+            <CardDetailMakanan menu={{ title: "Nasi Goreng", description: "Tes", image: NasiGoreng, price: 1000000 }} />
             <Box className="card-lebar shadow-box"
               sx={{
                 padding: "30px",
@@ -222,3 +207,24 @@ function OrderDetail() {
 }
 
 export default OrderDetail
+
+const CardDetailMakanan = ({ menu }) => {
+  return (
+    <Box className="card-lebar shadow-box"
+      sx={{
+        padding: "30px",
+        borderRadius: "10px",
+        display: "flex",
+        alignItems: "center",
+        width: "45%",
+        flex: "50"
+      }}>
+      <img src={menu?.image} alt="" width={"150px"} />
+      <Box className="deskripsi" ml={"25px"} display={"grid"}>
+        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu?.title}</Typography>
+        <Typography variant="p" fontSize={"14px"}>{menu?.descrption}</Typography>
+        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp.{menu?.price}</Typography>
+      </Box>
+    </Box>
+  )
+}
