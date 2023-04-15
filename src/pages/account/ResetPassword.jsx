@@ -5,12 +5,13 @@ import { useState } from "react";
 import BASE_URL from "../../config/BASE_URL";
 import Eye from "../../assets/eye.png";
 import Invisible from "../../assets/invisible.png"
+import axios from "axios";
 
 const ResetPassword = () => {
-    const [password, setPassword] = useState('');
+    const [new_password, setNewPassword] = useState('');
+    const [confirm_new_password, setConfirmNewPassword] = useState('');
 
     const [showPassword, setShowPassword] = useState(false);
-
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const [errorMessage, setErrorMessage] = useState('');
@@ -21,38 +22,25 @@ const ResetPassword = () => {
         event.preventDefault();
     };
 
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const token = urlParams.get('token')
+    console.log(token)
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = { password };
-
-        const response = await fetch(BASE_URL + "/account/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // "Authorization": "Bearar "
-            },
-            body: JSON.stringify(data),
-        })
-            .then(
-                res => res.json()
-            ).then(
-                message => {
-                    if (message.status == "404") {
-                        console.log("sini");
-                        throw new Error(message.error)
-                    } else {
-                        navigate("/")
-                    }
-                }
-            )
-            .catch(error => {
-                setErrorMessage('*' + error.message);
-                document.getElementById("Email").value = "";
-                document.getElementById("Password").value = "";
-            })
-
-        console.log(response);
+        try {
+            const data = { token, new_password, confirm_new_password };
+            const response = await axios.post(BASE_URL + "/account/reset-password", data)
+            const title = "Password Change Complete"
+            const message = "Your password has been changed, and you have been logged into your account. You Will be redirected back to the site in 5 seconds"
+            navigate("/account/email-confirmation", { state: { title: title, message: message } })
+        } catch (err) {
+            setErrorMessage('*Confirm New Password must be matched with New Password');
+            setNewPassword("")
+            setConfirmNewPassword("")
+        }
     }
 
     return (
@@ -84,10 +72,11 @@ const ResetPassword = () => {
                         textAlign: "center"
                     }} >Reset Password</h1>
                     <Box>
-                        <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Password</Typography>
+                        <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>New Password</Typography>
                         <TextField
-                            placeholder="Password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={new_password}
+                            placeholder="New Password"
+                            onChange={(e) => setNewPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
                             InputProps={{
                                 sx: { backgroundColor: "white", width: { sm: "450px", xs: "350px" }, marginBottom: "30px" },
@@ -102,13 +91,14 @@ const ResetPassword = () => {
                                         </IconButton>
                                     </InputAdornment>
                             }}
-                            id="Password" />
+                            id="NewPassword" />
                     </Box>
                     <Box>
-                        <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Confirm Password</Typography>
+                        <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Confirm New Password</Typography>
                         <TextField
-                            placeholder="Password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={confirm_new_password}
+                            placeholder="Confirm New Password"
+                            onChange={(e) => setConfirmNewPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
                             InputProps={{
                                 sx: { backgroundColor: "white", width: { sm: "450px", xs: "350px" }, marginBottom: "10px" },
@@ -123,7 +113,7 @@ const ResetPassword = () => {
                                         </IconButton>
                                     </InputAdornment>
                             }}
-                            id="Password" />
+                            id="ConfirmNewPassword" />
                     </Box>
                     <Box sx={{ display: "flex" }}>
                         <Typography variant="p" color={"red"} sx={{ marginRight: "auto" }}>{errorMessage}</Typography>

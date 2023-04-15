@@ -3,6 +3,7 @@ import Background from "../../assets/background-login.png"
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import BASE_URL from "../../config/BASE_URL";
+import axios from "axios";
 
 const RequestResetPassword = () => {
     const [email, setEmail] = useState('');
@@ -15,35 +16,16 @@ const RequestResetPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = { email };
-
-        const response = await fetch(BASE_URL + "/account/request-reset-password", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data),
-        })
-            .then(
-                res => res.json()
-            ).then(
-                message => {
-                    if (message.status == "404") {
-                        throw new Error("Email not registered")
-                    } else {
-                        navigate("/")
-                    }
-                }
-            )
-            .catch(error => {
-                // setErrorMessage('*Email not registered');
-                // document.getElementById("Email").value = "";
-                const title = "Reset Password"
-                const message = "We have sent  email to " + email + " to confirm the validity of your email address. After receiving the email follow link provided to complete your reset password. The link is only valid for a maximum of 30 minutes"
-                navigate("/account/email-confirmation", { state: { title: title, message: message } })
-            })
-
-        console.log(response);
+        try {
+            const data = { email };
+            const response = await axios.post(BASE_URL + "/account/request-reset-password", data)
+            const title = "Reset Password Link"
+            const message = "We have sent  email to " + email + " to confirm the validity of your email address. After receiving the email follow link provided to complete your reset password. The link is only valid for a maximum of 30 minutes"
+            navigate("/account/email-confirmation", { state: { title: title, message: message } })
+        } catch (err) {
+            setErrorMessage('*' + err.response.data.message);
+            setEmail("")
+        }
     }
 
     return (
@@ -87,6 +69,7 @@ const RequestResetPassword = () => {
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Email</Typography>
                         <TextField
+                            value={email}
                             placeholder="Email"
                             onChange={(e) => setEmail(e.target.value)}
                             InputProps={{

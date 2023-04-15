@@ -13,6 +13,12 @@ const EmailConfirmation = () => {
 
     const location = useLocation();
 
+    if (location?.state?.title === "Password Change Complete") {
+        setTimeout(() => {
+            navigate("/account/login")
+        }, 5000)
+    }
+
     return (
         <Box sx={{
             // width: "100vw",

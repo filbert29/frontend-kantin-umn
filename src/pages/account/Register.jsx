@@ -5,6 +5,7 @@ import { useState } from "react";
 import BASE_URL from "../../config/BASE_URL";
 import Eye from "../../assets/eye.png";
 import Invisible from "../../assets/invisible.png"
+import axios from "axios";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -27,37 +28,19 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = { email, password, confirm_password, full_name };
-
-        const response = await fetch(BASE_URL + "/account/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // "Authorization": "Bearar "
-            },
-            body: JSON.stringify(data),
-        })
-            .then(
-                res => res.json()
-            ).then(
-                message => {
-                    if (message.status == "200") {
-                        const title = "Email Confirmation"
-                        const message = "We have sent  email to " + email + " to confirm the validity of your email address. After receiving the email follow link provided to complete your registration"
-                        navigate("/account/email-confirmation", { state: { title: title, message: message } })
-                    } else if (message.status == "400") {
-                        throw new Error(message.error)
-                    }
-                }
-            )
-            .catch(error => {
-                setErrorMessage('*' + error.message);
-                document.getElementById("Email").value = "";
-                document.getElementById("Password").value = "";
-                document.getElementById("CPassword").value = "";
-                document.getElementById("Name").value = "";
-            })
-        console.log(response);
+        try {
+            const data = { email, full_name, password, confirm_password };
+            const response = await axios.post(BASE_URL + "/account/reset-password", data)
+            const title = "Password Change Complete"
+            const message = "Your password has been changed, and you have been logged into your account. You Will be redirected back to the site in 5 seconds"
+            navigate("/account/email-confirmation", { state: { title: title, message: message } })
+        } catch (err) {
+            setErrorMessage('*Confirm New Password must be matched with New Password');
+            setEmail("")
+            setName("")
+            setPassword("")
+            setCpassword("")
+        }
     }
 
     return (
@@ -92,6 +75,7 @@ const Register = () => {
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Email</Typography>
                         <TextField
+                            value={email}
                             placeholder="Email"
                             onChange={(e) => setEmail(e.target.value)}
                             InputProps={{
@@ -107,6 +91,7 @@ const Register = () => {
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Name</Typography>
                         <TextField
+                            value={full_name}
                             placeholder="Name"
                             onChange={(e) => setName(e.target.value)}
                             InputProps={{
@@ -121,6 +106,7 @@ const Register = () => {
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Password</Typography>
                         <TextField
+                            value={password}
                             placeholder="Password"
                             onChange={(e) => setPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
@@ -142,6 +128,7 @@ const Register = () => {
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Confirm Password</Typography>
                         <TextField
+                            value={confirm_password}
                             placeholder="Confirm Password"
                             onChange={(e) => setCpassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
