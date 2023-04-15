@@ -31,7 +31,7 @@ const Login = () => {
         try {
             const data = { email, password };
             const response = await axios.post(BASE_URL + "/account/login", data)
-            dispatch(setLogin(response?.data))
+            dispatch(setLogin(response?.data?.data))
         } catch (err) {
             setErrorMessage('*' + err.response.data.message);
             setEmail("")
