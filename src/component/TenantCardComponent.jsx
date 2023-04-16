@@ -2,12 +2,13 @@ import { Box, Typography } from "@mui/material";
 import PicTenant from "../assets/pic-tenant.png"
 import Star from "../assets/star.png"
 import { Link } from "react-router-dom";
+import NoImage from "../assets/No_Image_Available.jpg"
 
-const TenantCardComponent = () => {
+const TenantCardComponent = ({ tenant }) => {
     return (
         <Box
             component={Link}
-            to={"/customer/tenant/detailtenant"}
+            to={`/customer/tenant/detailtenant/${tenant._id}`}
             className="card-tenant"
             sx={{
                 display: "grid",
@@ -17,14 +18,14 @@ const TenantCardComponent = () => {
                 textDecoration: "none",
                 color: "#5F6C7B"
             }}>
-            <img src={PicTenant} alt="" width={"100%"} />
+            <img src={tenant?.profile_image || NoImage} alt="no image" width={"100%"} style={{ borderRadius: "15px", minHeight: "186px" }} />
             <Box sx={{
                 display: "grid",
                 padding: "10px 15px",
                 gap: "1px"
             }}>
-                <Typography variant="p" fontSize={"16px"} fontWeight={"bold"}>Kedai Nasi Goreng</Typography>
-                <Typography variant="p" fontSize={"14px"}>Aneka Nasi Goreng</Typography>
+                <Typography variant="p" fontSize={"16px"} fontWeight={"bold"}>{tenant?.full_name}</Typography>
+                <Typography variant="p" fontSize={"14px"}>{tenant?.description}</Typography>
                 <Box display={"flex"} alignItems={"center"} gap={"3px"}>
                     <img src={Star} alt="" width={"20px"} />
                     <Typography variant="p" fontSize={"14px"}>4.7 (12)</Typography>

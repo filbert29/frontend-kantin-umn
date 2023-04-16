@@ -7,18 +7,28 @@ import IconTenant from "../assets/icon-tenant.png"
 import IconFood from "../assets/icon-food.png"
 import IconRandom from "../assets/icon-random.png"
 import TenantCardComponent from "../component/TenantCardComponent";
+import useSWR from 'swr'
+import fetcher from "../helper/fetcher";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-// import required modules
 import { Navigation, Pagination, Autoplay } from "swiper";
 import { Link } from "react-router-dom";
 import FoodCardComponent from "../component/FoodCardComponent";
+import BASE_URL from "../config/BASE_URL";
 
 function Home() {
+
+    const url = `${BASE_URL}/tenant`
+
+    const { data: tenants, isLoading, error } = useSWR(url, (url) => fetcher(url, undefined))
+
+    if (error) return <div>failed to load</div>
+    if (isLoading) return <div>loading...</div>
+
+    console.log(tenants)
 
     return (
         <Container
@@ -156,13 +166,11 @@ function Home() {
                             sx={{
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "center",
                                 gap: "3%"
                             }}>
-                            <TenantCardComponent />
-                            <TenantCardComponent />
-                            <TenantCardComponent />
-                            <TenantCardComponent />
+                            {tenants.map(tenant => (
+                                <TenantCardComponent tenant={tenant} />
+                            ))}
                         </Box>
                     </Box>
 
