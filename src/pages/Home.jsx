@@ -168,9 +168,9 @@ function Home() {
                                 alignItems: "center",
                                 gap: "3%"
                             }}>
-                            {tenants.map(tenant => (
+                            {tenants ? tenants.map(tenant => (
                                 <TenantCardComponent tenant={tenant} />
-                            ))}
+                            )) : <Typography variant="h1">No Data</Typography>}
                         </Box>
                     </Box>
 
