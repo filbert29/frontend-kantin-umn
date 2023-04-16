@@ -16,14 +16,20 @@ import Home from './pages/Home';
 import RequestResetPassword from './pages/account/RequestResetPassword';
 import EmailConfirmation from './pages/account/EmailConfirmation';
 import ResetPassword from './pages/account/ResetPassword';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomerLayout from './layout/CustomerLayout';
+import { setLogout } from './store/Auth';
 
 function App() {
   const { isLoggedin, accountData } = useSelector((state) => state.auth)
 
+  const dispatch = useDispatch()
+
   const checkRole = () => {
     if (isLoggedin) {
+      if (!accountData.hasOwnProperty('access_token') || !accountData.hasOwnProperty('role')) {
+        dispatch(setLogout())
+      }
       switch (accountData?.role) {
         case "customer":
           return <Navigate to={"/customer"} />
@@ -32,7 +38,7 @@ function App() {
         case "admin":
           return <Navigate to={"/admin"} />
         default:
-          return <Navigate to={"/404"} />
+          dispatch(setLogout())
       }
     } else {
       return <Navigate to={"/account/login"} />
