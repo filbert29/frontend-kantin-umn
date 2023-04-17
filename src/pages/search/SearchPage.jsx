@@ -37,7 +37,7 @@ function SearchPage() {
                     <img src={SearchIcon} width={"35px"} alt="" />
                     <TextField autoFocus className="search-page" placeholder="Cari Tenant atau Makanan kesukaan kamu disini"></TextField>
                 </Box>
-                <Box component={Link} to={"/search/listtenant"}
+                <Box component={Link} to={"/customer/search/listtenant"}
                     sx={{
                         padding: "38px 0px 20px 50px",
                         margin: "0px 40px",
