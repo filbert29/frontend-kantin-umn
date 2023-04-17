@@ -15,7 +15,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import { Navigation, Pagination, Autoplay } from "swiper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FoodCardComponent from "../component/FoodCardComponent";
 import BASE_URL from "../config/BASE_URL";
 
@@ -27,8 +27,6 @@ function Home() {
 
     if (error) return <div>failed to load</div>
     if (isLoading) return <div>loading...</div>
-
-    console.log(tenants)
 
     return (
         <Container
@@ -153,13 +151,17 @@ function Home() {
                             <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"}>
                                 Tenant
                             </Typography>
-                            <Button variant="p" sx={{
-                                backgroundColor: "#D8EEFE",
-                                float: "right",
-                                color: "#3DA9FC",
-                                borderRadius: "30px",
-                                padding: "10px 25px"
-                            }}>See all</Button>
+                            <Button
+                                component={Link}
+                                to={"/customer/search/listtenant"}
+                                variant="p"
+                                sx={{
+                                    backgroundColor: "#D8EEFE",
+                                    float: "right",
+                                    color: "#3DA9FC",
+                                    borderRadius: "30px",
+                                    padding: "10px 25px"
+                                }}>See all</Button>
                         </Box>
                         <Box
                             className="list-tenant"
