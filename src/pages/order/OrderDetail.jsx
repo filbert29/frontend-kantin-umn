@@ -222,7 +222,7 @@ const CardDetailMakanan = ({ menu }) => {
       <img src={menu?.image} alt="" width={"150px"} />
       <Box className="deskripsi" ml={"25px"} display={"grid"}>
         <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu?.title}</Typography>
-        <Typography variant="p" fontSize={"14px"}>{menu?.descrption}</Typography>
+        <Typography variant="p" fontSize={"14px"}>{menu?.descirption}</Typography>
         <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp.{menu?.price}</Typography>
       </Box>
     </Box>
