@@ -1,14 +1,43 @@
 import { BottomNavigation, BottomNavigationAction, Box, Paper } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../assets/style/styleNavbar.css"
 
-const NavBar = () => {
+const NavBar = ({ navbar }) => {
     const [value, setValue] = useState(0);
 
     const goHome = useNavigate()
 
     const location = useLocation()
+
+    const refHome = useRef(null)
+    const refSearch = useRef(null)
+    const refHistory = useRef(null)
+    const refCart = useRef(null)
+    const refProfile = useRef(null)
+
+    useEffect(() => {
+
+        if (location?.pathname?.includes("/customer/")) {
+            refHome.current.classList.remove("Mui-selected")
+        }
+
+        if (location?.pathname?.includes("/search")) {
+            refSearch.current.classList.add("Mui-selected")
+        } else if (location?.pathname?.includes("/history")) {
+            refHistory.current.classList.add("Mui-selected")
+        } else if (location?.pathname?.includes("/cart")) {
+            refCart.current.classList.add("Mui-selected")
+        } else if (location?.pathname?.includes("/profile")) {
+            refProfile.current.classList.add("Mui-selected")
+        } else {
+            refSearch.current.classList.remove("Mui-selected")
+            refCart.current.classList.remove("Mui-selected")
+            refHistory.current.classList.remove("Mui-selected")
+            refProfile.current.classList.remove("Mui-selected")
+        }
+
+    }, [location.pathname])
 
     return (
         !location?.pathname?.includes("/account") ?
@@ -25,7 +54,7 @@ const NavBar = () => {
 
                     }}
                 >
-                    <BottomNavigationAction sx={{ color: "white" }} icon={
+                    <BottomNavigationAction ref={refHome} id="nav-btn1" sx={{ color: "white" }} icon={
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                             width="40" height="40"
                             viewBox="0 0 24 24">
@@ -34,10 +63,10 @@ const NavBar = () => {
                     } label="Home"
                         component={Link}
                         to={"/"} />
-                    <BottomNavigationAction component={Link} to={"search/searchpage"} sx={{ color: "white" }} label="Search" />
-                    <BottomNavigationAction component={Link} to={"transaction/history"} sx={{ color: "white" }} label="History" />
-                    <BottomNavigationAction component={Link} to={"cart/listcart"} sx={{ color: "white" }} label="Cart" />
-                    <BottomNavigationAction component={Link} to={"profile/myaccount"} sx={{ color: "white" }} label="Profile" />
+                    <BottomNavigationAction ref={refSearch} id="nav-btn2" component={Link} to={"search/searchpage"} sx={{ color: "white" }} label="Search" />
+                    <BottomNavigationAction ref={refHistory} id="nav-btn3" component={Link} to={"transaction/history"} sx={{ color: "white" }} label="History" />
+                    <BottomNavigationAction ref={refCart} id="nav-btn4" component={Link} to={"cart/listcart"} sx={{ color: "white" }} label="Cart" />
+                    <BottomNavigationAction ref={refProfile} id="nav-btn5" component={Link} to={"profile/myaccount"} sx={{ color: "white" }} label="Profile" />
                 </BottomNavigation>
             </Paper>
             :
