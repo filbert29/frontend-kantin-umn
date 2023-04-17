@@ -22,8 +22,6 @@ function SearchPage() {
                     paddingBottom: "100px"
                 }}>
                 <Box
-                    component={Link}
-                    to={"/search/searchpage"}
                     className="search-box"
                     sx={{
                         display: "flex",
