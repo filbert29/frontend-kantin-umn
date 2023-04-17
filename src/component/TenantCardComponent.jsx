@@ -24,14 +24,14 @@ const TenantCardComponent = ({ tenant }) => {
                 padding: "10px 15px",
                 gap: "1px"
             }}>
-                <Typography variant="p" fontSize={"16px"} fontWeight={"bold"}>{tenant?.full_name}</Typography>
-                <Typography variant="p" fontSize={"14px"}>{tenant?.description}</Typography>
+                <Typography variant="p" fontSize={"16px"} sx={{ width: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} fontWeight={"bold"}>{tenant?.full_name}</Typography>
+                <Typography variant="p" fontSize={"14px"} sx={{ width: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{tenant?.description}</Typography>
                 <Box display={"flex"} alignItems={"center"} gap={"3px"}>
                     <img src={Star} alt="" width={"20px"} />
                     <Typography variant="p" fontSize={"14px"}>4.7 (12)</Typography>
                 </Box>
             </Box>
-        </Box>
+        </Box >
     );
 }
 
