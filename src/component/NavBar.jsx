@@ -20,6 +20,8 @@ const NavBar = ({ navbar }) => {
 
         if (location?.pathname?.includes("/customer/")) {
             refHome.current.classList.remove("Mui-selected")
+        } else {
+            refHome.current.classList.add("Mui-selected")
         }
 
         if (location?.pathname?.includes("/search")) {
