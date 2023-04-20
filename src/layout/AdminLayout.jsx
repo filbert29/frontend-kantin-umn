@@ -1,16 +1,20 @@
 import { AppBar, Box, Button, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from "@mui/material";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useParams } from "react-router-dom";
 import MenuIcon from './../assets/icon/menu-icon.svg';
 import { AdminMenu } from "../config/menu.config";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../store/Auth";
-import { Dashboard, Store } from '@mui/icons-material';
+import { AddBox, Dashboard, Store } from '@mui/icons-material';
 
 const AdminLayout = () => {
     const location = useLocation();
+    const params = useParams()
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const dispatch = useDispatch()
+
+    const pathName = params?.id ? location.pathname.replace(params?.id, ":id") : location.pathname 
+
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
@@ -58,7 +62,8 @@ const AdminLayout = () => {
                         <Box>
                             <List sx={{ py: 0 }}>
                                 <ListMenu title={"Dashboard"} path={"/admin"} icon={<Dashboard />} />
-                                <ListMenu title={"Register Tenant"} path={"/admin/register-tenant"} icon={<Store />} />
+                                <ListMenu title={"Tenant"} path={"/admin/tenant"} icon={<Store />} />
+                                <ListMenu title={"Register Tenant"} path={"/admin/register-tenant"} icon={<AddBox />} />
                             </List>
                         </Box>
                     </Box>
@@ -80,7 +85,7 @@ const AdminLayout = () => {
                                     <img alt="" width={"20px"} src={MenuIcon} />
                                 </IconButton>
                                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                    {AdminMenu[location.pathname]}
+                                    {AdminMenu[pathName]}
                                 </Typography>
                                 <Button onClick={logout} color="inherit">
                                     Logout

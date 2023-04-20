@@ -1,10 +1,12 @@
-import { Box, TextField, Grid, Button } from "@mui/material";
+import { Box, TextField, Grid, Button, Typography, Modal } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import BASE_URL from "../../config/BASE_URL";
 import { useSelector } from "react-redux";
+import { Store } from "@mui/icons-material";
 
 const RegisterTenantPage = () => {
+    const [modalOpen, setModalOpen] = useState(false);
     const [tenantData, setTenantData] = useState({
         full_name: "",
         location: "",
@@ -15,7 +17,6 @@ const RegisterTenantPage = () => {
     const [tenantDataError, setTenantDataError] = useState();
     const { accountData } = useSelector((state) => state.auth)
 
-    console.log(accountData)
 
     const handleTenantDataChange = (e) => {
         setTenantData((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
@@ -29,80 +30,111 @@ const RegisterTenantPage = () => {
                     Authorization: `Bearer ${accountData?.access_token}`
                 },
             })
-            const data = await response?.data
-            console.log(data)
+            await response?.data
+            alert("Register Tenant Success")
+            setModalOpen(false)
         } catch (err) {
-            console.log(err?.response?.data)
+            setTenantDataError("Something went wrong")
         }
     }
 
     return (
-        <Box>
-            <form onChange={handleTenantDataChange} onSubmit={handleTenantDataSubmit}>
-                <Grid container spacing={4}>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Tenant Name"
-                            variant="standard"
-                            type="text"
-                            required={true}
-                            fullWidth
-                            name="full_name"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Location"
-                            variant="standard"
-                            type="text"
-                            name="location"
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Tenant Description"
-                            variant="standard"
-                            name="password"
-                            type="text"
-                            fullWidth
-                            multiline
-                            minRows={1}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Email"
-                            variant="standard"
-                            type="email"
-                            required={true}
-                            name="email"
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Password"
-                            variant="standard"
-                            type="text"
-                            name="password"
-                            required={true}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button fullWidth variant="contained" color="secondary">
-                            Cancel
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button fullWidth type="submit" variant="contained" color="primary">
-                            Submit
-                        </Button>
-                    </Grid>
-                </Grid>
-            </form>
-        </Box>
+        <>
+            <Box sx={{ textAlign: "center" }}>
+                <Button onClick={() => setModalOpen(true)} color="success" variant="contained" sx={{ textTransform: "capitalize", flexDirection: "column" }}>
+                    <Typography >
+                        Register New Tenant
+                    </Typography>
+                    <Box>
+                        <Store sx={{ fontSize: "64px" }} />
+                    </Box>
+                </Button>
+            </Box>
+            <Modal open={modalOpen}>
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    border: '2px solid #000',
+                    boxShadow: 24,
+                    px: 4,
+                    maxHeight: "90vh",
+                    overflowY: "auto"
+                }}>
+                    <Typography my={4} variant="h5" component="h1" textAlign={"center"}>
+                        Create new Tenant
+                    </Typography>
+                    <form onChange={handleTenantDataChange} onSubmit={handleTenantDataSubmit}>
+                        <Grid sx={{mb: 4}} container rowGap={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Tenant Name"
+                                    variant="standard"
+                                    type="text"
+                                    required={true}
+                                    fullWidth
+                                    name="full_name"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Location"
+                                    variant="standard"
+                                    type="text"
+                                    name="location"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Tenant Description"
+                                    variant="standard"
+                                    name="password"
+                                    type="text"
+                                    fullWidth
+                                    multiline
+                                    minRows={1}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Email"
+                                    variant="standard"
+                                    type="email"
+                                    required={true}
+                                    name="email"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Password"
+                                    variant="standard"
+                                    type="text"
+                                    name="password"
+                                    required={true}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button fullWidth type="submit" variant="contained" color="primary">
+                                    Submit
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button onClick={() => setModalOpen(false)} fullWidth variant="contained" color="secondary">
+                                    Cancel
+                                </Button>
+                            </Grid>
+                            {tenantDataError && <Typography textAlign={"center"} color="error">{tenantDataError}</Typography>}
+                        </Grid>
+                    </form>
+                </Box>
+            </Modal>
+        </>
     );
 }
 
