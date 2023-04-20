@@ -19,6 +19,8 @@ import ResetPassword from './pages/account/ResetPassword';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomerLayout from './layout/CustomerLayout';
 import { setLogout } from './store/Auth';
+import AdminLayout from './layout/AdminLayout';
+import DashboardPage from './pages/admin/DashboardPage';
 
 function App() {
   const { isLoggedin, accountData } = useSelector((state) => state.auth)
@@ -79,6 +81,9 @@ function App() {
             <Route path='transaction'>
               <Route path='history' element={<History />} />
             </Route>
+          </Route>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<DashboardPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
