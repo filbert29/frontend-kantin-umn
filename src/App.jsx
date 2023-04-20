@@ -82,7 +82,7 @@ function App() {
               <Route path='history' element={<History />} />
             </Route>
           </Route>
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin" element={accountData?.role === "admin" ? <AdminLayout /> : <Navigate to={"/account/login"} />}>
             <Route index element={<DashboardPage />} />
           </Route>
         </Routes>

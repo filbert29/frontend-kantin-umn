@@ -1,19 +1,27 @@
-import { AppBar, Box, Button, Grid, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import MenuIcon from './../assets/icon/menu-icon.svg';
 import { AdminMenu } from "../config/menu.config";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../store/Auth";
 
 const AdminLayout = () => {
     const location = useLocation();
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const dispatch = useDispatch()
+
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     }
 
+    const logout = () => {
+        dispatch(setLogout())
+    }
+
     return (
         <>
-            <Box sx={{ display: "flex"}} >
+            <Box sx={{ display: "flex" }} >
                 <Box sx={{
                     width: sidebarOpen ? "300px" : 0,
                     transition: "0.4s",
@@ -26,10 +34,19 @@ const AdminLayout = () => {
                         padding: "30px",
                         color: "white"
                     }} >
-                        <Typography mt="10px" variant="h4" component="h1" fontSize="32px" >
+                        <Typography
+                            mt="10px"
+                            variant="h4"
+                            component="h1"
+                            fontSize="32px"
+                        >
                             Kantin UMN
                         </Typography>
-                        <Typography mt="10px" variant="h4" component="h1" fontSize="16px" >
+                        <Typography
+                            variant="h4"
+                            component="h1"
+                            fontSize="20px"
+                        >
                             Admin
                         </Typography>
                     </Box>
@@ -38,7 +55,7 @@ const AdminLayout = () => {
                     <Box sx={{
                         padding: "2em",
                     }}>
-                        <AppBar position="static" sx={{ background: "#fff", color: "black"}}>
+                        <AppBar position="static" sx={{ background: "#fff", color: "black" }}>
                             <Toolbar>
                                 <IconButton
                                     size="large"
@@ -53,8 +70,8 @@ const AdminLayout = () => {
                                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                     {AdminMenu[location.pathname]}
                                 </Typography>
-                                <Button color="inherit">
-                                    Login
+                                <Button onClick={logout} color="inherit">
+                                    Logout
                                 </Button>
                             </Toolbar>
                         </AppBar>
