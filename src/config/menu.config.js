@@ -1,3 +1,4 @@
 export const AdminMenu = {
-    "/admin": "Dashboard"
+    "/admin": "Dashboard",
+    "/admin/register-tenant": "Register Tenant"
 }

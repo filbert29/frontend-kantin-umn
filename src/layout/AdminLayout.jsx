@@ -1,10 +1,11 @@
-import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
-import { Outlet, useLocation } from "react-router-dom";
+import { AppBar, Box, Button, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from "@mui/material";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import MenuIcon from './../assets/icon/menu-icon.svg';
 import { AdminMenu } from "../config/menu.config";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../store/Auth";
+import { Dashboard, Store } from '@mui/icons-material';
 
 const AdminLayout = () => {
     const location = useLocation();
@@ -21,7 +22,7 @@ const AdminLayout = () => {
 
     return (
         <>
-            <Box sx={{ display: "flex" }} >
+            <Box sx={{ display: "flex", background: "rgba(0,0,0,0.05)" }} >
                 <Box sx={{
                     width: sidebarOpen ? "300px" : 0,
                     transition: "0.4s",
@@ -31,29 +32,40 @@ const AdminLayout = () => {
                     minHeight: "100vh",
                 }}>
                     <Box sx={{
-                        padding: "30px",
+                        padding: "20px 0 30px 0",
                         color: "white"
                     }} >
-                        <Typography
-                            mt="10px"
-                            variant="h4"
-                            component="h1"
-                            fontSize="32px"
-                        >
-                            Kantin UMN
-                        </Typography>
-                        <Typography
-                            variant="h4"
-                            component="h1"
-                            fontSize="20px"
-                        >
-                            Admin
-                        </Typography>
+                        <Box>
+                            <Typography
+                                mt=""
+                                variant="h4"
+                                component="h1"
+                                fontSize="26px"
+                                padding="0 30px"
+                            >
+                                Kantin UMN
+                            </Typography>
+                            <Typography
+                                variant="h4"
+                                component="h1"
+                                fontSize="20px"
+                                padding="0 30px"
+                            >
+                                Admin
+                            </Typography>
+                        </Box>
+                        <Divider sx={{ backgroundColor: "white", margin: "18px 0 0 0" }} />
+                        <Box>
+                            <List sx={{ py: 0 }}>
+                                <ListMenu title={"Dashboard"} path={"/admin"} icon={<Dashboard />} />
+                                <ListMenu title={"Register Tenant"} path={"/admin/register-tenant"} icon={<Store />} />
+                            </List>
+                        </Box>
                     </Box>
                 </Box>
                 <Box sx={{ width: "100%" }}>
                     <Box sx={{
-                        padding: "2em",
+                        padding: "30px",
                     }}>
                         <AppBar position="static" sx={{ background: "#fff", color: "black" }}>
                             <Toolbar>
@@ -75,7 +87,9 @@ const AdminLayout = () => {
                                 </Button>
                             </Toolbar>
                         </AppBar>
-                        <Outlet />
+                        <Box component={Paper} p={"25px"} mt={"30px"}>
+                            <Outlet />
+                        </Box>
                     </Box>
                 </Box>
             </Box>
@@ -84,3 +98,18 @@ const AdminLayout = () => {
 }
 
 export default AdminLayout;
+
+const ListMenu = ({ title, path, icon }) => {
+    const isActive = useLocation().pathname === path
+
+    return (
+        <ListItem disablePadding sx={{ color: "white" }} component={NavLink} to={path}>
+            <ListItemButton sx={{ pl: "30px", "&:hover": { background: "#1a233d" }, background: isActive ? "#273764" : "transparent" }}>
+                <ListItemIcon sx={{ color: "white", minWidth: "40px" }}>
+                    {icon}
+                </ListItemIcon>
+                <ListItemText primaryTypographyProps={{ fontSize: "18px" }} primary={title} />
+            </ListItemButton>
+        </ListItem>
+    )
+}

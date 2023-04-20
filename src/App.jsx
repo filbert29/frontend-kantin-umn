@@ -21,6 +21,7 @@ import CustomerLayout from './layout/CustomerLayout';
 import { setLogout } from './store/Auth';
 import AdminLayout from './layout/AdminLayout';
 import DashboardPage from './pages/admin/DashboardPage';
+import RegisterTenantPage from './pages/admin/RegisterTenantPage';
 
 function App() {
   const { isLoggedin, accountData } = useSelector((state) => state.auth)
@@ -84,6 +85,7 @@ function App() {
           </Route>
           <Route path="/admin" element={accountData?.role === "admin" ? <AdminLayout /> : <Navigate to={"/account/login"} />}>
             <Route index element={<DashboardPage />} />
+            <Route path='register-tenant' element={<RegisterTenantPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
