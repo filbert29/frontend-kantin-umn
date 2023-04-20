@@ -17,15 +17,21 @@ const MyAccount = () => {
     const [change_email, setChangeEmail] = useState('')
     const [change_full_name, setChangeFullName] = useState('')
     const [errorMessage, setErrorMessage] = useState('');
-    const [open, setOpen] = useState(false);
+    const [openname, setOpenName] = useState(false);
+    const [openemail, setOpenEmail] = useState(false);
     const { accountData } = useSelector((state) => state.auth)
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleClickOpenName = () => {
+        setOpenName(true);
+    };
+
+    const handleClickOpenEmail = () => {
+        setOpenEmail(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenName(false);
+        setOpenEmail(false);
     };
 
     const dispatch = useDispatch()
@@ -49,11 +55,36 @@ const MyAccount = () => {
             const data = { access_token, email, full_name, profile_image, role }
             dispatch(setLogin(data))
             // console.log(response)
-            setOpen(false);
+            setOpenName(false);
         } catch (err) {
             setErrorMessage('*' + err.response.data.message);
             setChangeFullName("")
-            console.log(err)
+        }
+    }
+
+    const handleEditEmail = async (e) => {
+        e.preventDefault();
+
+        const email = change_email;
+        const full_name = accountData?.full_name;
+
+        try {
+            const change_email = { full_name, email };
+            const response = await axios.put(BASE_URL + "/customer/profile", change_email, {
+                headers: {
+                    Authorization: `Bearer ${accountData?.access_token}`
+                },
+            })
+            const access_token = accountData.access_token;
+            const profile_image = accountData.profile_image;
+            const role = accountData.role;
+            const data = { access_token, email, full_name, profile_image, role }
+            dispatch(setLogin(data))
+            // console.log(response)
+            setOpenEmail(false);
+        } catch (err) {
+            setErrorMessage('*' + err.response.data.message);
+            setChangeEmail("")
         }
     }
 
@@ -104,7 +135,7 @@ const MyAccount = () => {
                         <Box>
                             <Typography variant="p" fontSize={"24px"}>{accountData.full_name}</Typography>
                             <Button
-                                onClick={handleClickOpen}
+                                onClick={handleClickOpenName}
                                 sx={{
                                     float: "right",
                                     backgroundColor: "#D8EEFE",
@@ -113,7 +144,7 @@ const MyAccount = () => {
                                     ":hover": { backgroundColor: "#86c7f7" }
                                 }}> <span style={{ margin: "8px 20px", fontWeight: "bold" }}>Edit</span> <img src={IconEdit} alt="" width={"40px"} /></Button>
                         </Box>
-                        <Dialog open={open} onClose={handleClose}>
+                        <Dialog open={openname} onClose={handleClose}>
                             <DialogTitle>Edit Name</DialogTitle>
                             <DialogContent>
                                 <TextField
@@ -141,14 +172,36 @@ const MyAccount = () => {
                         <Typography variant="p" fontSize={"18px"}>Email</Typography>
                         <Box>
                             <Typography variant="p" fontSize={"24px"}>{accountData.email}</Typography>
-                            <Button sx={{
-                                float: "right",
-                                backgroundColor: "#D8EEFE",
-                                padding: "0",
-                                borderRadius: "12px",
-                                ":hover": { backgroundColor: "#86c7f7" }
-                            }}> <span style={{ margin: "8px 20px", fontWeight: "bold" }}>Edit</span> <img src={IconEdit} alt="" width={"40px"} /></Button>
+                            <Button
+                                onClick={handleClickOpenEmail}
+                                sx={{
+                                    float: "right",
+                                    backgroundColor: "#D8EEFE",
+                                    padding: "0",
+                                    borderRadius: "12px",
+                                    ":hover": { backgroundColor: "#86c7f7" }
+                                }}> <span style={{ margin: "8px 20px", fontWeight: "bold" }}>Edit</span> <img src={IconEdit} alt="" width={"40px"} /></Button>
                         </Box>
+                        <Dialog open={openemail} onClose={handleClose}>
+                            <DialogTitle>Edit Email</DialogTitle>
+                            <DialogContent>
+                                <TextField
+                                    autoFocus
+                                    onChange={(e) => setChangeEmail(e.target.value)}
+                                    value={change_email}
+                                    margin="dense"
+                                    id="change_email"
+                                    label="Change Email"
+                                    type="text"
+                                    fullWidth
+                                    variant="standard"
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose}>Cancel</Button>
+                                <Button onClick={handleEditEmail}>Edit</Button>
+                            </DialogActions>
+                        </Dialog>
                     </Box>
                     <Box className="Email" sx={{
                         display: "grid",
