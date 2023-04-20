@@ -37,13 +37,17 @@ const MyAccount = () => {
         const full_name = change_full_name;
 
         try {
-            const data = { full_name, email };
-            const response = await axios.put(BASE_URL + "/customer/profile", data, {
+            const change_name = { full_name, email };
+            const response = await axios.put(BASE_URL + "/customer/profile", change_name, {
                 headers: {
                     Authorization: `Bearer ${accountData?.access_token}`
                 },
             })
-            dispatch(setLogin(full_name))
+            const access_token = accountData.access_token;
+            const profile_image = accountData.profile_image;
+            const role = accountData.role;
+            const data = { access_token, email, full_name, profile_image, role }
+            dispatch(setLogin(data))
             // console.log(response)
             setOpen(false);
         } catch (err) {
