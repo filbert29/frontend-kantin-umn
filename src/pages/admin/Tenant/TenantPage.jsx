@@ -1,7 +1,7 @@
 import BASE_URL from "../../../config/BASE_URL";
 import useSWR from 'swr'
 import fetcher from "../../../helper/fetcher";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { Visibility } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -35,9 +35,9 @@ const TenantPage = () => {
                 total_order: tenant?.total_order,
                 total_menu: tenant?.total_menu,
                 action: (
-                    <IconButton onClick={() => navigate(`/admin/tenant/${tenant?._id}`)}>
-                        <Visibility />
-                    </IconButton>
+                    <Button onClick={() => navigate(`/admin/tenant/${tenant?._id}`)} endIcon={<Visibility />}>
+                        See Detail
+                    </Button>
                 )
             }))
             setTenantData(tempTenantData)

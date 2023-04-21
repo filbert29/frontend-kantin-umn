@@ -45,9 +45,7 @@ const TableData = ({
                 </TableBody>
             </Table>
             <TablePagination
-                sx={{
-                }}
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={10}
                 component="div"
                 count={data?.length}
                 rowsPerPage={rowsPerPage}
