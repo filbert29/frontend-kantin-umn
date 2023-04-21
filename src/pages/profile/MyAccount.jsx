@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLogin, setLogout } from "../../store/Auth";
 import axios from "axios";
 import BASE_URL from "../../config/BASE_URL";
+import useSWR from 'swr'
+import fetcher from "../../helper/fetcher";
 
 
 const MyAccount = () => {
@@ -16,10 +18,18 @@ const MyAccount = () => {
 
     const [change_email, setChangeEmail] = useState('')
     const [change_full_name, setChangeFullName] = useState('')
+
     const [errorMessage, setErrorMessage] = useState('');
+
     const [openname, setOpenName] = useState(false);
     const [openemail, setOpenEmail] = useState(false);
+    const [openpassword, setOpenPassword] = useState(false);
+
     const { accountData } = useSelector((state) => state.auth)
+
+    const [password, setPassword] = useState('')
+    const [new_password, setNewPassword] = useState('')
+    const [confirm_new_password, setConfirmPassword] = useState('')
 
     const handleClickOpenName = () => {
         setOpenName(true);
@@ -29,17 +39,29 @@ const MyAccount = () => {
         setOpenEmail(true);
     };
 
+    const handleClickOpenPassword = () => {
+        setOpenPassword(true);
+    };
+
     const handleClose = () => {
         setOpenName(false);
         setOpenEmail(false);
+        setOpenPassword(false);
     };
 
     const dispatch = useDispatch()
 
+    const url = `${BASE_URL}/customer/profile`
+
+    const { data: customer, isLoading, error, mutate } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
+
+    if (error) return <div>failed to load</div>
+    if (isLoading) return <div>loading...</div>
+
     const handleEditName = async (e) => {
         e.preventDefault();
 
-        const email = accountData?.email;
+        const email = customer?.email;
         const full_name = change_full_name;
 
         try {
@@ -55,6 +77,7 @@ const MyAccount = () => {
             const data = { access_token, email, full_name, profile_image, role }
             dispatch(setLogin(data))
             // console.log(response)
+            mutate()
             setOpenName(false);
         } catch (err) {
             setErrorMessage('*' + err.response.data.message);
@@ -66,7 +89,7 @@ const MyAccount = () => {
         e.preventDefault();
 
         const email = change_email;
-        const full_name = accountData?.full_name;
+        const full_name = customer?.full_name;
 
         try {
             const change_email = { full_name, email };
@@ -76,15 +99,39 @@ const MyAccount = () => {
                 },
             })
             const access_token = accountData.access_token;
-            const profile_image = accountData.profile_image;
+            const profile_image = customer.profile_image;
             const role = accountData.role;
             const data = { access_token, email, full_name, profile_image, role }
             dispatch(setLogin(data))
             // console.log(response)
+            mutate()
             setOpenEmail(false);
         } catch (err) {
             setErrorMessage('*' + err.response.data.message);
             setChangeEmail("")
+        }
+    }
+
+    const handleChangePassword = async (e) => {
+        e.preventDefault();
+
+        try {
+            const change_password = { password, new_password, confirm_new_password };
+            const response = await axios.put(BASE_URL + "/customer/change-password", change_password, {
+                headers: {
+                    Authorization: `Bearer ${accountData?.access_token}`
+                },
+            })
+            setPassword("")
+            setNewPassword("")
+            setConfirmPassword("")
+            setOpenPassword(false);
+        } catch (err) {
+            console.log(err)
+            setErrorMessage('*' + err.response.data.message);
+            setPassword("")
+            setNewPassword("")
+            setConfirmPassword("")
         }
     }
 
@@ -114,7 +161,7 @@ const MyAccount = () => {
                         <img src={ProfilePicture} alt="" width={"160px"} />
                     </Box>
                     <Box className="name-tag" display={"grid"} gap={"10px"}>
-                        <Typography variant="p" fontSize={"24px"} fontWeight={"bold"}>{accountData.full_name}</Typography>
+                        <Typography variant="p" fontSize={"24px"} fontWeight={"bold"}>{customer.full_name}</Typography>
                         <Chip label="Customer" sx={{ fontWeight: "bold", backgroundColor: "#094067", color: "white", width: "100px", paddingY: "17px" }} />
                     </Box>
 
@@ -133,7 +180,7 @@ const MyAccount = () => {
                     }}>
                         <Typography variant="p" fontSize={"18px"}>Display Name</Typography>
                         <Box>
-                            <Typography variant="p" fontSize={"24px"}>{accountData.full_name}</Typography>
+                            <Typography variant="p" fontSize={"24px"}>{customer.full_name}</Typography>
                             <Button
                                 onClick={handleClickOpenName}
                                 sx={{
@@ -210,15 +257,57 @@ const MyAccount = () => {
                         <Typography variant="p" fontSize={"18px"}>Password</Typography>
                         <Box>
                             <Typography variant="p" fontSize={"24px"}>********</Typography>
-                            <Button sx={{
-                                float: "right",
-                                backgroundColor: "#D8EEFE",
-                                padding: "0",
-                                borderRadius: "12px",
-                                ":hover": { backgroundColor: "#86c7f7" }
-                            }}> <span style={{ margin: "8px 20px", fontWeight: "bold" }}>Change Password</span> <img src={IconEdit} alt="" width={"40px"} /></Button>
+                            <Button
+                                onClick={handleClickOpenPassword}
+                                sx={{
+                                    float: "right",
+                                    backgroundColor: "#D8EEFE",
+                                    padding: "0",
+                                    borderRadius: "12px",
+                                    ":hover": { backgroundColor: "#86c7f7" }
+                                }}> <span style={{ margin: "8px 20px", fontWeight: "bold" }}>Change Password</span> <img src={IconEdit} alt="" width={"40px"} /></Button>
                         </Box>
                     </Box>
+                    <Dialog open={openpassword} onClose={handleClose}>
+                        <DialogTitle>Change Password</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                autoFocus
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
+                                margin="dense"
+                                id="password"
+                                label="Password"
+                                type=""
+                                fullWidth
+                                variant="standard"
+                            />
+                            <TextField
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                value={new_password}
+                                margin="dense"
+                                id="new-password"
+                                label="New Password"
+                                type=""
+                                fullWidth
+                                variant="standard"
+                            />
+                            <TextField
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                value={confirm_new_password}
+                                margin="dense"
+                                id="confirm-password"
+                                label="Confirm Password"
+                                type=""
+                                fullWidth
+                                variant="standard"
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button onClick={handleChangePassword}>Edit</Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
                 <Box className="balance shadow-box"
                     m={"30px"}
