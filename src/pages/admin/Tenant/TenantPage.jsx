@@ -1,17 +1,49 @@
 import BASE_URL from "../../../config/BASE_URL";
 import useSWR from 'swr'
 import fetcher from "../../../helper/fetcher";
-import { IconButton, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Visibility } from "@mui/icons-material"
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import TableData from "../../../component/Admin/TableData";
+import { useEffect, useState } from "react";
+
+const tenantColumns = [
+    { id: 'number', label: '#', minWidth: 0 },
+    { id: 'full_name', label: 'Tenant Name', minWidth: 170 },
+    { id: 'rating', label: 'Rating', minWidth: 170 },
+    { id: 'total_order', label: 'Orders', minWidth: 170 },
+    { id: 'total_menu', label: 'Menu', minWidth: 170 },
+    { id: 'action', label: 'Action', minWidth: 170 },
+]
 
 const TenantPage = () => {
-    const { data, error, isLoading } = useSWR(`${BASE_URL}/admin/tenant`, fetcher);
+    const url = `${BASE_URL}/admin/tenant`;
 
-    if (isLoading) return
-    Array(10).fill().map((_, index) => (
-        <Skeleton key={index} variant="rectangular" width="100%" height={50} />
-    ))
+    const { accountData } = useSelector(state => state.auth)
+    const { data: allTenant, error } = useSWR(url, (url) => fetcher(url, accountData?.access_token));
+    const [tenantData, setTenantData] = useState()
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (allTenant) {
+            const tempTenantData = allTenant.map((tenant, index) => ({
+                number: index + 1,
+                full_name: tenant?.full_name,
+                rating: tenant?.rating,
+                total_order: tenant?.total_order,
+                total_menu: tenant?.total_menu,
+                action: (
+                    <IconButton onClick={() => navigate(`/admin/tenant/${tenant?._id}`)}>
+                        <Visibility />
+                    </IconButton>
+                )
+            }))
+            setTenantData(tempTenantData)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allTenant])
 
     if (error) return (
         <p>Something went wrong</p>
@@ -19,38 +51,10 @@ const TenantPage = () => {
 
     return (
         <div>
-            <TableContainer>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>No</TableCell>
-                            <TableCell>Tenant Name</TableCell>
-                            <TableCell>Rating</TableCell>
-                            <TableCell>Orders</TableCell>
-                            <TableCell>Menu</TableCell>
-                            <TableCell>Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data?.map((tenant, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>{tenant?.full_name}</TableCell>
-                                <TableCell>{tenant?.rating}</TableCell>
-                                <TableCell>{tenant?.total_order}</TableCell>
-                                <TableCell>{tenant?.total_menu}</TableCell>
-                                <TableCell>
-                                    <Link to={`/admin/tenant/${tenant?._id}`}>
-                                        <IconButton >
-                                            <Visibility />
-                                        </IconButton>
-                                    </Link>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <TableData
+                data={tenantData}
+                columns={tenantColumns}
+            />
         </div>
     );
 }
