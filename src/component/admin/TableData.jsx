@@ -30,6 +30,13 @@ const TableData = ({
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {data?.length === 0 && ( 
+                        <TableRow>
+                            <TableCell colSpan={columns.length} align="center">
+                                No data
+                            </TableCell>
+                        </TableRow>
+                    )}
                     {data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, id) => (
                         <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                             {columns.map((column) => {

@@ -1,17 +1,61 @@
 import { ArrowBack, LocationOn } from "@mui/icons-material";
-import { Box, Button, Card, Typography, Grid, Divider } from "@mui/material";
+import { Box, Button, Typography, Divider, Modal } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import BASE_URL from "../../../config/BASE_URL";
 import useSWR from "swr";
 import fetcher from "../../../helper/fetcher";
 import DefaulltImage from "./../../../assets/default.jpg"
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import TableData from "../../../component/Admin/TableData";
+
+const menuColumns = [
+    { id: "number", label: "#" },
+    { id: "title", label: "Title" },
+    { id: "price", label: "Price" },
+    { id: "description", label: "Description" },
+    { id: "category", label: "Category" },
+    { id: "action", label: "" },
+]
 
 const TenantDetailPage = () => {
     const id = useParams().id;
-    const { data, error, isLoading } = useSWR(`${BASE_URL}/tenant/${id} `, fetcher);
+    const { access_token } = useSelector((state) => state.auth?.accountData)
+    const { data, error, isLoading } = useSWR(`${BASE_URL}/admin/tenant/${id}`, (url) => fetcher(url, access_token));
+    const [menus, setMenus] = useState();
+
+    // MODAL MENU DETAIL
+    const [openModalMenuDetail, setOpenModalMenuDetail] = useState(false);
+    const [selectedMenu, setSelectedMenu] = useState();
+
+    const handleCloseModalMenuDetail = () => {
+        setOpenModalMenuDetail(false);
+    };
+
+    useEffect(() => {
+        if (data?.menus) {
+            const tempTenantMenus = data?.menus?.map((menu, index) => ({
+                number: index + 1,
+                title: menu?.title,
+                price: menu?.price,
+                description: menu?.description,
+                category: menu?.category?.title || "No Category",
+                action: (
+                    <Button onClick={() => {
+                        setOpenModalMenuDetail(true)
+                        setSelectedMenu(menu)
+                    }}> Detail </Button>
+                )
+            }))
+            setMenus(tempTenantMenus)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data])
+
 
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong</p>;
+
 
     return (
         <div>
@@ -38,48 +82,55 @@ const TenantDetailPage = () => {
                         Menu
                     </Typography>
                     <Divider />
-                    <Grid container columnGap={3}>
-                        <Menus menus={data?.menus} />
-                    </Grid>
+                    <TableData
+                        columns={menuColumns}
+                        data={menus}
+                    />
                 </Box>
             </Box>
+
+            <ModalMenuDetail
+                open={openModalMenuDetail}
+                handleClose={handleCloseModalMenuDetail}
+                menu={selectedMenu}
+            />
         </div>
     );
 }
 
 export default TenantDetailPage;
 
-const Menus = ({ menus }) => {
+const ModalMenuDetailStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
+const ModalMenuDetail = ({ open, handleClose, menu }) => {
+    const { title, price, description, category, image } = menu || {};
     return (
-        menus?.map((dataMenus, idx) => (
-            <>
-                {dataMenus.category?.title ? (
-                    <Grid item xs={12} key={idx}>
-                        <Typography mb={2} mt={4} variant="h6">
-                            {dataMenus.category?.title}
-                        </Typography>
-                    </Grid>
-                ) : (
-                    <Grid item xs={12} key={idx}>
-                        <Typography mb={2} mt={4} variant="h6">No Category</Typography>
-                    </Grid>
-                )}
-                {dataMenus.menu?.map((menu, index) => (
-                    <Grid mb={3} item xs={3} key={index}>
-                        <Card>
-                            <Box p={"20px"}>
-                                <img width={"100%"} height={"150px"} style={{ objectFit: "cover" }} alt={menu?.name} src={menu?.image || DefaulltImage} />
-                                <Typography fontWeight={"bold"} component="h2">
-                                    {menu?.title}
-                                </Typography>
-                                <Typography height={"2ch"} component="h2">
-                                    Rp{(menu?.price).toLocaleString("id-ID")}
-                                </Typography>
-                            </Box>
-                        </Card>
-                    </Grid>
-                ))}
-            </>
-        ))
-    )
+        <Modal open={open} onClose={handleClose}>
+            <Box sx={ModalMenuDetailStyle}>
+                <img width={"100%"} height={"400px"} style={{objectFit: "cover"}} alt={title} src={image || DefaulltImage}></img>
+                <Typography mt={1} variant="h5" component="h1">
+                    {title}
+                </Typography>
+                <Typography variant="p" component="p">
+                    {category?.title || "No Category"}
+                </Typography>
+                <Typography my={1} variant="p" component="p">
+                    {price}
+                </Typography>
+                <Typography variant="p" component="p">
+                    {description}
+                </Typography>
+            </Box>
+        </Modal>
+    );
 }
