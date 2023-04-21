@@ -1,4 +1,4 @@
-.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input {
+.section-fitur .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input {
     display: flex;
     align-items: center;
     padding: 9px 0px 13px 40px;
@@ -6,8 +6,8 @@
     font-weight: bold;
 }
 
-.css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon,
-.css-1mf6u8l-MuiSvgIcon-root-MuiSelect-icon {
+.section-fitur .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon,
+.section-fitur .css-1mf6u8l-MuiSvgIcon-root-MuiSelect-icon {
     font-size: 55px !important;
     width: 80px !important;
 }
@@ -26,7 +26,8 @@
     width: 600px;
 }
 
-.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+.section-fitur .css-1d3z3hw-MuiOutlinedInput-notchedOutline,
+.search-box .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
     border-color: white !important;
 }
 
