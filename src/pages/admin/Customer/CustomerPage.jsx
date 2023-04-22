@@ -6,7 +6,7 @@ import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
 import { Button} from "@mui/material";
 import { Visibility } from "@mui/icons-material";
-import TableData from "../../../component/Admin/TableData";
+import TableData from "../../../component/admin/TableData";
 
 const customerColumn = [
     { id: 'number', label: '#', minWidth: 0 },

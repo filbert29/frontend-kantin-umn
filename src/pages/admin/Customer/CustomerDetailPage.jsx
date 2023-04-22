@@ -7,7 +7,7 @@ import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
 import DefaultImage from "./../../../assets/default.jpg"
 import moment from "moment";
-import TableData from "../../../component/Admin/TableData";
+import TableData from "../../../component/admin/TableData";
 import { useEffect, useState } from "react";
 import { ModalStyle } from "../Tenant/TenantDetailPage";
 

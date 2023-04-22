@@ -7,7 +7,7 @@ import fetcher from "../../../helper/fetcher";
 import DefaulltImage from "./../../../assets/default.jpg"
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import TableData from "../../../component/Admin/TableData";
+import TableData from "../../../component/admin/TableData";
 import moment from "moment/moment";
 
 const menuColumns = [
