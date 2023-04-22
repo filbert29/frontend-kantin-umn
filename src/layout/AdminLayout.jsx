@@ -5,7 +5,7 @@ import { AdminMenu } from "../config/menu.config";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../store/Auth";
-import { AddBox, Dashboard, Store } from '@mui/icons-material';
+import { AddBox, Dashboard, People, Store } from '@mui/icons-material';
 
 const AdminLayout = () => {
     const location = useLocation();
@@ -62,8 +62,9 @@ const AdminLayout = () => {
                         <Box>
                             <List sx={{ py: 0 }}>
                                 <ListMenu title={"Dashboard"} path={"/admin"} icon={<Dashboard />} />
-                                <ListMenu title={"Tenant"} path={"/admin/tenant"} icon={<Store />} />
                                 <ListMenu title={"Register Tenant"} path={"/admin/register-tenant"} icon={<AddBox />} />
+                                <ListMenu title={"Tenant"} path={"/admin/tenant"} icon={<Store />} />
+                                <ListMenu title={"Customer"} path={"/admin/customer"} icon={<People />} />
                             </List>
                         </Box>
                     </Box>
