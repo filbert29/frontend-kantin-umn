@@ -1,67 +1,123 @@
-import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box } from '@mui/material';
+import React, { useMemo, useState } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box, TextField, InputAdornment, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Search } from '@mui/icons-material';
 
 const TableData = ({
     columns,
-    data = []
+    data = [],
+    searchField = [],
 }) => {
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const rowsPerPage = 5
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (_, newPage) => {
         setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+    const [activeSearchField, setActiveSearchField] = useState(searchField?.[0]?.id);
+    const handleChangeSearchField = (element, newSearchField) => {
+        if (newSearchField !== null) {
+            setActiveSearchField(newSearchField);
+            filterData(search, newSearchField)
+        }
     };
 
-    return (
-        <TableContainer component={Box}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        {columns.map((column, id) => (
-                            <TableCell key={id} align={column.align} style={{ minWidth: column.minWidth }}>
-                                {column.label}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data?.length === 0 && ( 
+    const [search, setSearch] = useState('')
+    const [searchData, setSearchData] = useState(data)
+    const handleSearchChange = (event) => {
+        const value = event.target.value
+        setSearch(value)
+        filterData(value)
+    }
+
+    const filterData = (searchValue, searchField = activeSearchField) => {
+        setPage(0)
+        setSearchData(data?.filter((item) => {
+            return item[searchField]?.toLowerCase().includes(searchValue.toLowerCase())
+        }))
+    }
+
+    return useMemo(() => (
+        <>
+            {searchField.length > 0 && (
+                <Box sx={{ display: "flex", alignItems: "center", columnGap: 5, mb: 5 }}>
+                    <TextField
+                        variant='standard'
+                        label='Search'
+                        disabled={activeSearchField === null}
+                        onChange={handleSearchChange}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <Search />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <Box sx={{ display: "flex", alignItems: "center", columnGap: 1 }}>
+                        <Typography component={"p"} variant="p" >Search by:</Typography>
+                        <ToggleButtonGroup
+                            value={activeSearchField}
+                            onChange={handleChangeSearchField}
+                            exclusive
+                            size='small'
+                        >
+                            {searchField.map((field, id) => (
+                                <ToggleButton sx={{ textTransform: "capitalize" }} key={id} value={field?.id}>
+                                    {field?.label}
+                                </ToggleButton>
+                            ))}
+                        </ToggleButtonGroup>
+                    </Box>
+                </Box>
+            )}
+            <TableContainer component={Box}>
+                <Table>
+                    <TableHead>
                         <TableRow>
-                            <TableCell colSpan={columns.length} align="center">
-                                No data
-                            </TableCell>
+                            {columns.map((column, id) => (
+                                <TableCell key={id} align={column.align} style={{ minWidth: column.minWidth }}>
+                                    {column.label}
+                                </TableCell>
+                            ))}
                         </TableRow>
-                    )}
-                    {data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, id) => (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={id}>
-                            {columns.map((column, id) => {
-                                const value = row[column.id];
-                                return (
-                                    <TableCell key={id} align={column.align}>
-                                        {value}
-                                    </TableCell>
-                                );
-                            })}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-            <TablePagination
-                rowsPerPageOptions={[]}
-                component="div"
-                count={data?.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </TableContainer>
-    );
+                    </TableHead>
+                    <TableBody>
+                        {(search?.length > 0 ? searchData : data)?.length === 0 && (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} align="center">
+                                    No data
+                                </TableCell>
+                            </TableRow>
+                        )}
+                        {(search?.length > 0 ? searchData : data)?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, id) => (
+                            <TableRow hover role="checkbox" tabIndex={-1} key={id}>
+                                {columns.map((column, id) => {
+                                    const value = row[column.id];
+                                    return (
+                                        <TableCell key={id} align={column.align}>
+                                            {value}
+                                        </TableCell>
+                                    );
+                                })}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+                <TablePagination
+                    rowsPerPageOptions={[]}
+                    component="div"
+                    count={(search?.length > 0 ? searchData : data)?.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                />
+            </TableContainer>
+        </>
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    ), [data, search, activeSearchField, page])
+
+
 };
 
 export default TableData;

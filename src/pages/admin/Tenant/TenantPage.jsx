@@ -5,11 +5,12 @@ import { Button } from "@mui/material";
 import { Visibility } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import TableData from "../../../component/Admin/TableData";
+import TableData from "../../../component/admin/TableData";
 import { useEffect, useState } from "react";
 
 const tenantColumns = [
     { id: 'number', label: '#', minWidth: 0 },
+    { id: 'id', label: 'Id', minWidth: 0 },
     { id: 'full_name', label: 'Tenant Name', minWidth: 170 },
     { id: 'rating', label: 'Rating', minWidth: 170 },
     { id: 'total_order', label: 'Orders', minWidth: 170 },
@@ -31,6 +32,7 @@ const TenantPage = () => {
             const tempTenantData = allTenant.map((tenant, index) => ({
                 number: index + 1,
                 full_name: tenant?.full_name,
+                id: tenant?._id,
                 rating: tenant?.rating,
                 total_order: tenant?.total_order,
                 total_menu: tenant?.total_menu,
@@ -54,6 +56,10 @@ const TenantPage = () => {
             <TableData
                 data={tenantData}
                 columns={tenantColumns}
+                searchField={[
+                    { id: 'full_name', label: 'Tenant Name' },
+                    { id: 'id', label: 'Tenant Id' },
+                ]}
             />
         </div>
     );
