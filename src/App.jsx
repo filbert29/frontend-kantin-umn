@@ -24,8 +24,20 @@ import DashboardPage from './pages/admin/DashboardPage';
 import RegisterTenantPage from './pages/admin/RegisterTenantPage';
 import TenantPage from './pages/admin/Tenant/TenantPage';
 import TenantDetailPage from './pages/admin/Tenant/TenantDetailPage';
+import axios from 'axios';
 
 function App() {
+
+  axios.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        dispatch(setLogout())
+      }
+      return Promise.reject(error);
+    }
+  );
+
   const { isLoggedin, accountData } = useSelector((state) => state.auth)
 
   const dispatch = useDispatch()
