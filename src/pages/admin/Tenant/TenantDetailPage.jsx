@@ -159,7 +159,7 @@ const TenantDetailPage = () => {
 
 export default TenantDetailPage;
 
-const ModalStyle = {
+export const ModalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
