@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Table
 
 const TableData = ({
     columns,
-    data
+    data = []
 }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -22,8 +22,8 @@ const TableData = ({
             <Table>
                 <TableHead>
                     <TableRow>
-                        {columns.map((column) => (
-                            <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                        {columns.map((column, id) => (
+                            <TableCell key={id} align={column.align} style={{ minWidth: column.minWidth }}>
                                 {column.label}
                             </TableCell>
                         ))}
@@ -38,11 +38,11 @@ const TableData = ({
                         </TableRow>
                     )}
                     {data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, id) => (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                            {columns.map((column) => {
+                        <TableRow hover role="checkbox" tabIndex={-1} key={id}>
+                            {columns.map((column, id) => {
                                 const value = row[column.id];
                                 return (
-                                    <TableCell key={column.id} align={column.align}>
+                                    <TableCell key={id} align={column.align}>
                                         {value}
                                     </TableCell>
                                 );
