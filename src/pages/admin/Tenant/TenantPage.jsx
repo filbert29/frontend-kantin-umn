@@ -5,11 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import TableData from "../../../component/admin/TableData";
 import { useEffect, useState } from "react";
+import { Rating } from "@mui/material";
 
 const tenantColumns = [
     { id: 'number', label: '#', minWidth: 0 },
     { id: 'id', label: 'Id', minWidth: 0 },
     { id: 'full_name', label: 'Tenant Name' },
+    { id: 'description', label: 'Description' },
     { id: 'rating', label: 'Rating' },
     { id: 'total_order', label: 'Orders' },
     { id: 'total_menu', label: 'Menu' },
@@ -31,7 +33,8 @@ const TenantPage = () => {
                 number: index + 1,
                 full_name: tenant?.full_name,
                 id: tenant?._id,
-                rating: tenant?.rating,
+                description: tenant?.description,
+                rating: <Rating title={tenant?.rating} name="read-only" value={tenant?.rating} size="small" readOnly precision={0.1} />,
                 total_order: tenant?.total_order,
                 total_menu: tenant?.total_menu,
                 action: {
