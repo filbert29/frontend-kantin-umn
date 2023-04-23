@@ -8,7 +8,7 @@ const TableData = ({
     searchField = [],
 }) => {
     const [page, setPage] = useState(0);
-    const rowsPerPage = 5
+    const rowsPerPage = 10
 
     const handleChangePage = (_, newPage) => {
         setPage(newPage);
