@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box, TextField, InputAdornment, Typography, ToggleButtonGroup, ToggleButton, Divider } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box, TextField, InputAdornment, Typography, ToggleButtonGroup, ToggleButton, Divider, IconButton, Menu, MenuItem } from '@mui/material';
+import { MoreVert, Search, Visibility } from '@mui/icons-material';
 
 const TableData = ({
     columns,
@@ -38,11 +38,22 @@ const TableData = ({
         }))
     }
 
+    const [anchorEl, setAnchorEl] = useState();
+    const [activeMenu, setActiveMenu] = useState()
+    const handleMenuClick = (index) => (event) => {
+        setAnchorEl(event.currentTarget)
+        setActiveMenu(index)
+    };
+    const handleMenuClose = () => {
+        setAnchorEl(undefined)
+        setActiveMenu(undefined)
+    };
+
     return useMemo(() => (
         <>
             {title && (
                 <>
-                    <Box sx={{columnGap: 1, mb: 1 }}>
+                    <Box sx={{ columnGap: 1, mb: 1 }}>
                         <Typography component={"h2"} variant="p" >{title}</Typography>
                         <Typography component={"p"} variant="p" >Total: ({data?.length}) data</Typography>
                     </Box>
@@ -100,14 +111,35 @@ const TableData = ({
                                 </TableCell>
                             </TableRow>
                         )}
-                        {(search?.length > 0 ? searchData : data)?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, id) => (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={id}>
-                                {columns.map((column, id) => {
+                        {(search?.length > 0 ? searchData : data)?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, rowId) => (
+                            <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
+                                {columns.map((column, columnId) => {
                                     const value = row[column.id];
-                                    return (
-                                        <TableCell key={id} align={column.align}>
+                                    console.log(value?.handleDetail)
+                                    return (column.id === 'action' ? (
+                                        <TableCell key={columnId}>
+                                            <IconButton
+                                                onClick={handleMenuClick(rowId)}
+                                            >
+                                                <MoreVert />
+                                            </IconButton>
+                                            <Menu
+                                                anchorEl={anchorEl}
+                                                open={Boolean(anchorEl) && activeMenu === rowId}
+                                                onClose={handleMenuClose}
+                                            >
+                                                {value?.hasOwnProperty("handleDetail") && (
+                                                    <MenuItem onClick={() => value?.handleDetail(row?.id)}>
+                                                        See Detail &nbsp; <Visibility />
+                                                    </MenuItem>
+                                                )}
+                                            </Menu>
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell key={columnId} align={column.align}>
                                             {value}
                                         </TableCell>
+                                    )
                                     );
                                 })}
                             </TableRow>
@@ -125,7 +157,7 @@ const TableData = ({
             </TableContainer>
         </>
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    ), [data, search, activeSearchField, page])
+    ), [data, search, activeSearchField, page, activeMenu])
 
 
 };
