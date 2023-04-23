@@ -115,7 +115,6 @@ const TableData = ({
                             <TableRow hover role="checkbox" tabIndex={-1} key={rowId}>
                                 {columns.map((column, columnId) => {
                                     const value = row[column.id];
-                                    console.log(value?.handleDetail)
                                     return (column.id === 'action' ? (
                                         <TableCell key={columnId}>
                                             <IconButton
@@ -129,7 +128,10 @@ const TableData = ({
                                                 onClose={handleMenuClose}
                                             >
                                                 {value?.hasOwnProperty("handleDetail") && (
-                                                    <MenuItem onClick={() => value?.handleDetail(row?.id)}>
+                                                    <MenuItem onClick={() => {
+                                                        handleMenuClose()
+                                                        value?.handleDetail(row?.id)
+                                                    }}>
                                                         See Detail &nbsp; <Visibility />
                                                     </MenuItem>
                                                 )}
