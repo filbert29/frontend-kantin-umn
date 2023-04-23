@@ -1,4 +1,4 @@
-import { ArrowBack, Visibility } from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import { Box, Button, Chip, Divider, Modal, Rating, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -44,16 +44,9 @@ const CustomerDetailPage = () => {
                 total_price: "Rp" + (order?.total_price).toLocaleString("id-ID"),
                 status: order?.status,
                 createdAt: moment(order?.createdAt).format("DD MMMM YYYY HH:mm"),
-                action: (
-                    <Button
-                        endIcon={<Visibility />}
-                        onClick={() => {
-                            setSelectedOrderDetail(order)
-                        }}
-                    >
-                        Detail
-                    </Button>
-                )
+                action: {
+                    handleDetail: () => setSelectedOrderDetail(order)
+                }
             }))
             setOrders(tempOrderData)
         }

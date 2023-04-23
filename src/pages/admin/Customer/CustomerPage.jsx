@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import useSWR from "swr"
 import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
-import { Button } from "@mui/material";
-import { Visibility } from "@mui/icons-material";
 import TableData from "../../../component/admin/TableData";
 
 const customerColumn = [
@@ -36,9 +34,9 @@ const CustomerPage = () => {
                 id: customer?._id,
                 email: customer?.email,
                 total_order: customer?.total_order,
-                action: (
-                    <Button startIcon={<Visibility />} onClick={() => navigate(`/admin/customer/${customer?._id}`)}>Detail</Button>
-                )
+                action: {
+                    handleDetail: (id) => navigate(`/admin/customer/${id}`)
+                }
             }))
             setTenantData(tempCustomerData)
         }

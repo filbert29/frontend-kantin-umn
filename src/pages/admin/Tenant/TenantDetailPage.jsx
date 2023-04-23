@@ -12,7 +12,7 @@ import moment from "moment/moment";
 
 const menuColumns = [
     { id: "number", label: "#" },
-    { id: "id", label: "Id"},
+    { id: "id", label: "Id" },
     { id: "title", label: "Title" },
     { id: "price", label: "Price" },
     { id: "description", label: "Description" },
@@ -22,7 +22,7 @@ const menuColumns = [
 
 const orderColumns = [
     { id: "number", label: "#" },
-    { id: "id", label: "Id"},
+    { id: "id", label: "Id" },
     { id: "total_price", label: "Total Price" },
     { id: "quantity", label: "Quantity" },
     { id: "status", label: "Status" },
@@ -64,12 +64,12 @@ const TenantDetailPage = () => {
                 price: menu?.price,
                 description: menu?.description,
                 category: menu?.category?.title || "No Category",
-                action: (
-                    <Button onClick={() => {
+                action: {
+                    handleDetail: () => {
                         setOpenModalMenuDetail(true)
                         setSelectedMenu(menu)
-                    }}> Detail </Button>
-                )
+                    }
+                }
             }))
             setMenus(tempTenantMenus)
         }
@@ -86,12 +86,12 @@ const TenantDetailPage = () => {
                 status: order?.status,
                 items: order?.items?.map((item) => item?.menu?.title).join(", "),
                 customer: order?.customer?.full_name,
-                action: (
-                    <Button onClick={() => {
+                action: {
+                    handleDetail: () => {
                         setOpenModalOrderDetail(true)
                         setSelectedOrder(order)
-                    }}> Detail </Button>
-                )
+                    }
+                }
             }))
 
             setOrders(tempTenantOrders)
