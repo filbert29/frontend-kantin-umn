@@ -13,6 +13,7 @@ import { ModalStyle } from "../Tenant/TenantDetailPage";
 
 const orderColumns = [
     { id: 'number', label: '#', minWidth: 0 },
+    { id: 'id', label: 'Id' },
     { id: 'items', label: 'Items' },
     { id: 'total_price', label: 'Total Price' },
     { id: 'status', label: 'Status' },
@@ -38,6 +39,7 @@ const CustomerDetailPage = () => {
             const tempOrderData = data?.orders?.map((order, index) => ({
                 number: index + 1,
                 tenant: order?.tenant?.full_name,
+                id: order?._id,
                 items: order?.items?.map((item) => item?.menu?.title).join(", "),
                 total_price: "Rp" + (order?.total_price).toLocaleString("id-ID"),
                 status: order?.status,
@@ -82,13 +84,14 @@ const CustomerDetailPage = () => {
                     Joined since {moment(data?.createdAt).format("DD MMMM YYYY")}
                 </Typography>
                 <Box mt={4}>
-                    <Typography variant="h5" component="h1">
-                        Orders: {data?.orders?.length}
-                    </Typography>
-                    <Divider />
                     <TableData
+                        title={"Orders"}
                         columns={orderColumns}
                         data={orders}
+                        searchField={[
+                            { id: 'tenant', label: 'Tenant Name' },
+                            { id: 'id', label: 'Order Id' },
+                        ]}
                     />
                 </Box>
             </Box>

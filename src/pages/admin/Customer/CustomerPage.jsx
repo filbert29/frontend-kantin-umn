@@ -4,16 +4,17 @@ import { useNavigate } from "react-router-dom";
 import useSWR from "swr"
 import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
-import { Button} from "@mui/material";
+import { Button } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
 import TableData from "../../../component/admin/TableData";
 
 const customerColumn = [
     { id: 'number', label: '#', minWidth: 0 },
-    { id: 'full_name', label: 'Customer Name', minWidth: 170 },
-    { id: 'email', label: 'Email', minWidth: 170 },
-    { id: 'total_order', label: 'Total Orders', minWidth: 170 },
-    { id: 'action', label: '', minWidth: 170 },
+    { id: 'id', label: 'Id' },
+    { id: 'full_name', label: 'Customer Name' },
+    { id: 'email', label: 'Email' },
+    { id: 'total_order', label: 'Total Orders' },
+    { id: 'action', label: '' },
 
 ]
 
@@ -32,6 +33,7 @@ const CustomerPage = () => {
             const tempCustomerData = allTenant.map((customer, index) => ({
                 number: index + 1,
                 full_name: customer?.full_name,
+                id: customer?._id,
                 email: customer?.email,
                 total_order: customer?.total_order,
                 action: (
@@ -50,8 +52,14 @@ const CustomerPage = () => {
     return (
         <div>
             <TableData
+                title={"Customers"}
                 data={tenantData}
                 columns={customerColumn}
+                searchField={[
+                    { id: 'full_name', label: 'Customer Name' },
+                    { id: 'id', label: 'Customer Id' },
+                    { id: 'email', label: 'Email' },
+                ]}
             />
         </div>
     );

@@ -12,6 +12,7 @@ import moment from "moment/moment";
 
 const menuColumns = [
     { id: "number", label: "#" },
+    { id: "id", label: "Id"},
     { id: "title", label: "Title" },
     { id: "price", label: "Price" },
     { id: "description", label: "Description" },
@@ -21,6 +22,7 @@ const menuColumns = [
 
 const orderColumns = [
     { id: "number", label: "#" },
+    { id: "id", label: "Id"},
     { id: "total_price", label: "Total Price" },
     { id: "quantity", label: "Quantity" },
     { id: "status", label: "Status" },
@@ -57,6 +59,7 @@ const TenantDetailPage = () => {
         if (data?.menus) {
             const tempTenantMenus = data?.menus?.map((menu, index) => ({
                 number: index + 1,
+                id: menu?._id,
                 title: menu?.title,
                 price: menu?.price,
                 description: menu?.description,
@@ -77,6 +80,7 @@ const TenantDetailPage = () => {
         if (data?.orders) {
             const tempTenantOrders = data?.orders?.map((order, index) => ({
                 number: index + 1,
+                id: order?._id,
                 total_price: "Rp" + (order?.total_price).toLocaleString("id-ID"),
                 quantity: (order?.items)?.reduce(((acc, item) => acc + item?.quantity), 0),
                 status: order?.status,
@@ -121,23 +125,26 @@ const TenantDetailPage = () => {
                     <LocationOn fontSize="12px" /> {data?.location}
                 </Typography>
                 <Box mt={4}>
-                    <Typography variant="h5" component="h1">
-                        Menu
-                    </Typography>
-                    <Divider />
                     <TableData
+                        title={"Menus"}
                         columns={menuColumns}
                         data={menus}
+                        searchField={[
+                            { id: "title", label: "Title" },
+                            { id: "description", label: "Description" },
+                            { id: "id", label: "Menu Id" },
+                        ]}
                     />
                 </Box>
                 <Box mt={4}>
-                    <Typography variant="h5" component="h1">
-                        Orders
-                    </Typography>
-                    <Divider />
                     <TableData
+                        title={"Orders"}
                         columns={orderColumns}
                         data={orders}
+                        searchField={[
+                            { id: "customer", label: "Customer" },
+                            { id: "id", label: "Menu Id" },
+                        ]}
                     />
                 </Box>
             </Box>

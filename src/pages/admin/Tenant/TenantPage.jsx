@@ -11,11 +11,11 @@ import { useEffect, useState } from "react";
 const tenantColumns = [
     { id: 'number', label: '#', minWidth: 0 },
     { id: 'id', label: 'Id', minWidth: 0 },
-    { id: 'full_name', label: 'Tenant Name', minWidth: 170 },
-    { id: 'rating', label: 'Rating', minWidth: 170 },
-    { id: 'total_order', label: 'Orders', minWidth: 170 },
-    { id: 'total_menu', label: 'Menu', minWidth: 170 },
-    { id: 'action', label: 'Action', minWidth: 170 },
+    { id: 'full_name', label: 'Tenant Name' },
+    { id: 'rating', label: 'Rating' },
+    { id: 'total_order', label: 'Orders' },
+    { id: 'total_menu', label: 'Menu' },
+    { id: 'action', label: 'Action' },
 ]
 
 const TenantPage = () => {
@@ -54,6 +54,7 @@ const TenantPage = () => {
     return (
         <div>
             <TableData
+                title={"Tenants"}
                 data={tenantData}
                 columns={tenantColumns}
                 searchField={[

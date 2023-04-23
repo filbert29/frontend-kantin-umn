@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box, TextField, InputAdornment, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box, TextField, InputAdornment, Typography, ToggleButtonGroup, ToggleButton, Divider } from '@mui/material';
 import { Search } from '@mui/icons-material';
 
 const TableData = ({
     columns,
     data = [],
     searchField = [],
+    title
 }) => {
     const [page, setPage] = useState(0);
     const rowsPerPage = 10
@@ -39,8 +40,17 @@ const TableData = ({
 
     return useMemo(() => (
         <>
+            {title && (
+                <>
+                    <Box sx={{columnGap: 1, mb: 1 }}>
+                        <Typography component={"h2"} variant="p" >{title}</Typography>
+                        <Typography component={"p"} variant="p" >Total: ({data?.length}) data</Typography>
+                    </Box>
+                    <Divider />
+                </>
+            )}
             {searchField.length > 0 && (
-                <Box sx={{ display: "flex", alignItems: "center", columnGap: 5, mb: 5 }}>
+                <Box sx={{ display: "flex", alignItems: "end", columnGap: 5, my: 1 }}>
                     <TextField
                         variant='standard'
                         label='Search'
