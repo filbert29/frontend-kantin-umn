@@ -42,7 +42,7 @@ const RegisterTenantPage = () => {
         <>
             <Box sx={{ textAlign: "center" }}>
                 <Button onClick={() => setModalOpen(true)} color="success" variant="contained" sx={{ textTransform: "capitalize", flexDirection: "column" }}>
-                    <Typography >
+                    <Typography fontSize={"24px"} >
                         Register New Tenant
                     </Typography>
                     <Box>
