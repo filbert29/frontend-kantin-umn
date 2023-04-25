@@ -12,7 +12,6 @@ function SearchPage() {
                 maxWidth: { md: "md", sm: "sm" }
             }}>
             <Box
-                className="Home"
                 sx={{
                     backgroundColor: "#fffffe",
                     boxShadow: { md: "1px 1px 20px -10px rgba(109, 109, 109, 0.5)" },
