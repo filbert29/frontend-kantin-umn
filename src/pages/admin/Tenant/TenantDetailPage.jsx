@@ -1,14 +1,15 @@
-import { ArrowBack, LocationOn } from "@mui/icons-material";
-import { Box, Button, Typography, Divider, Modal, Chip, Rating } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
+import { Box, Button, Typography, Divider, Modal, Chip, Rating, Grid } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import BASE_URL from "../../../config/BASE_URL";
 import useSWR from "swr";
 import fetcher from "../../../helper/fetcher";
-import DefaulltImage from "./../../../assets/default.jpg"
+import DefaultImage from "./../../../assets/default.jpg"
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import TableData from "../../../component/admin/TableData";
 import moment from "moment/moment";
+import LabelValue from "../../../component/admin/LabelValue";
 
 const menuColumns = [
     { id: "number", label: "#" },
@@ -111,19 +112,21 @@ const TenantDetailPage = () => {
                     Back to Tenant
                 </Button>
             </Link>
-            <Box mt={4}>
-                <Box textAlign={"center"} >
-                    <img width={"300px"} alt={data?.full_name} src={data?.profile_image || DefaulltImage}></img>
+            <Box mt={4} sx={{ display: "flex", columnGap: 4 }} >
+                <Box >
+                    <img width={"400px"} alt={data?.full_name} src={data?.profile_image || DefaultImage}></img>
                 </Box>
-                <Typography variant="h4" component="h1" textAlign={"center"}>
-                    {data?.full_name}
-                </Typography>
-                <Typography variant="p" component="p" textAlign={"center"}>
-                    {data?.description}
-                </Typography>
-                <Typography variant="p" component="p" textAlign={"center"}>
-                    <LocationOn fontSize="12px" /> {data?.location}
-                </Typography>
+                <Box>
+                    <Grid container spacing={1}>
+                        <LabelValue fontSize={20} label={"Id"} value={data?._id} />
+                        <LabelValue fontSize={20} label={"Tenant Name"} value={data?.full_name} />
+                        <LabelValue fontSize={20} label={"Description"} value={data?.description} />
+                        <LabelValue fontSize={20} label={"Location"} value={data?.location} />
+                        <LabelValue fontSize={20} label={"Email"} value={data?.email} />
+                    </Grid>
+                </Box>
+            </Box>
+            <Box mt={4}>
                 <Box mt={4}>
                     <TableData
                         title={"Menus"}
@@ -183,7 +186,7 @@ const ModalMenuDetail = ({ open, handleClose, menu }) => {
     return (
         <Modal open={open} onClose={handleClose}>
             <Box sx={ModalStyle}>
-                <img width={"100%"} height={"400px"} style={{ objectFit: "cover" }} alt={title} src={image || DefaulltImage}></img>
+                <img width={"100%"} height={"400px"} style={{ objectFit: "cover" }} alt={title} src={image || DefaultImage}></img>
                 <Typography mt={1} variant="h5" component="h1">
                     {title}
                 </Typography>

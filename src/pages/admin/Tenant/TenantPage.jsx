@@ -16,6 +16,7 @@ const tenantColumns = [
     { id: 'id', label: 'Id', minWidth: 0 },
     { id: 'full_name', label: 'Tenant Name' },
     { id: 'description', label: 'Description' },
+    { id: 'location', label: 'Location' },
     { id: 'rating', label: 'Rating' },
     { id: 'total_order', label: 'Orders' },
     { id: 'total_menu', label: 'Menu' },
@@ -40,6 +41,7 @@ const TenantPage = () => {
                 description: tenant?.description,
                 rating: <Rating title={tenant?.rating} name="read-only" value={tenant?.rating} size="small" readOnly precision={0.1} />,
                 total_order: tenant?.total_order,
+                location: tenant?.location,
                 total_menu: tenant?.total_menu,
                 action: {
                     handleDetail: (id) => navigate(`/admin/tenant/${id}`),

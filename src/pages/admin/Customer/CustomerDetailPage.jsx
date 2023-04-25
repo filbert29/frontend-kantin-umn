@@ -1,5 +1,5 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Box, Button, Chip, Divider, Modal, Rating, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Grid, Modal, Rating, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
@@ -10,6 +10,7 @@ import moment from "moment";
 import TableData from "../../../component/admin/TableData";
 import { useEffect, useState } from "react";
 import { ModalStyle } from "../Tenant/TenantDetailPage";
+import LabelValue from "../../../component/admin/LabelValue";
 
 const orderColumns = [
     { id: 'number', label: '#', minWidth: 0 },
@@ -64,18 +65,19 @@ const CustomerDetailPage = () => {
                 </Button>
             </Link>
             <Box mt={4}>
-                <Box textAlign={"center"} >
-                    <img width={"300px"} alt={data?.full_name} src={data?.profile_image || DefaultImage}></img>
+                <Box mt={4} sx={{ display: "flex", columnGap: 4 }} >
+                    <Box >
+                        <img width={"400px"} alt={data?.full_name} src={data?.profile_image || DefaultImage}></img>
+                    </Box>
+                    <Box>
+                        <Grid container spacing={1}>
+                            <LabelValue fontSize={20} label={"Id"} value={data?._id} />
+                            <LabelValue fontSize={20} label={"Full Name"} value={data?.full_name} />
+                            <LabelValue fontSize={20} label={"Email"} value={data?.email} />
+                            <LabelValue fontSize={20} label={"Joined"} value={moment(data?.createdAt).format("DD MMMM YYYY")} />
+                        </Grid>
+                    </Box>
                 </Box>
-                <Typography variant="h4" component="h1" textAlign={"center"}>
-                    {data?.full_name}
-                </Typography>
-                <Typography variant="p" component="p" textAlign={"center"}>
-                    {data?.email}
-                </Typography>
-                <Typography variant="p" component="p" textAlign={"center"}>
-                    Joined since {moment(data?.createdAt).format("DD MMMM YYYY")}
-                </Typography>
                 <Box mt={4}>
                     <TableData
                         title={"Orders"}
