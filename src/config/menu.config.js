@@ -5,4 +5,5 @@ export const AdminMenu = {
     "/admin/tenant/:id": "Detail Tenant",
     "/admin/customer": "Customer",
     "/admin/customer/:id": "Detail Customer",
+    "/admin/order": "Order",
 }
