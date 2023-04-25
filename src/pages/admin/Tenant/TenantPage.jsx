@@ -64,13 +64,8 @@ const TenantPage = () => {
         setSelectedTenant(allTenant?.filter(tenant => tenant?._id === id)[0])
     }
 
-    if (isLoading) return (
-        <p>Loading...</p>
-    )
-
-    if (error) return (
-        <p>Something went wrong</p>
-    )
+    if (isLoading) return <p>Loading...</p>
+    if (error) return <p>Something went wrong</p>
 
     return (
         <div>
