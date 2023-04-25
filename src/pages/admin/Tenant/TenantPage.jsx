@@ -27,7 +27,7 @@ const TenantPage = () => {
     const url = `${BASE_URL}/admin/tenant`;
 
     const { access_token } = useSelector(state => state.auth.accountData)
-    const { data: allTenant, isLoading, error } = useSWR(url, (url) => fetcher(url, access_token));
+    const { data: allTenant, isLoading, error, mutate } = useSWR(url, (url) => fetcher(url, access_token));
     const [tenantData, setTenantData] = useState()
 
     const navigate = useNavigate()
@@ -46,6 +46,7 @@ const TenantPage = () => {
                 action: {
                     handleDetail: (id) => navigate(`/admin/tenant/${id}`),
                     handleEdit: (id) => handleOpenModalEdit(id),
+                    handleDelete: (id) => handleDelete(id)
                 }
             }))
             setTenantData(tempTenantData)
@@ -62,6 +63,20 @@ const TenantPage = () => {
     const handleOpenModalEdit = (id) => {
         setOpenModalEdit(true)
         setSelectedTenant(allTenant?.filter(tenant => tenant?._id === id)[0])
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`${BASE_URL}/admin/tenant/${id}`, {
+                headers: {
+                    "Authorization": `Bearer ${access_token}`
+                }
+            })
+            
+            mutate()
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     if (isLoading) return <p>Loading...</p>
