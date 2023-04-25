@@ -19,8 +19,28 @@ import ResetPassword from './pages/account/ResetPassword';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomerLayout from './layout/CustomerLayout';
 import { setLogout } from './store/Auth';
+import AdminLayout from './layout/AdminLayout';
+import DashboardPage from './pages/admin/DashboardPage';
+import RegisterTenantPage from './pages/admin/RegisterTenantPage';
+import TenantPage from './pages/admin/Tenant/TenantPage';
+import TenantDetailPage from './pages/admin/Tenant/TenantDetailPage';
+import axios from 'axios';
+import CustomerDetailPage from './pages/admin/Customer/CustomerDetailPage';
+import CustomerPage from './pages/admin/Customer/CustomerPage';
+import OrderPage from './pages/admin/Order/OrderPage';
 
 function App() {
+
+  axios.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        dispatch(setLogout())
+      }
+      return Promise.reject(error);
+    }
+  );
+
   const { isLoggedin, accountData } = useSelector((state) => state.auth)
 
   const dispatch = useDispatch()
@@ -80,6 +100,25 @@ function App() {
               <Route path='history' element={<History />} />
             </Route>
           </Route>
+
+          {/* ADMIN ROUTES */}
+          <Route path="/admin" element={accountData?.role === "admin" ? <AdminLayout /> : <Navigate to={"/account/login"} />}>
+            <Route index element={<DashboardPage />} />
+            <Route path='tenant'>
+              <Route index element={<TenantPage />} />
+              <Route path=':id' element={<TenantDetailPage />} />
+            </Route>
+            <Route path='customer'>
+              <Route index element={<CustomerPage />} />
+              <Route path=':id' element={<CustomerDetailPage />} />
+            </Route>
+            <Route path='order'>
+              <Route index element={<OrderPage />} />
+            </Route>
+            <Route path='register-tenant' element={<RegisterTenantPage />} />
+          </Route>
+          {/* END OF ADMIN ROUTES */}
+          \
         </Routes>
       </BrowserRouter>
     </Box>

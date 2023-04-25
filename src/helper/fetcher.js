@@ -2,13 +2,13 @@ import axios from "axios";
 
 // Define a custom fetcher function using Axios that accepts a token
 const fetcher = async (url, token = undefined) => {
+    const cancelToken = axios.CancelToken;
     try {
         const response = await axios.get(url, {
             headers: {
                 Authorization: token ? `Bearer ${token}` : undefined // Include the token in the Authorization header
             }
-        });
-
+        }, { cancelToken: cancelToken.source().token });
         // If the response status is 401, throw an error
         if (response.status === 401) {
             throw new Error("Unauthorized");
