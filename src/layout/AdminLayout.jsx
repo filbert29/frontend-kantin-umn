@@ -94,7 +94,7 @@ const AdminLayout = () => {
                                 </Button>
                             </Toolbar>
                         </AppBar>
-                        <Box component={Paper} p={"25px"} mt={"30px"}>
+                        <Box component={Paper} elevation={5}  p={"25px"} mt={"30px"}>
                             <Outlet />
                         </Box>
                     </Box>
