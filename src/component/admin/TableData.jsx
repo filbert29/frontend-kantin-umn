@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box, TextField, InputAdornment, Typography, ToggleButtonGroup, ToggleButton, Divider, IconButton, Menu, MenuItem } from '@mui/material';
-import { MoreVert, Search, Visibility } from '@mui/icons-material';
+import { Edit, MoreVert, Search, Visibility } from '@mui/icons-material';
 
 const TableData = ({
     columns,
@@ -133,6 +133,14 @@ const TableData = ({
                                                         value?.handleDetail(row?.id)
                                                     }}>
                                                         See Detail &nbsp; <Visibility />
+                                                    </MenuItem>
+                                                )}
+                                                {value?.hasOwnProperty("handleEdit") && (
+                                                    <MenuItem onClick={() => {
+                                                        handleMenuClose()
+                                                        value?.handleEdit(row?.id)
+                                                    }}>
+                                                        Edit Item &nbsp; <Edit />
                                                     </MenuItem>
                                                 )}
                                             </Menu>
