@@ -12,10 +12,10 @@ const orderColumns = [
     { id: 'number', label: '#' },
     { id: 'id', label: 'Id' },
     { id: 'items', label: 'Items' },
-    { id: 'total_price', label: 'Total Price' },
+    { id: 'total_price', label: 'Total Price', sort: true },
     { id: 'status', label: 'Status' },
     { id: 'tenant', label: 'Tenant' },
-    { id: 'customer', label: 'Customer' },
+    { id: 'customer', label: 'Customer', sort: true },
     { id: 'createdAt', label: 'Date' },
     { id: 'action', label: '' }
 ]

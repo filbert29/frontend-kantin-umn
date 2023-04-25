@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box, TextField, InputAdornment, Typography, ToggleButtonGroup, ToggleButton, Divider, IconButton, Menu, MenuItem, Button, Modal } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Box, TextField, InputAdornment, Typography, ToggleButtonGroup, ToggleButton, Divider, IconButton, Menu, MenuItem, Button, Modal, TableSortLabel } from '@mui/material';
 import { Delete, Edit, MoreVert, Search, Visibility } from '@mui/icons-material';
 import { ModalStyle } from '../../pages/admin/Tenant/TenantDetailPage';
 
@@ -62,6 +62,25 @@ const TableData = ({
         })
     }
 
+    const [sort, setSort] = useState({
+        field: undefined,
+        order: undefined
+    })
+    const handleSort = (field) => () => {
+        if (sort.field === field) {
+            setSort({
+                field: sort.order === "asc" ? field : undefined,
+                order: sort.order === "asc" ? "desc" : undefined
+            })
+
+        } else {
+            setSort({
+                field: field,
+                order: "asc"
+            })
+        }
+    }
+
     return (
         <>
             {useMemo(() => (
@@ -112,9 +131,21 @@ const TableData = ({
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column, id) => (
-                                        <TableCell key={id} align={column.align} style={{ minWidth: column.minWidth }}>
-                                            {column.label}
-                                        </TableCell>
+                                        column?.sort ? (
+                                            <TableCell key={id} align={column.align} style={{ minWidth: column.minWidth }}>
+                                                <TableSortLabel
+                                                    active={sort.field === column.id}
+                                                    direction={sort.order}
+                                                    onClick={handleSort(column.id)}
+                                                >
+                                                    {column.label}
+                                                </TableSortLabel>
+                                            </TableCell>
+                                        ) : (
+                                            <TableCell key={id} align={column.align} style={{ minWidth: column.minWidth }}>
+                                                {column.label}
+                                            </TableCell>
+                                        )
                                     ))}
                                 </TableRow>
                             </TableHead>
@@ -190,8 +221,8 @@ const TableData = ({
                     </TableContainer>
                 </>
                 // eslint-disable-next-line react-hooks/exhaustive-deps
-            ), [data, search, activeSearchField, page, activeMenu])}
-            
+            ), [data, search, activeSearchField, page, activeMenu, sort])}
+
             <ModalDelete
                 open={modalDeleteProps.open}
                 handleClose={() => setModalDeleteProps({ open: false, handleDelete: undefined })}
