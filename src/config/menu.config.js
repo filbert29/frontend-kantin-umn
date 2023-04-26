@@ -6,4 +6,5 @@ export const AdminMenu = {
     "/admin/customer": "Customer",
     "/admin/customer/:id": "Detail Customer",
     "/admin/order": "Order",
+    "/admin/menu": "Menu",
 }

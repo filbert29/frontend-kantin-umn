@@ -28,6 +28,7 @@ import axios from 'axios';
 import CustomerDetailPage from './pages/admin/Customer/CustomerDetailPage';
 import CustomerPage from './pages/admin/Customer/CustomerPage';
 import OrderPage from './pages/admin/Order/OrderPage';
+import MenuPage from './pages/admin/Menu/MenuPage';
 
 function App() {
 
@@ -114,6 +115,9 @@ function App() {
             </Route>
             <Route path='order'>
               <Route index element={<OrderPage />} />
+            </Route>
+            <Route path='menu'>
+              <Route index element={<MenuPage />} />
             </Route>
             <Route path='register-tenant' element={<RegisterTenantPage />} />
           </Route>
