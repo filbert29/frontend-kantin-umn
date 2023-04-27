@@ -23,7 +23,7 @@ const menuColumns = [
 
 const MenuPage = () => {
     const { access_token } = useSelector((state) => state.auth?.accountData)
-    const { data: allMenu, error, isLoading } = useSWR(`${BASE_URL}/admin/menu`, (url) => fetcher(url, access_token));
+    const { data: allMenu, error, isLoading, mutate } = useSWR(`${BASE_URL}/admin/menu`, (url) => fetcher(url, access_token));
 
     const [menu, setMenu] = useState()
     const [openModalDetail, setOpenModalDetail] = useState(false)
@@ -50,13 +50,29 @@ const MenuPage = () => {
                     handleEdit: () => {
                         setSelectedMenuDetail(menu)
                         setOpenModalEdit(true)
-                    }
+                    },
+                    handleDelete: (id) => handleDelete(id)
                 }
             }))
             setMenu(tempMenu)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allMenu])
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`${BASE_URL}/admin/menu/${id}`, {
+                headers: {
+                    "Authorization": `Bearer ${access_token}`
+                }
+            })
+            
+            mutate()
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
 
     if (isLoading) return <p>Loading...</p>
     if (error) return <p>Something went wrong</p>
@@ -223,7 +239,7 @@ const ModalEditMenu = ({ open, handleClose, menu }) => {
                         name="description"
                         label="Menu Description"
                         placeholder="Enter Menu Description"
-                        value={form?.title}
+                        value={form?.description}
                         onChange={handleChange}
                         fullWidth
                     />
@@ -240,6 +256,7 @@ const ModalEditMenu = ({ open, handleClose, menu }) => {
                     <TextField
                         variant="standard"
                         name="tenant"
+                        label="Tenant Name"
                         tenant="Tenant Name"
                         value={form?.tenant}
                     />
