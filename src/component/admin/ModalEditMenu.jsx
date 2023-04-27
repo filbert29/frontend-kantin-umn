@@ -27,6 +27,10 @@ const ModalEditMenu = ({ open, handleClose, menu }) => {
                 image: menu?.image
             })
             setPreviewMenuImage(menu?.image)
+        } else {
+            setForm(undefined)
+            setMenuImage(undefined)
+            setPreviewMenuImage(undefined)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menu])
