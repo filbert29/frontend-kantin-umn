@@ -29,6 +29,8 @@ import CustomerDetailPage from './pages/admin/Customer/CustomerDetailPage';
 import CustomerPage from './pages/admin/Customer/CustomerPage';
 import OrderPage from './pages/admin/Order/OrderPage';
 import MenuPage from './pages/admin/Menu/MenuPage';
+import TenantLayout from './layout/TenantLayout';
+import TenantHomePage from './pages/tenantPage/TenantHomePage';
 
 function App() {
 
@@ -122,7 +124,13 @@ function App() {
             <Route path='register-tenant' element={<RegisterTenantPage />} />
           </Route>
           {/* END OF ADMIN ROUTES */}
-          \
+
+          {/* TENANT ROUTES */}
+          <Route path="/tenant" element={accountData?.role === "tenant" ? <TenantLayout /> : <Navigate to={"/account/login"} />}>
+            <Route index element={<TenantHomePage />} />
+          </Route>
+          {/* END OF TENANT ROUTES */}
+
         </Routes>
       </BrowserRouter>
     </Box>
