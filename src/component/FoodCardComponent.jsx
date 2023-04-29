@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material";
-import PicFood from "../assets/pic-food.png"
+import NoImage from "../assets/No_Image_Available.jpg"
 
-const FoodCardComponent = ({ handleClickModal }) => {
+const FoodCardComponent = ({menu, handleClick = undefined }) => {
     return (
         <Box
-            onClick={handleClickModal}
+            onClick={handleClick || null}
             className="card-food"
             sx={{
                 display: "grid",
@@ -13,16 +13,16 @@ const FoodCardComponent = ({ handleClickModal }) => {
                 borderRadius: "15px",
                 cursor: "pointer"
             }}>
-            <img src={PicFood} alt="" width={"100%"} />
+                <img src={menu?.image || NoImage} alt="no image" width={"100%"} style={{ borderRadius: "15px", minHeight: "186px" }} />
             <Box sx={{
                 display: "grid",
                 padding: "10px 0px 10px 15px",
                 gap: "1px"
             }}>
-                <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Nasi Goreng Kampung</Typography>
-                <Typography variant="p" fontSize={"12px"}>nasi goreng dari kampung</Typography>
+                <Typography variant="p" fontSize={"14px"} fontWeight={"bold"} sx={{ width: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{menu?.title}</Typography>
+                <Typography variant="p" fontSize={"12px"} sx={{ width: "150px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{menu?.description}</Typography>
                 <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                    <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Rp. 15.000</Typography>
+                    <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Rp. {menu?.price.toLocaleString("id-ID")}</Typography>
                 </Box>
             </Box>
         </Box>

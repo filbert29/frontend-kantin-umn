@@ -13,6 +13,7 @@ import BgBanner from "../../assets/bg-banner-detail.png"
 import useSWR from 'swr'
 import fetcher from "../../helper/fetcher"
 import BASE_URL from "../../config/BASE_URL"
+import NoImage from "../../assets/No_Image_Available.jpg"
 
 
 function DetailTenant() {
@@ -22,9 +23,23 @@ function DetailTenant() {
     const [rating, setRating] = useState('4.7 (12)')
     const [age, setAge] = useState('');
 
-    const [open, setOpen] = useState('')
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [selectedMenu, setSelectedMenu] = useState()
+
+    const [amount, setAmount] = useState(1)
+
+    const [open, setOpen] = useState(false)
+
+    const handleOpen = (menu) => {
+        setOpen(true)
+        setSelectedMenu(menu)
+    };
+
+    console.log(selectedMenu)
+
+    const handleClose = () => {
+        setOpen(false)
+        setSelectedMenu(undefined)
+    }
 
     const handleChange = (event) => {
         setAge(event.target.value);
@@ -36,8 +51,12 @@ function DetailTenant() {
 
     const { data: tenant, isLoading, error } = useSWR(url, (url) => fetcher(url, undefined))
 
-    if (error) return <div>failed to load</div>
     if (isLoading) return <div>loading...</div>
+    if (error) return <div>failed to load</div>
+
+    const tenant_menus = tenant?.tenant_menu
+
+    const tenant_reviews = tenant?.reviews
 
     const BootstrapInput = styled(InputBase)(({ theme }) => ({
         'label + &': {
@@ -65,11 +84,12 @@ function DetailTenant() {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        width: 250,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
+        // border: '2px solid #000',
         boxShadow: 24,
         p: 4,
+        borderRadius: "10px"
     };
 
     return (
@@ -81,12 +101,20 @@ function DetailTenant() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={styleModal}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography>
+                    <Box sx={{
+                        display: "grid",
+                        gap: "10px"
+                    }}>
+                        <img src={selectedMenu?.image || NoImage} width={"100%"} alt="" />
+                        <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>{selectedMenu?.title}</Typography>
+                        <Typography variant="p">{selectedMenu?.price}</Typography>
+                        <Box display={"flex"}>
+                            <Button onClick={() => setAmount(amount > 0 ? amount - 1 : amount)}>minus</Button>
+                            <TextField type="number" value={amount}></TextField>
+                            <Button onClick={() => setAmount(amount + 1)}>plus</Button>
+                        </Box>
+                        <Button>Add to Cart</Button>
+                    </Box>
                 </Box>
             </Modal>
             <Container
@@ -170,9 +198,10 @@ function DetailTenant() {
                         </Box>
                     </Box>
                     <Box className="foods" mt={"10px"}>
+                        {/* {menus[0] ? menus.slice(0,4)} */}
                         <Box width={"100%"} mb="10px">
                             <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
-                                Nasi
+                                {tenant_menus[0]?.category?.title || `No Category`}
                             </Typography>
                         </Box>
                         <Box
@@ -180,13 +209,15 @@ function DetailTenant() {
                             sx={{
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "center",
                                 gap: "3%"
                             }}>
-                            <FoodCardComponent handleClickModal={handleOpen} />
-                            <FoodCardComponent handleClickModal={handleOpen} />
-                            <FoodCardComponent handleClickModal={handleOpen} />
-                            <FoodCardComponent handleClickModal={handleOpen} />
+                            {tenant_menus[0].menu ? tenant_menus[0].menu.slice(0, 4).map(menu => (
+                                <FoodCardComponent menu={menu} handleClick={() => handleOpen(menu)} />
+                            )) : <Typography variant="h1">No Data</Typography>}
+                            {/* <FoodCardComponent foodData={food} handleClick={(id) => handleOpen(id)} />
+                            <FoodCardComponent handleClick={handleOpen} />
+                            <FoodCardComponent handleClick={handleOpen} />
+                            <FoodCardComponent handleClick={handleOpen} /> */}
                         </Box>
                         <Box
                             sx={{
@@ -201,157 +232,68 @@ function DetailTenant() {
                                 whiteSpace: "nowrap",
                                 paddingBottom: "10px"
                             }}>
-                                <Box className="box-review"
-                                    sx={{
-                                        backgroundImage: `url(${BoxReview})`,
-                                        // border: "1px solid black",
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundSize: "cover",
-                                        minHeight: "110px",
-                                        width: "280px",
-                                        padding: "40px 0px 0px 40px",
-                                        display: "inline-block",
-                                        marginRight: "15px"
-                                    }}>
-                                    <Typography variant="p" color={"#094067"}>Enak Banget nasgornya..</Typography>
-                                    <Box sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        paddingTop: "5px",
-                                        gap: "5px"
-                                    }}>
-                                        <img src={YellowStar} alt="" width={"30px"} />
-                                        <Typography variant="p">5 . Najim Rizky</Typography>
+                                {tenant_reviews.map(review => (
+                                    <Box className="box-review"
+                                        sx={{
+                                            backgroundImage: `url(${BoxReview})`,
+                                            // border: "1px solid black",
+                                            backgroundRepeat: "no-repeat",
+                                            backgroundSize: "cover",
+                                            minHeight: "110px",
+                                            width: "280px",
+                                            padding: "40px 0px 0px 40px",
+                                            display: "inline-block",
+                                            marginRight: "15px"
+                                        }}>
+                                        <Typography variant="p" color={"#094067"}>{review.content}</Typography>
+                                        <Box sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            paddingTop: "5px",
+                                            gap: "5px"
+                                        }}>
+                                            <img src={YellowStar} alt="" width={"30px"} />
+                                            <Typography variant="p">{review.rating} . {review.customer.full_name}</Typography>
+                                        </Box>
                                     </Box>
-                                </Box>
-                                <Box className="box-review"
-                                    sx={{
-                                        backgroundImage: `url(${BoxReview})`,
-                                        // border: "1px solid black",
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundSize: "cover",
-                                        minHeight: "110px",
-                                        width: "280px",
-                                        padding: "40px 0px 0px 40px",
-                                        display: "inline-block",
-                                        marginRight: "15px"
-                                    }}>
-                                    <Typography variant="p" color={"#094067"}>Enak Banget nasgornya..</Typography>
-                                    <Box sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        paddingTop: "5px",
-                                        gap: "5px"
-                                    }}>
-                                        <img src={YellowStar} alt="" width={"30px"} />
-                                        <Typography variant="p">5 . Najim Rizky</Typography>
-                                    </Box>
-                                </Box>
-                                <Box className="box-review"
-                                    sx={{
-                                        backgroundImage: `url(${BoxReview})`,
-                                        // border: "1px solid black",
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundSize: "cover",
-                                        minHeight: "110px",
-                                        width: "280px",
-                                        padding: "40px 0px 0px 40px",
-                                        display: "inline-block",
-                                        marginRight: "15px"
-                                    }}>
-                                    <Typography variant="p" color={"#094067"}>Enak Banget nasgornya..</Typography>
-                                    <Box sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        paddingTop: "5px",
-                                        gap: "5px"
-                                    }}>
-                                        <img src={YellowStar} alt="" width={"30px"} />
-                                        <Typography variant="p">5 . Najim Rizky</Typography>
-                                    </Box>
-                                </Box>
+                                ))}
                             </Box>
                         </Box>
                         <Box className="minuman" mt={"25px"}>
-                            <Box width={"100%"} mb="10px">
-                                <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
-                                    Minuman
-                                </Typography>
-                            </Box>
-                            <Box sx={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: "30px"
-                            }}>
-                                <Box className="card-lebar"
-                                    sx={{
-                                        boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
-                                        padding: "30px",
-                                        borderRadius: "10px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        width: "45%",
-                                        flex: "50"
-                                    }}>
-                                    <img src={JusJeruk} alt="" width={"150px"} />
-                                    <Box className="deskripsi" ml={"25px"} display={"grid"}>
-                                        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Jus Jeruk</Typography>
-                                        <Typography variant="p" fontSize={"14px"}>minuman dari jeruk</Typography>
-                                        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. 7.000</Typography>
+                            {tenant_menus ? tenant_menus.slice(1).map(menus => (
+                                <>
+                                    <Box width={"100%"} mb="10px" mt={"30px"}>
+                                        <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
+                                            {menus?.category?.title || `No Category`}
+                                        </Typography>
                                     </Box>
-                                </Box>
-                                <Box className="card-lebar"
-                                    sx={{
-                                        boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
-                                        padding: "30px",
-                                        borderRadius: "10px",
+                                    <Box sx={{
                                         display: "flex",
-                                        alignItems: "center",
-                                        width: "45%",
-                                        flex: "50"
+                                        flexWrap: "wrap",
+                                        gap: "30px"
                                     }}>
-                                    <img src={JusJeruk} alt="" width={"150px"} />
-                                    <Box className="deskripsi" ml={"25px"} display={"grid"}>
-                                        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Jus Jeruk</Typography>
-                                        <Typography variant="p" fontSize={"14px"}>minuman dari jeruk</Typography>
-                                        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. 7.000</Typography>
+                                        {menus?.menu.map(menu => (
+                                            <Box className="card-lebar"
+                                                sx={{
+                                                    boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
+                                                    padding: "30px",
+                                                    borderRadius: "10px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    width: "45%",
+                                                    flex: "50"
+                                                }}>
+                                                <img src={menu?.image || NoImage} alt="" width={"150px"} />
+                                                <Box className="deskripsi" ml={"25px"} display={"grid"}>
+                                                    <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu.title}</Typography>
+                                                    <Typography variant="p" fontSize={"14px"}>{menu.description}</Typography>
+                                                    <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. {menu?.price.toLocaleString("id-ID")}</Typography>
+                                                </Box>
+                                            </Box>
+                                        ))}
                                     </Box>
-                                </Box>
-                                <Box className="card-lebar"
-                                    sx={{
-                                        boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
-                                        padding: "30px",
-                                        borderRadius: "10px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        width: "45%",
-                                        flex: "50"
-                                    }}>
-                                    <img src={JusJeruk} alt="" width={"150px"} />
-                                    <Box className="deskripsi" ml={"25px"} display={"grid"}>
-                                        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Jus Jeruk</Typography>
-                                        <Typography variant="p" fontSize={"14px"}>minuman dari jeruk</Typography>
-                                        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. 7.000</Typography>
-                                    </Box>
-                                </Box>
-                                <Box className="card-lebar"
-                                    sx={{
-                                        boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
-                                        padding: "30px",
-                                        borderRadius: "10px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        width: "45%",
-                                        flex: "50"
-                                    }}>
-                                    <img src={JusJeruk} alt="" width={"150px"} />
-                                    <Box className="deskripsi" ml={"25px"} display={"grid"}>
-                                        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Jus Jeruk</Typography>
-                                        <Typography variant="p" fontSize={"14px"}>minuman dari jeruk</Typography>
-                                        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. 7.000</Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
+                                </>
+                            )) : <Typography variant="h1">No Data</Typography>}
                         </Box>
                     </Box>
                 </Box>
