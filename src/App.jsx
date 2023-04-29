@@ -30,7 +30,10 @@ import CustomerPage from './pages/admin/Customer/CustomerPage';
 import OrderPage from './pages/admin/Order/OrderPage';
 import MenuPage from './pages/admin/Menu/MenuPage';
 import TenantLayout from './layout/TenantLayout';
-import TenantHomePage from './pages/tenantPage/TenantHomePage';
+import TenantHomePage from './pages/tenantPage/Home/TenantHomePage';
+import TenantOrderPage from './pages/tenantPage/Order/TenantOrderPage';
+import TenantMenuPage from './pages/tenantPage/Menu/TenantMenuPage';
+import TenantProfilePage from './pages/tenantPage/Profile/TenantProfilePage';
 
 function App() {
 
@@ -128,6 +131,15 @@ function App() {
           {/* TENANT ROUTES */}
           <Route path="/tenant" element={accountData?.role === "tenant" ? <TenantLayout /> : <Navigate to={"/account/login"} />}>
             <Route index element={<TenantHomePage />} />
+            <Route path='order'>
+              <Route index element={<TenantOrderPage />} />
+            </Route>
+            <Route path='menu'>
+              <Route index element={<TenantMenuPage />} />
+            </Route>
+            <Route path='profile'>
+              <Route index element={<TenantProfilePage />} />
+            </Route>
           </Route>
           {/* END OF TENANT ROUTES */}
 
