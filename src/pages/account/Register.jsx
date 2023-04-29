@@ -30,7 +30,7 @@ const Register = () => {
 
         try {
             const data = { email, full_name, password, confirm_password };
-            const response = await axios.post(BASE_URL + "/account/reset-password", data)
+            const response = await axios.post(BASE_URL + "/account/register", data)
             const title = "Password Change Complete"
             const message = "Your password has been changed, and you have been logged into your account. You Will be redirected back to the site in 5 seconds"
             navigate("/account/email-confirmation", { state: { title: title, message: message } })
