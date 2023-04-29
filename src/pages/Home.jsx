@@ -21,12 +21,17 @@ import BASE_URL from "../config/BASE_URL";
 
 function Home() {
 
-    const url = `${BASE_URL}/tenant`
+    const urlRandomTenant = `${BASE_URL}/random-tenant`
+    const urlRandomMenus = `${BASE_URL}/random-menu`
 
-    const { data: tenants, isLoading, error } = useSWR(url, (url) => fetcher(url, undefined))
+    const { data: tenants, isLoading: isLoadingRandomTenant, error: errorRandomTenant } = useSWR(urlRandomTenant, (url) => fetcher(url, undefined))
+    const { data: menus, isLoading: isLoadingRandomMenus, error: errorRandomMenus } = useSWR(urlRandomMenus, (url) => fetcher(url, undefined))
 
-    if (error) return <div>failed to load</div>
-    if (isLoading) return <div>loading...</div>
+    if (errorRandomTenant) return <div>failed to load</div>
+    if (isLoadingRandomTenant) return <div>loading...</div>
+
+    if (errorRandomMenus) return <div>failed to load</div>
+    if (isLoadingRandomMenus) return <div>loading...</div>
 
     return (
         <Container
@@ -45,7 +50,7 @@ function Home() {
                 }}>
                 <Box
                     component={Link}
-                    to={"/search/searchpage"}
+                    to={"/customer/search/searchpage"}
                     className="search-box"
                     sx={{
                         display: "flex",
@@ -197,10 +202,9 @@ function Home() {
                                 justifyContent: "center",
                                 gap: "3%"
                             }}>
-                            <FoodCardComponent />
-                            <FoodCardComponent />
-                            <FoodCardComponent />
-                            <FoodCardComponent />
+                            {menus ? menus.slice(0, 4).map(menu => (
+                                <FoodCardComponent menu={menu} />
+                            )) : <Typography variant="h1">No Data</Typography>}
                         </Box>
                     </Box>
                 </Box>
