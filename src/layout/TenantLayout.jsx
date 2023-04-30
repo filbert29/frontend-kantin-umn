@@ -1,4 +1,4 @@
-import { Fastfood, Home, Person, Receipt } from "@mui/icons-material";
+import { Comment, Fastfood, Home, Person, Receipt } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -11,7 +11,7 @@ const TenantLayout = () => {
                 bottom: 0,
             }}
         >
-            <Box sx={{ minHeight: "87vh" }} >
+            <Box sx={{ minHeight: "87vh", mt: 2, mb: 4 }} >
                 <Outlet />
             </Box>
             <TenantNavBar />
@@ -51,6 +51,7 @@ const TenantNavBar = () => {
                 icon={<Home />}
                 LinkComponent={Link}
                 to="/tenant"
+                sx={{ p: 0, minWidth: 75 }}
             />
             <BottomNavigationAction
                 label="Menu"
@@ -58,6 +59,7 @@ const TenantNavBar = () => {
                 icon={<Fastfood />}
                 LinkComponent={Link}
                 to="/tenant/menu"
+                sx={{ p: 0, minWidth: 75 }}
             />
             <BottomNavigationAction
                 label="Order"
@@ -65,6 +67,15 @@ const TenantNavBar = () => {
                 icon={<Receipt />}
                 LinkComponent={Link}
                 to="/tenant/order"
+                sx={{ p: 0, minWidth: 75 }}
+            />
+            <BottomNavigationAction
+                label="Review"
+                value="review"
+                icon={<Comment />}
+                LinkComponent={Link}
+                to="/tenant/review"
+                sx={{ p: 0, minWidth: 75 }}
             />
             <BottomNavigationAction
                 label="Profile"
@@ -72,6 +83,7 @@ const TenantNavBar = () => {
                 icon={<Person />}
                 LinkComponent={Link}
                 to="/tenant/profile"
+                sx={{ p: 0, minWidth: 75 }}
             />
         </BottomNavigation>
     )
