@@ -1,15 +1,29 @@
-import { ArrowForwardIos, Star } from "@mui/icons-material";
-import { Box, Container, Typography, Grid, Paper, Button } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 import MenuImage from "../../../assets/tenant/menu.png";
 import OrderImage from "../../../assets/tenant/order.png";
 import ProfileImage from "../../../assets/tenant/profile.png";
 import ReviewImage from "../../../assets/tenant/review.jpg";
 
+import { ArrowForwardIos, Star } from "@mui/icons-material";
+import { Box, Container, Typography, Grid, Paper, Button } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useSWR from "swr";
+import fetcher from "../../../helper/fetcher";
+import { useSelector } from "react-redux";
+import Loading from "../../../component/state/loading";
+import ErrorApi from "../../../component/state/ErrorApi";
+import BASE_URL from "../../../config/BASE_URL";
+
+
+
 const TenantHomePage = () => {
+    const { access_token } = useSelector((state) => state.auth.accountData)
+    const { data: tenant, isLoading, error } = useSWR(`${BASE_URL}/tenant/dashboard`, (url) => fetcher(url, access_token))
     const [maximizeDescription, setMaximizeDescription] = useState(false)
+
+    if (isLoading) return <Loading />
+    if (error) return <ErrorApi />
+
     return (
         <Box>
             <Container>
@@ -25,7 +39,7 @@ const TenantHomePage = () => {
                 >
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={8}>
-                            <Typography variant="h4" fontWeight={"bold"}>Kedai Nasi Goreng</Typography>
+                            <Typography variant="h4" fontWeight={"bold"}>{tenant?.full_name}</Typography>
                             <Typography
                                 variant="p"
                                 sx={{
@@ -36,14 +50,14 @@ const TenantHomePage = () => {
                                     textOverflow: "ellipsis"
                                 }}
                             >
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis animi qui quis similique quos ad praesentium consequuntur! Quis pariatur molestias quas. Minus autem quam obcaecati nisi ex eos non voluptatum.
+                                {tenant?.description}
                             </Typography>
                             <Typography component={"span"} variant="p" sx={{ cursor: "pointer" }} onClick={() => setMaximizeDescription(!maximizeDescription)}>{maximizeDescription ? " Show Less" : " Show More"}</Typography>
                             <Typography
                                 variant="p"
                                 component="p"
-                                sx={{ display: "flex", alignItems: "center", mt: 2, fontSize: "24px" }}>
-                                <Star sx={{ color: "#FFDF00", fontSize: "30px" }} /> &nbsp; 4.7 (12)
+                                sx={{ display: "flex", alignItems: "center", mt: 2, fontSize: "18px" }}>
+                                <Star sx={{ color: "#FFDF00", fontSize: "30px" }} /> &nbsp; {tenant?.rating} ({tenant?.total_review})
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={4} sx={{ textAlign: "right" }}>
@@ -52,7 +66,8 @@ const TenantHomePage = () => {
                             }}>
                                 <Box
                                     component={"img"}
-                                    src="https://picsum.photos/id/292/600/600"
+                                    // src="https://picsum.photos/id/292/600/600"
+                                    src={tenant?.profile_image}
                                     alt=""
                                     width={156}
                                     height={156}
@@ -66,19 +81,19 @@ const TenantHomePage = () => {
                         <Grid item md={12} sm={6} xs={12}>
                             <CardStatistics
                                 title={"Your Balance"}
-                                value={"Rp650.000"}
+                                value={`Rp. ${tenant?.balance}`}
                                 handleClick={() => { }}
                                 clickLabel={"Withdraw"}
                             />
                         </Grid>
                         <Grid item md={4} sm={6} xs={12}>
-                            <CardStatistics title={"Total Order"} value={12} />
+                            <CardStatistics title={"Total Order"} value={tenant?.total_order} />
                         </Grid>
                         <Grid item md={4} sm={6} xs={12}>
-                            <CardStatistics title={"Total Order Today"} value={12} />
+                            <CardStatistics title={"Total Order Today"} value={tenant?.total_order_today} />
                         </Grid>
                         <Grid item md={4} sm={6} xs={12}>
-                            <CardStatistics title={"Total Review"} value={12} />
+                            <CardStatistics title={"Total Review"} value={tenant?.total_review} />
                         </Grid>
                     </Grid>
                 </Box>
