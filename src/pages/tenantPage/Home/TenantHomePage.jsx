@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import Loading from "../../../component/state/loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import BASE_URL from "../../../config/BASE_URL";
+import { formatThousand } from "../../../helper/number";
 
 
 
@@ -81,7 +82,7 @@ const TenantHomePage = () => {
                     <Grid item md={12} sm={6} xs={12}>
                         <CardStatistics
                             title={"Your Balance"}
-                            value={`Rp. ${tenant?.balance}`}
+                            value={`Rp. ${formatThousand(tenant?.balance)}`}
                             handleClick={() => { }}
                             clickLabel={"Withdraw"}
                         />
@@ -149,7 +150,7 @@ const CardStatistics = ({ title, value, handleClick = undefined, clickLabel = un
             <Grid container spacing={2}>
                 <Grid item xs={8}>
                     <Typography variant="p" fontWeight={"bold"}>{title}</Typography>
-                    <Typography variant="h4" fontWeight={"bold"}>{value}</Typography>
+                    <Typography variant="h5" fontWeight={"bold"}>{value}</Typography>
                 </Grid>
                 {clickLabel && (
                     <Grid item xs={4} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
