@@ -18,6 +18,7 @@ const menuColumns = [
     { id: 'price', label: 'Price', sort: true },
     { id: 'category', label: 'Category' },
     { id: 'tenant', label: 'Tenant' },
+    { id: 'prep_duration', label: 'Prep Duration' },
     { id: 'action', label: '' }
 ]
 
@@ -41,6 +42,7 @@ const MenuPage = () => {
                 description: menu?.description,
                 category: menu?.category?.title || "-",
                 price: "Rp" + (menu?.price).toLocaleString("id-ID"),
+                prep_duration: menu?.prep_duration,
                 action: {
                     handleDetail: () => handleOpenModalDetail(menu),
                     handleEdit: () => handleOpenModalEdit(menu),

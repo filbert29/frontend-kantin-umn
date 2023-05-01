@@ -24,7 +24,8 @@ const ModalEditMenu = ({ open, handleClose, menu }) => {
                 price: menu?.price,
                 category: menu?.category?._id,
                 tenant: menu?.tenant?.full_name,
-                image: menu?.image
+                image: menu?.image,
+                prep_duration: menu?.prep_duration
             })
             setPreviewMenuImage(menu?.image)
         } else {
@@ -50,6 +51,7 @@ const ModalEditMenu = ({ open, handleClose, menu }) => {
             formData.append("title", form?.title)
             formData.append("description", form?.description)
             formData.append("price", form?.price)
+            formData.append("prep_duration", form?.prep_duration)
 
             if (menuImage) {
                 formData.append("image", menuImage)
@@ -130,9 +132,18 @@ const ModalEditMenu = ({ open, handleClose, menu }) => {
                     />
                     <TextField
                         variant="standard"
+                        name="prep_duration"
+                        placeholder="Enter Prep Duration"
+                        label="Prep Duration (minutes)"
+                        value={form?.prep_duration}
+                        onChange={handleChange}
+                        type="number"
+                        fullWidth
+                    />
+                    <TextField
+                        variant="standard"
                         name="tenant"
                         label="Tenant Name"
-                        tenant="Tenant Name"
                         value={form?.tenant}
                     />
                     <Box display="flex" justifyContent="flex-end" mt={2} >
