@@ -43,8 +43,9 @@ const TenantHomePage = () => {
                             variant="p"
                             sx={{
                                 mt: 1,
-                                display: maximizeDescription ? "block"
-                                    : "-webkit-box", "-webkit-line-clamp": "1", "-webkit-box-orient": "vertical",
+                                display: maximizeDescription ? "block" : "-webkit-box",
+                                WebkitLineClamp: "1",
+                                WebkitBoxOrient: "vertical",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis"
                             }}
