@@ -25,112 +25,110 @@ const TenantHomePage = () => {
     if (error) return <ErrorApi />
 
     return (
-        <Box>
-            <Container>
-                <Box
-                    sx={{
-                        background: "black",
-                        borderRadius: "10px",
-                        color: "white",
-                        padding: "40px",
-                    }}
-                    component={Paper}
-                    elevation={3}
-                >
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={8}>
-                            <Typography variant="h4" fontWeight={"bold"}>{tenant?.full_name}</Typography>
-                            <Typography
-                                variant="p"
-                                sx={{
-                                    mt: 1,
-                                    display: maximizeDescription ? "block"
-                                        : "-webkit-box", "-webkit-line-clamp": "1", "-webkit-box-orient": "vertical",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis"
-                                }}
-                            >
-                                {tenant?.description}
-                            </Typography>
-                            <Typography component={"span"} variant="p" sx={{ cursor: "pointer" }} onClick={() => setMaximizeDescription(!maximizeDescription)}>{maximizeDescription ? " Show Less" : " Show More"}</Typography>
-                            <Typography
-                                variant="p"
-                                component="p"
-                                sx={{ display: "flex", alignItems: "center", mt: 2, fontSize: "18px" }}>
-                                <Star sx={{ color: "#FFDF00", fontSize: "30px" }} /> &nbsp; {tenant?.rating} ({tenant?.total_review})
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={4} sx={{ textAlign: "right" }}>
-                            <Box sx={{
-                                textAlign: { xs: "center", sm: "right" },
-                            }}>
-                                <Box
-                                    component={"img"}
-                                    // src="https://picsum.photos/id/292/600/600"
-                                    src={tenant?.profile_image}
-                                    alt=""
-                                    width={156}
-                                    height={156}
-                                    sx={{ borderRadius: "10px", border: "8px solid white", objectFit: "cover" }} />
-                            </Box>
-                        </Grid>
+        <Container>
+            <Box
+                sx={{
+                    background: "black",
+                    borderRadius: "10px",
+                    color: "white",
+                    padding: "40px",
+                }}
+                component={Paper}
+                elevation={3}
+            >
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={8}>
+                        <Typography variant="h4" fontWeight={"bold"}>{tenant?.full_name}</Typography>
+                        <Typography
+                            variant="p"
+                            sx={{
+                                mt: 1,
+                                display: maximizeDescription ? "block"
+                                    : "-webkit-box", "-webkit-line-clamp": "1", "-webkit-box-orient": "vertical",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis"
+                            }}
+                        >
+                            {tenant?.description}
+                        </Typography>
+                        <Typography component={"span"} variant="p" sx={{ cursor: "pointer" }} onClick={() => setMaximizeDescription(!maximizeDescription)}>{maximizeDescription ? " Show Less" : " Show More"}</Typography>
+                        <Typography
+                            variant="p"
+                            component="p"
+                            sx={{ display: "flex", alignItems: "center", mt: 2, fontSize: "18px" }}>
+                            <Star sx={{ color: "#FFDF00", fontSize: "30px" }} /> &nbsp; {tenant?.rating} ({tenant?.total_review})
+                        </Typography>
                     </Grid>
-                </Box>
-                <Box sx={{ mt: 2 }}>
-                    <Grid container spacing={2}>
-                        <Grid item md={12} sm={6} xs={12}>
-                            <CardStatistics
-                                title={"Your Balance"}
-                                value={`Rp. ${tenant?.balance}`}
-                                handleClick={() => { }}
-                                clickLabel={"Withdraw"}
-                            />
-                        </Grid>
-                        <Grid item md={4} sm={6} xs={12}>
-                            <CardStatistics title={"Total Order"} value={tenant?.total_order} />
-                        </Grid>
-                        <Grid item md={4} sm={6} xs={12}>
-                            <CardStatistics title={"Total Order Today"} value={tenant?.total_order_today} />
-                        </Grid>
-                        <Grid item md={4} sm={6} xs={12}>
-                            <CardStatistics title={"Total Review"} value={tenant?.total_review} />
-                        </Grid>
+                    <Grid item xs={12} sm={4} sx={{ textAlign: "right" }}>
+                        <Box sx={{
+                            textAlign: { xs: "center", sm: "right" },
+                        }}>
+                            <Box
+                                component={"img"}
+                                // src="https://picsum.photos/id/292/600/600"
+                                src={tenant?.profile_image}
+                                alt=""
+                                width={156}
+                                height={156}
+                                sx={{ borderRadius: "10px", border: "8px solid white", objectFit: "cover" }} />
+                        </Box>
                     </Grid>
-                </Box>
-                <Box sx={{ mt: 8 }}>
-                    <Grid container spacing={2}>
-                        <Grid item md={3} xs={6}>
-                            <CardActionMenu
-                                title={"All Menu"}
-                                image={MenuImage}
-                                path={"/tenant/menu"}
-                            />
-                        </Grid>
-                        <Grid item md={3} xs={6}>
-                            <CardActionMenu
-                                title={"All Order"}
-                                image={OrderImage}
-                                path={"/tenant/order"}
-                            />
-                        </Grid>
-                        <Grid item md={3} xs={6}>
-                            <CardActionMenu
-                                title={"All Review"}
-                                image={ReviewImage}
-                                path={"/tenant/review"}
-                            />
-                        </Grid>
-                        <Grid item md={3} xs={6}>
-                            <CardActionMenu
-                                title={"Profile"}
-                                image={ProfileImage}
-                                path={"/tenant/profile"}
-                            />
-                        </Grid>
+                </Grid>
+            </Box>
+            <Box sx={{ mt: 2 }}>
+                <Grid container spacing={2}>
+                    <Grid item md={12} sm={6} xs={12}>
+                        <CardStatistics
+                            title={"Your Balance"}
+                            value={`Rp. ${tenant?.balance}`}
+                            handleClick={() => { }}
+                            clickLabel={"Withdraw"}
+                        />
                     </Grid>
-                </Box>
-            </Container>
-        </Box>
+                    <Grid item md={4} sm={6} xs={12}>
+                        <CardStatistics title={"Total Order"} value={tenant?.total_order} />
+                    </Grid>
+                    <Grid item md={4} sm={6} xs={12}>
+                        <CardStatistics title={"Total Order Today"} value={tenant?.total_order_today} />
+                    </Grid>
+                    <Grid item md={4} sm={6} xs={12}>
+                        <CardStatistics title={"Total Review"} value={tenant?.total_review} />
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box sx={{ mt: 8 }}>
+                <Grid container spacing={2}>
+                    <Grid item md={3} xs={6}>
+                        <CardActionMenu
+                            title={"All Menu"}
+                            image={MenuImage}
+                            path={"/tenant/menu"}
+                        />
+                    </Grid>
+                    <Grid item md={3} xs={6}>
+                        <CardActionMenu
+                            title={"All Order"}
+                            image={OrderImage}
+                            path={"/tenant/order"}
+                        />
+                    </Grid>
+                    <Grid item md={3} xs={6}>
+                        <CardActionMenu
+                            title={"All Review"}
+                            image={ReviewImage}
+                            path={"/tenant/review"}
+                        />
+                    </Grid>
+                    <Grid item md={3} xs={6}>
+                        <CardActionMenu
+                            title={"Profile"}
+                            image={ProfileImage}
+                            path={"/tenant/profile"}
+                        />
+                    </Grid>
+                </Grid>
+            </Box>
+        </Container>
     );
 }
 
