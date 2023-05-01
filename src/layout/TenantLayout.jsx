@@ -51,7 +51,7 @@ const TenantNavBar = () => {
                 icon={<Home />}
                 LinkComponent={Link}
                 to="/tenant"
-                sx={{ p: 0, minWidth: 75 }}
+                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
             />
             <BottomNavigationAction
                 label="Menu"
@@ -59,7 +59,7 @@ const TenantNavBar = () => {
                 icon={<Fastfood />}
                 LinkComponent={Link}
                 to="/tenant/menu"
-                sx={{ p: 0, minWidth: 75 }}
+                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
             />
             <BottomNavigationAction
                 label="Order"
@@ -67,7 +67,7 @@ const TenantNavBar = () => {
                 icon={<Receipt />}
                 LinkComponent={Link}
                 to="/tenant/order"
-                sx={{ p: 0, minWidth: 75 }}
+                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
             />
             <BottomNavigationAction
                 label="Review"
@@ -75,7 +75,7 @@ const TenantNavBar = () => {
                 icon={<Comment />}
                 LinkComponent={Link}
                 to="/tenant/review"
-                sx={{ p: 0, minWidth: 75 }}
+                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
             />
             <BottomNavigationAction
                 label="Profile"
@@ -83,7 +83,7 @@ const TenantNavBar = () => {
                 icon={<Person />}
                 LinkComponent={Link}
                 to="/tenant/profile"
-                sx={{ p: 0, minWidth: 75 }}
+                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
             />
         </BottomNavigation>
     )
