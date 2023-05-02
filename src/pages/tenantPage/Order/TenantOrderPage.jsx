@@ -1,5 +1,5 @@
 import { ExpandMore } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip, CircularProgress, Container, Divider, Paper, Tab, Tabs, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip, CircularProgress, Container, Divider, Paper, Rating, Tab, Tabs, Typography } from "@mui/material";
 import { useState } from "react";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
@@ -12,6 +12,7 @@ import { formatThousand } from "../../../helper/number";
 import DFlexJustifyContentBetween from "../../../component/general/DFlexJustifyContentBetween";
 import { useTimer } from "react-timer-hook";
 import axios from "axios";
+import ORDER_STATUS from "../../../config/order-status.config";
 
 const customAccordionStyle = {
     boxShadow: "none",
@@ -129,9 +130,20 @@ const OnProgressOrder = () => {
 }
 
 const HistoryOrder = () => {
+    const { access_token } = useSelector((state) => state.auth.accountData)
+    const { data: orders, isLoading, error } = useSWR(`${BASE_URL}/order`, (url) => fetcher(url, access_token))
+
+    if (isLoading) return <Loading />
+    if (error) return <ErrorApi />
     return (
-        <Box>
-            History
+        <Box sx={{ mt: 2, display: "grid", rowGap: 3 }}>
+            {orders?.length > 0 ? (
+                orders?.map((item, index) => (
+                    <OrderCard order={item} key={item?._id} />
+                ))
+            ) : (
+                <NoOrder />
+            )}
         </Box>
     )
 }
@@ -272,5 +284,56 @@ const RejectTimer = ({ time, onFinish }) => {
         <span>
             {rejectTimer.minutes}:{rejectTimer.seconds}
         </span>
+    )
+}
+
+const OrderCard = ({ order }) => {
+    console.log(ORDER_STATUS[order?.status])
+    return (
+        <Box p={2} component={Paper} elevation={1}>
+            <DFlexJustifyContentBetween>
+                <Typography variant="p" fontSize={12}>{order?._id}</Typography>
+                <Chip
+                    size="small"
+                    label={ORDER_STATUS[order?.status].label}
+                    color={ORDER_STATUS[order?.status]?.color || "default"}
+                />
+            </DFlexJustifyContentBetween>
+            <DFlexJustifyContentBetween sx={{ mt: 1 }}>
+                <Typography component="p" fontSize={16} fontWeight={500}>{order?.customer?.full_name}</Typography>
+                <Typography variant="p" fontSize={12}>{moment(order?.progress?.created).format("DD MMM YYYY, hh:mm:ss")}</Typography>
+            </DFlexJustifyContentBetween>
+            <Typography
+                component="p"
+                sx={{
+                    mt: 1,
+                    fontSize: 14,
+                    display: "-webkit-box",
+                    WebkitLineClamp: "2",
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis"
+                }}
+            >
+                {order?.items?.map((item) => `${item?.quantity} ${item?.menu?.title}`).join(", ")}
+            </Typography>
+
+            <Divider sx={{ mt: 2 }} />
+            <DFlexJustifyContentBetween sx={{ mt: 1 }}>
+                <Box>
+                    <Typography component="p" variant="p" fontSize={14} fontWeight={600}>
+                        Rp. {formatThousand(order?.total_price)}
+                    </Typography>
+                    <Typography component="p" variant="p" fontSize={12} fontWeight={500}>
+                        {order?.items?.reduce((acc, item) => acc + item?.quantity, 0)} Items
+                    </Typography>
+                </Box>
+                {order?.review ? (
+                    <Rating name="read-only" value={4.1} readOnly size="medium" precision={0.1} />
+                ) : (
+                    <Typography component="p" variant="p" fontSize={13} fontWeight={500}>No reviews yet</Typography>
+                )}
+            </DFlexJustifyContentBetween>
+        </Box>
     )
 }
