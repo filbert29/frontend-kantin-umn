@@ -1,5 +1,5 @@
 import { ExpandMore } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip, CircularProgress, Container, Divider, Paper, Rating, Tab, Tabs, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip, CircularProgress, Container, Divider, MenuItem, Paper, Rating, Select, Tab, Tabs, Typography } from "@mui/material";
 import { useState } from "react";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
@@ -46,14 +46,22 @@ const TenantOrderPage = () => {
 export default TenantOrderPage;
 
 const OnProgressOrder = () => {
+    const [priority, setPriority] = useState("fcfs")
     const { access_token } = useSelector((state) => state.auth.accountData)
-    const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress`, (url) => fetcher(url, access_token))
+    const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress?priority=${priority}`, (url) => fetcher(url, access_token))
 
-    if (isLoading) return <Loading />
+    if (isLoading ) return <Loading />
     if (error) return <ErrorApi />
 
     return (
         <Box sx={{ mt: 2 }}>
+            <Box my={2} >
+                <Typography component="p" variant="p" fontWeight={600} mb={1} >Order Priority</Typography>
+                <Select fullWidth={true} value={priority} onChange={(event) => {setPriority(event.target.value)} }>
+                    <MenuItem value="fcfs">First Come First Serve</MenuItem>
+                    <MenuItem value="sjf">Short Job First</MenuItem>
+                </Select>
+            </Box>
             <Accordion defaultExpanded={true} sx={customAccordionStyle}>
                 <AccordionSummary
                     expandIcon={<ExpandMore />}
@@ -273,10 +281,10 @@ const NoOrder = () => (
 
 const RejectTimer = ({ time, onFinish }) => {
     const rejectTimer = useTimer({
-        expiryTimestamp: moment(time) + 1000 * 60 * 3,
+        expiryTimestamp: moment(time) + 1000 * 60 * 5,
         autoStart: true,
         onExpire: () => {
-            onFinish()
+            // onFinish()
         }
     })
 
