@@ -5,7 +5,7 @@ const ORDER_STATUS = {
     },
     preparing: {
         label: "On Progress",
-        color: "info"
+        color: "secondary"
     },
     ready: {
         label: "Ready to Pickup",

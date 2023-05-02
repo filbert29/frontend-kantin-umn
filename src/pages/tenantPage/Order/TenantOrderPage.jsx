@@ -50,14 +50,14 @@ const OnProgressOrder = () => {
     const { access_token } = useSelector((state) => state.auth.accountData)
     const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress?priority=${priority}`, (url) => fetcher(url, access_token))
 
-    if (isLoading ) return <Loading />
+    if (isLoading) return <Loading />
     if (error) return <ErrorApi />
 
     return (
         <Box sx={{ mt: 2 }}>
             <Box my={2} >
                 <Typography component="p" variant="p" fontWeight={600} mb={1} >Order Priority</Typography>
-                <Select fullWidth={true} value={priority} onChange={(event) => {setPriority(event.target.value)} }>
+                <Select fullWidth={true} value={priority} onChange={(event) => { setPriority(event.target.value) }}>
                     <MenuItem value="fcfs">First Come First Serve</MenuItem>
                     <MenuItem value="sjf">Short Job First</MenuItem>
                 </Select>
@@ -140,18 +140,36 @@ const OnProgressOrder = () => {
 const HistoryOrder = () => {
     const { access_token } = useSelector((state) => state.auth.accountData)
     const { data: orders, isLoading, error } = useSWR(`${BASE_URL}/order`, (url) => fetcher(url, access_token))
+    const [filter, setFilter] = useState("all")
 
     if (isLoading) return <Loading />
     if (error) return <ErrorApi />
-    return (
-        <Box sx={{ mt: 2, display: "grid", rowGap: 3 }}>
-            {orders?.length > 0 ? (
-                orders?.map((item, index) => (
+
+    const showOrder = () => {
+        if (orders?.length > 0) {
+            const orderData = orders?.filter((item) => filter === "all" ? item : item?.status === filter)
+            if (orderData?.length > 0) {
+                return orderData.map((item) => (
                     <OrderCard order={item} key={item?._id} />
                 ))
-            ) : (
-                <NoOrder />
-            )}
+            } else {
+                return <NoOrder />
+            }
+        } else {
+            return <NoOrder />
+        }
+    }
+
+    return (
+        <Box sx={{ mt: 2, display: "grid", rowGap: 3 }}>
+            <Box sx={{ overflowX: "auto", display: "flex", gap: 2, pb: 2 }}>
+                <Chip sx={{ px: 1 }} onClick={() => setFilter("all")} label={"All"} variant={filter === "all" ? "filled" : "outlined"} />
+                {Object.entries(ORDER_STATUS).map(([key, value]) => (
+                    <Chip sx={{ px: 1 }} onClick={() => setFilter(key)} color={value.color} label={value.label} variant={filter === key ? "filled" : "outlined"} key={key} />
+                ))}
+            </Box>
+
+            {showOrder()}
         </Box>
     )
 }
@@ -296,7 +314,6 @@ const RejectTimer = ({ time, onFinish }) => {
 }
 
 const OrderCard = ({ order }) => {
-    console.log(ORDER_STATUS[order?.status])
     return (
         <Box p={2} component={Paper} elevation={1}>
             <DFlexJustifyContentBetween>
