@@ -68,7 +68,7 @@ const OnProgressOrder = () => {
                 <AccordionDetails sx={{ background: "rgba(0,0,0,0.05)", p: 2, display: "grid", rowGap: 2 }} >
                     {order?.created?.length > 0 ? (
                         order?.created?.map((item, index) => (
-                            <OrderCard key={item?._id} order={item} index={index} mutate={mutate} />
+                            <OnProgressOrderCard key={item?._id} order={item} index={index} mutate={mutate} />
                         ))
 
                     ) : (
@@ -92,7 +92,7 @@ const OnProgressOrder = () => {
                 <AccordionDetails sx={{ background: "rgba(0,0,0,0.05)", p: 2, display: "grid", rowGap: 2 }}>
                     {order?.preparing?.length > 0 ? (
                         order?.preparing?.map((item, index) => (
-                            <OrderCard key={item?._id} order={item} index={index} mutate={mutate} />
+                            <OnProgressOrderCard key={item?._id} order={item} index={index} mutate={mutate} />
                         ))
 
                     ) : (
@@ -116,7 +116,7 @@ const OnProgressOrder = () => {
                 <AccordionDetails sx={{ background: "rgba(0,0,0,0.05)", p: 2, display: "grid", rowGap: 2 }}>
                     {order?.ready?.length > 0 ? (
                         order?.ready?.map((item, index) => (
-                            <OrderCard key={item?._id} order={item} index={index} mutate={mutate} />
+                            <OnProgressOrderCard key={item?._id} order={item} index={index} mutate={mutate} />
                         ))
 
                     ) : (
@@ -136,7 +136,7 @@ const HistoryOrder = () => {
     )
 }
 
-const OrderCard = ({ order, index, mutate = undefined }) => {
+const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
     const { access_token } = useSelector((state) => state.auth.accountData)
     const [loading, setLoading] = useState({ action: undefined, state: false })
 
