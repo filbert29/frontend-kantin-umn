@@ -150,9 +150,25 @@ const HistoryOrder = () => {
         if (orders?.length > 0) {
             const orderData = orders?.filter((item) => filter === "all" ? item : item?.status === filter)
             if (orderData?.length > 0) {
-                return orderData.map((item) => (
-                    <OrderCard order={item} key={item?._id} />
-                ))
+                let date = 0
+                return (
+                    orderData.map((item) => {
+                        const dateItem = moment(item?.progress?.created).format("DD-MMM-YYYY")
+                        if (date !== dateItem) {
+                            date = dateItem
+                            return (
+                                <Box key={item?._id}>  
+                                    <Typography component="p" variant="p" fontSize={20} fontWeight={600} mb={2} >{moment(date).format("LL")}</Typography>
+                                    <OrderCard order={item} />
+                                </Box>
+                            )
+                        } else {
+                            return (
+                                <OrderCard order={item} key={item?._id} />
+                            )
+                        }
+                    })
+                )
             } else {
                 return <NoOrder />
             }
@@ -206,7 +222,7 @@ const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
                     <Typography variant="h6" >
                         #{index + 1}
                     </Typography>
-                    <Typography sx={{color: "gray"}} variant="p" fontSize={14} textAlign={"right"} >
+                    <Typography sx={{ color: "gray" }} variant="p" fontSize={14} textAlign={"right"} >
                         {order?.customer?._id}
                     </Typography>
                 </DFlexJustifyContentBetween>
