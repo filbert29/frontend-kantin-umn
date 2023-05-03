@@ -72,6 +72,7 @@ function OrderConfirmation() {
           headers: {
             Authorization: `Bearer ${accountData?.access_token}`
           },
+          data: remove_item
         })
         handleClose();
         setMessage('*Success remove from cart');
