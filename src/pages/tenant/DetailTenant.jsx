@@ -14,6 +14,8 @@ import useSWR from 'swr'
 import fetcher from "../../helper/fetcher"
 import BASE_URL from "../../config/BASE_URL"
 import NoImage from "../../assets/No_Image_Available.jpg"
+import axios from "axios";
+import { useSelector } from "react-redux"
 
 
 function DetailTenant() {
@@ -22,10 +24,13 @@ function DetailTenant() {
     const [deskripsi, setDeskripsi] = useState('Aneka Nasi Goreng')
     const [rating, setRating] = useState('4.7 (12)')
     const [age, setAge] = useState('');
+    const [message, setMessage] = useState('')
 
     const [selectedMenu, setSelectedMenu] = useState()
 
     const [amount, setAmount] = useState(1)
+
+    const { accountData } = useSelector((state) => state.auth)
 
     const [open, setOpen] = useState(false)
 
@@ -33,8 +38,6 @@ function DetailTenant() {
         setOpen(true)
         setSelectedMenu(menu)
     };
-
-    console.log(selectedMenu)
 
     const handleClose = () => {
         setOpen(false)
@@ -47,16 +50,35 @@ function DetailTenant() {
 
     const { id } = useParams();
 
-    const url = `${BASE_URL}/tenant/${id}`
+    const urlTenant = `${BASE_URL}/tenant/${id}`
 
-    const { data: tenant, isLoading, error } = useSWR(url, (url) => fetcher(url, undefined))
+    const { data: tenant, isLoading, error } = useSWR(urlTenant, (url) => fetcher(url, undefined))
 
     if (isLoading) return <div>loading...</div>
     if (error) return <div>failed to load</div>
 
     const tenant_menus = tenant?.tenant_menu
-
     const tenant_reviews = tenant?.reviews
+
+    const handleAddtoCart = async (e) => {
+        e.preventDefault();
+
+        const menu_id = selectedMenu?._id;
+        const quantity = amount;
+
+        try {
+            const add_cart = { menu_id, quantity };
+            const response = await axios.post(BASE_URL + `/cart/${id}`, add_cart, {
+                headers: {
+                    Authorization: `Bearer ${accountData?.access_token}`
+                },
+            })
+            handleClose();
+            setMessage('*Success add to cart');
+        } catch (err) {
+            setMessage('*Cannot add to cart');
+        }
+    }
 
     const BootstrapInput = styled(InputBase)(({ theme }) => ({
         'label + &': {
@@ -113,7 +135,7 @@ function DetailTenant() {
                             <TextField type="number" value={amount}></TextField>
                             <Button onClick={() => setAmount(amount + 1)}>plus</Button>
                         </Box>
-                        <Button>Add to Cart</Button>
+                        <Button onClick={handleAddtoCart}>Add to Cart</Button>
                     </Box>
                 </Box>
             </Modal>

@@ -51,7 +51,10 @@ const ListCart = () => {
                         <Typography variant="p" ml={"80px"} fontSize={"20px"} fontWeight={"bold"}>Order List</Typography>
                     </Box>
                     {cart ? cart.map(cart => (
-                        <CardCart cart={cart} />
+                        <Box>
+                            <CardCart cart={cart} />
+                            <Liner />
+                        </Box>
                     )) : <Typography variant="h1">No Data</Typography>}
 
                     {/* <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />

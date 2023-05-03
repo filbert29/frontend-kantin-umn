@@ -25,8 +25,8 @@ const CardCart = ({ cart }) => {
                         <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>{cart?.tenant?.full_name}</Typography>
                         <Typography variant="p" fontSize={"16px"}>
                             {cart?.items[0].menu?.title}
-                            {cart?.items?.menu ? cart?.items?.menu.slice(1).map(menu => (
-                                <span>, {menu?.title}</span>
+                            {cart?.items ? cart?.items?.slice(1).map(menus => (
+                                <>, {menus?.menu.title}</>
                             )) : <span></span>}
                         </Typography>
                     </Box>
