@@ -28,7 +28,7 @@ function OrderConfirmation() {
   return (
     <Container
       sx={{
-        maxWidth: { md: "md", sm: "sm" }
+        maxWidth: { md: "md", sm: "md" }
       }}>
       <Box
         className="order-detail"
@@ -46,8 +46,15 @@ function OrderConfirmation() {
           <Box className="shadow-box" p={"30px 40px 30px 30px"} fontSize={"18px"} borderRadius={"10px"} display={"grid"} gap={"25px"}>
             {cart.items.map(menus => (
               <Box px={"40px"}>
-                <Typography variant="p">{menus.quantity}<span style={{fontWeight: "bold"}}>x</span> {menus.menu.title}  </Typography>
+                <Box>
+                <Typography variant="p"><span style={{fontWeight: "bold", padding: "5px 7px", marginRight: "15px", borderRadius: "5px", border: "1px solid #D9D9D9"}}>{menus.quantity}x</span> {menus.menu.title}  </Typography>
                 <Typography variant="p" sx={{ float: "right" }}>Rp. {(menus.menu.price*menus.quantity).toLocaleString("id-ID")}</Typography>
+                </Box>
+                <Button sx={{
+                  backgroundColor: "white", 
+                  color: "#357DED", 
+                  margin: "5px 0px 0px 40px"
+                  }}>edit</Button>
               </Box>
             ))}
             <Box sx={{ borderBottom: "1px solid black" }} />
@@ -84,24 +91,3 @@ function OrderConfirmation() {
 }
 
 export default OrderConfirmation
-
-const CardDetailMakanan = ({ menu }) => {
-  return (
-    <Box className="card-lebar shadow-box"
-      sx={{
-        padding: "30px",
-        borderRadius: "10px",
-        display: "flex",
-        alignItems: "center",
-        width: "45%",
-        flex: "50"
-      }}>
-      <img src={menu?.image} alt="" width={"150px"} />
-      <Box className="deskripsi" ml={"25px"} display={"grid"}>
-        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu?.title}</Typography>
-        <Typography variant="p" fontSize={"14px"}>{menu?.description}</Typography>
-        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp.{menu?.price}</Typography>
-      </Box>
-    </Box>
-  )
-}
