@@ -31,8 +31,8 @@ const Register = () => {
         try {
             const data = { email, full_name, password, confirm_password };
             const response = await axios.post(BASE_URL + "/account/register", data)
-            const title = "Password Change Complete"
-            const message = "Your password has been changed, and you have been logged into your account. You Will be redirected back to the site in 5 seconds"
+            const title = "Email Confirmation"
+            const message = `We have sent  email to `+email+` to confirm the validity of your email address. After receiving the email follow link provided to complete your registration`
             navigate("/account/email-confirmation", { state: { title: title, message: message } })
         } catch (err) {
             setErrorMessage('*Confirm New Password must be matched with New Password');
