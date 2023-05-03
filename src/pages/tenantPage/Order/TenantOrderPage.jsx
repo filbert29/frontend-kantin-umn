@@ -150,15 +150,15 @@ const HistoryOrder = () => {
         if (orders?.length > 0) {
             const orderData = orders?.filter((item) => filter === "all" ? item : item?.status === filter)
             if (orderData?.length > 0) {
-                let date = 0
+                let date = ""
                 return (
                     orderData.map((item) => {
-                        const dateItem = moment(item?.progress?.created).format("DD-MMM-YYYY")
+                        const dateItem = moment(item?.progress?.created).format("LL")
                         if (date !== dateItem) {
                             date = dateItem
                             return (
                                 <Box key={item?._id}>  
-                                    <Typography component="p" variant="p" fontSize={20} fontWeight={600} mb={2} >{moment(date).format("LL")}</Typography>
+                                    <Typography component="p" variant="p" fontSize={20} fontWeight={600} mb={2} >{date}</Typography>
                                     <OrderCard order={item} />
                                 </Box>
                             )
