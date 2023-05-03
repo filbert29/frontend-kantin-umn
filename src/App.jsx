@@ -35,6 +35,7 @@ import TenantOrderPage from './pages/tenantPage/Order/TenantOrderPage';
 import TenantMenuPage from './pages/tenantPage/Menu/TenantMenuPage';
 import TenantProfilePage from './pages/tenantPage/Profile/TenantProfilePage';
 import TenantReviewPage from './pages/tenantPage/Review/TenantReviewPage';
+import TenantOrderDetailPage from './pages/tenantPage/Order/TenantOrderDetailPage';
 
 function App() {
 
@@ -134,6 +135,7 @@ function App() {
             <Route index element={<TenantHomePage />} />
             <Route path='order'>
               <Route index element={<TenantOrderPage />} />
+              <Route path=':id' element={<TenantOrderDetailPage />} />
             </Route>
             <Route path='menu'>
               <Route index element={<TenantMenuPage />} />

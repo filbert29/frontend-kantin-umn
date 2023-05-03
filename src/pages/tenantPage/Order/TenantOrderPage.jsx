@@ -13,6 +13,7 @@ import DFlexJustifyContentBetween from "../../../component/general/DFlexJustifyC
 import { useTimer } from "react-timer-hook";
 import axios from "axios";
 import ORDER_STATUS from "../../../config/order-status.config";
+import { useNavigate } from "react-router-dom";
 
 const customAccordionStyle = {
     boxShadow: "none",
@@ -58,8 +59,8 @@ const OnProgressOrder = () => {
             <Box my={2} >
                 <Typography component="p" variant="p" fontWeight={600} mb={1} >Order Priority</Typography>
                 <Select fullWidth={true} value={priority} onChange={(event) => { setPriority(event.target.value) }}>
-                    <MenuItem value="fcfs">First Come First Serve</MenuItem>
-                    <MenuItem value="sjf">Short Job First</MenuItem>
+                    <MenuItem value="fcfs">First Come First</MenuItem>
+                    <MenuItem value="sjf">Shortest Job First</MenuItem>
                 </Select>
             </Box>
             <Accordion defaultExpanded={true} sx={customAccordionStyle}>
@@ -178,6 +179,8 @@ const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
     const { access_token } = useSelector((state) => state.auth.accountData)
     const [loading, setLoading] = useState({ action: undefined, state: false })
 
+    const navigate = useNavigate()
+
     const handleAction = async (action) => {
         setLoading({ action: action, state: true })
         try {
@@ -198,37 +201,39 @@ const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
 
     return (
         <Box p={2} component={Paper} elevation={1}>
-            <DFlexJustifyContentBetween sx={{ mb: 1 }}>
-                <Typography variant="h6" >
-                    #{index + 1}
-                </Typography>
-                <Typography variant="p" fontSize={14} textAlign={"right"} >
-                    {order?.customer?._id}
-                </Typography>
-            </DFlexJustifyContentBetween>
+            <Box onClick={() => { navigate(`/tenant/order/${order?._id}`) }}>
+                <DFlexJustifyContentBetween sx={{ mb: 1 }}>
+                    <Typography variant="h6" >
+                        #{index + 1}
+                    </Typography>
+                    <Typography sx={{color: "gray"}} variant="p" fontSize={14} textAlign={"right"} >
+                        {order?.customer?._id}
+                    </Typography>
+                </DFlexJustifyContentBetween>
 
-            <DFlexJustifyContentBetween>
-                <Typography variant="p" fontSize={15} fontWeight={500}>{order?.customer?.full_name}</Typography>
-                <Typography variant="p" fontSize={15}>{moment(order?.progress?.created).format("HH:mm")}</Typography>
-            </DFlexJustifyContentBetween>
-            <Divider sx={{ mt: 1, mb: 2 }} />
-            <Box>
-                {order?.items?.map((item, index) => (
-                    <DFlexJustifyContentBetween key={index}>
-                        <Typography variant="p" fontSize={14}>{item?.quantity} x {item?.menu?.title}</Typography>
-                        <Typography variant="p" fontSize={14}>Rp. {formatThousand(item?.price * item?.quantity)}</Typography>
+                <DFlexJustifyContentBetween>
+                    <Typography variant="p" fontSize={15} fontWeight={500}>{order?.customer?.full_name}</Typography>
+                    <Typography variant="p" fontSize={14}>{moment(order?.progress?.created).format("HH:mm:ss")}</Typography>
+                </DFlexJustifyContentBetween>
+                <Divider sx={{ mt: 1, mb: 2 }} />
+                <Box>
+                    {order?.items?.map((item, index) => (
+                        <DFlexJustifyContentBetween key={index}>
+                            <Typography variant="p" fontSize={14}>{item?.quantity} x {item?.menu?.title}</Typography>
+                            <Typography variant="p" fontSize={14}>Rp. {formatThousand(item?.price * item?.quantity)}</Typography>
+                        </DFlexJustifyContentBetween>
+                    ))}
+                    <DFlexJustifyContentBetween sx={{ mt: 1 }}>
+                        <Typography variant="p" fontSize={14} fontWeight={600}>Total</Typography>
+                        <Typography variant="p" fontSize={14} fontWeight={600}>Rp. {formatThousand(order?.total_price)}</Typography>
                     </DFlexJustifyContentBetween>
-                ))}
-                <DFlexJustifyContentBetween sx={{ mt: 1 }}>
-                    <Typography variant="p" fontSize={14} fontWeight={600}>Total</Typography>
-                    <Typography variant="p" fontSize={14} fontWeight={600}>Rp. {formatThousand(order?.total_price)}</Typography>
-                </DFlexJustifyContentBetween>
-                <DFlexJustifyContentBetween sx={{ mt: 1 }}>
-                    <Typography variant="p" fontSize={14} fontWeight={600}>Prep Duration</Typography>
-                    <Typography variant="p" fontSize={14} fontWeight={600}>{order?.total_prep_duration} Minutes</Typography>
-                </DFlexJustifyContentBetween>
+                    <DFlexJustifyContentBetween sx={{ mt: 1 }}>
+                        <Typography variant="p" fontSize={14} fontWeight={600}>Prep Duration</Typography>
+                        <Typography variant="p" fontSize={14} fontWeight={600}>{order?.total_prep_duration} Minutes</Typography>
+                    </DFlexJustifyContentBetween>
+                </Box>
+                <Divider sx={{ mt: 2 }} />
             </Box>
-            <Divider sx={{ mt: 2 }} />
 
             {order?.status === "created" && (
                 <Box sx={{ display: "flex", gap: 1 }}>
@@ -299,7 +304,7 @@ const NoOrder = () => (
 
 const RejectTimer = ({ time, onFinish }) => {
     const rejectTimer = useTimer({
-        expiryTimestamp: moment(time) + 1000 * 60 * 5,
+        expiryTimestamp: moment(time) + 1000 * 60 * 10,
         autoStart: true,
         onExpire: () => {
             // onFinish()
