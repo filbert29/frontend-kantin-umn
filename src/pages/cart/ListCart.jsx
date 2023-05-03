@@ -1,9 +1,16 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import Header from "../../component/Header";
-import PicTenant from "../../assets/pic-tenant.png"
 import { Link } from "react-router-dom";
+import useSWR from 'swr'
+import fetcher from "../../helper/fetcher"
+import BASE_URL from "../../config/BASE_URL"
+import { useSelector } from "react-redux";
+import CardCart from "../../component/CardCart";
 
 const ListCart = () => {
+
+    const { accountData } = useSelector((state) => state.auth)
+
     const title = "Cart"
 
     const Liner = () => {
@@ -12,53 +19,16 @@ const ListCart = () => {
         )
     }
 
-    const CardCart = ({ data }) => {
-        return (
-            <Box display={"grid"} justifyContent={"center"}>
-                <Box className="shadow-box"
-                    sx={{
-                        padding: "25px 30px",
-                        borderRadius: "10px",
-                        width: "600px"
-                    }}>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "25px",
-                        }}>
-                        <img src={PicTenant} alt="" />
-                        <Box className="deskripsi" sx={{
-                            display: "grid"
-                        }}>
-                            <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>{data?.tenant}</Typography>
-                            <Typography variant="p" fontSize={"16px"}>{data?.foods}</Typography>
-                        </Box>
-                    </Box>
-                    <Box className="price-control" sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        gap: "10px"
-                    }}>
-                        <Typography variant="p" fontWeight={"bold"}>Total Price: Rp. {data?.price}</Typography>
-                        <Button component={Link} to={"/customer/order/orderconfirmation"} sx={{
-                            backgroundColor: "#3DA9FC",
-                            color: "white",
-                            fontFamily: "Poppins",
-                            ":hover": { backgroundColor: "#058ffa" }
-                        }}>Checkout</Button>
-                        <Button sx={{
-                            backgroundColor: "#EF4565",
-                            color: "white",
-                            fontFamily: "Poppins",
-                            ":hover": { backgroundColor: "#f00a35" }
-                        }}>Delete</Button>
-                    </Box>
-                </Box>
-            </Box>
-        )
-    }
+    const url = `${BASE_URL}/cart`
+
+    // const { data: cart, isLoading, error } = useSWR(url, (url) => fetcher(url, undefined))
+    const { data: cart, isLoading, error, mutate } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
+
+
+    if (isLoading) return <div>loading...</div>
+    if (error) return <div>failed to load</div>
+
+    console.log(cart)
 
     return (
         <div>
@@ -80,11 +50,15 @@ const ListCart = () => {
                     <Box mb={"10px"}>
                         <Typography variant="p" ml={"80px"} fontSize={"20px"} fontWeight={"bold"}>Order List</Typography>
                     </Box>
-                    <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
+                    {cart ? cart.map(cart => (
+                        <CardCart cart={cart} />
+                    )) : <Typography variant="h1">No Data</Typography>}
+
+                    {/* <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
                     <Liner />
                     <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
                     <Liner />
-                    <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
+                    <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} /> */}
                 </Box>
             </Container >
         </div>
