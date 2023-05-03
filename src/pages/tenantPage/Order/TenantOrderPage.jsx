@@ -13,31 +13,32 @@ import DFlexJustifyContentBetween from "../../../component/general/DFlexJustifyC
 import { useTimer } from "react-timer-hook";
 import axios from "axios";
 import ORDER_STATUS from "../../../config/order-status.config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const customAccordionStyle = {
     boxShadow: "none",
 }
 
 const TenantOrderPage = () => {
-    const [value, setValue] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams()
+    const value = searchParams.get("type") || "on-progress"
 
     const handleChange = (_, newValue) => {
-        setValue(newValue);
+        setSearchParams({type: newValue})
     };
 
     return (
         <Container>
             <Box>
                 <Tabs variant="fullWidth" value={value} onChange={handleChange} >
-                    <Tab label="On Progress" />
-                    <Tab label="History" />
+                    <Tab value={"on-progress"} label="On Progress" />
+                    <Tab value={"history"} label="History" />
                 </Tabs>
             </Box>
-            {value === 0 && (
+            {value === "on-progress" && (
                 <OnProgressOrder />
             )}
-            {value === 1 && (
+            {value === "history" && (
                 <HistoryOrder />
             )}
         </Container>
@@ -335,8 +336,10 @@ const RejectTimer = ({ time, onFinish }) => {
 }
 
 const OrderCard = ({ order }) => {
+    const navigate = useNavigate()
+    
     return (
-        <Box p={2} component={Paper} elevation={1}>
+        <Box onClick={() => navigate(`/tenant/order/${order?._id}`)} p={2} component={Paper} elevation={1}>
             <DFlexJustifyContentBetween>
                 <Typography variant="p" fontSize={12}>{order?._id}</Typography>
                 <Chip
