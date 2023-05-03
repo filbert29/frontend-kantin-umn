@@ -83,7 +83,7 @@ function App() {
               <Route path='listcart' element={<ListCart />} />
             </Route>
             <Route path='order'>
-              <Route path='orderconfirmation' element={<OrderConfirmation />} />
+              <Route path='orderconfirmation/:id' element={<OrderConfirmation />} />
               <Route path='orderdetail' element={<OrderDetail />} />
             </Route>
             <Route path='profile'>

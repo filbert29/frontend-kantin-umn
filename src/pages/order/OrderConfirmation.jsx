@@ -3,9 +3,27 @@ import Header from "../../component/Header"
 import IconLocation from "../../assets/icon-location.png"
 import JusJeruk from "../../assets/jus-jeruk.png"
 import NasiGoreng from "../../assets/pic-food.png"
+import useSWR from 'swr'
+import fetcher from "../../helper/fetcher"
+import BASE_URL from "../../config/BASE_URL"
+import { useParams } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 function OrderConfirmation() {
   const title = "Order Confirmation"
+
+  const { accountData } = useSelector((state) => state.auth)
+
+  const { id } = useParams();
+
+  const url = `${BASE_URL}/cart/${id}`
+
+  const { data: cart, isLoading, error, mutate } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
+
+  if (isLoading) return <div>loading...</div>
+  if (error) return <div>failed to load</div>
+
+  console.log(cart)
 
   return (
     <Container
@@ -26,18 +44,16 @@ function OrderConfirmation() {
         <Box className="detail-makanan" display={"grid"} gap={"15px"} mt={"30px"}>
           <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Price</Typography>
           <Box className="shadow-box" p={"30px 40px 30px 30px"} fontSize={"18px"} borderRadius={"10px"} display={"grid"} gap={"25px"}>
-            <Box px={"40px"}>
-              <Typography variant="p">Nasi Goreng</Typography>
-              <Typography variant="p" sx={{ float: "right" }}>Rp. 15.000,00</Typography>
-            </Box>
-            <Box px={"40px"}>
-              <Typography variant="p">Jus Jeruk</Typography>
-              <Typography variant="p" sx={{ float: "right" }}>Rp. 7.000,00</Typography>
-            </Box>
+            {cart.items.map(menus => (
+              <Box px={"40px"}>
+                <Typography variant="p">{menus.quantity}<span style={{fontWeight: "bold"}}>x</span> {menus.menu.title}  </Typography>
+                <Typography variant="p" sx={{ float: "right" }}>Rp. {(menus.menu.price*menus.quantity).toLocaleString("id-ID")}</Typography>
+              </Box>
+            ))}
             <Box sx={{ borderBottom: "1px solid black" }} />
             <Box px={"40px"}>
               <Typography variant="p" fontWeight={"bold"}>Total</Typography>
-              <Typography variant="p" fontWeight={"bold"} sx={{ float: "right", color: "#094067" }}>Rp. 22.000,00</Typography>
+              <Typography variant="p" fontWeight={"bold"} sx={{ float: "right", color: "#094067" }}>Rp. {cart?.total.toLocaleString("id-ID")}</Typography>
             </Box>
           </Box>
         </Box>
@@ -47,23 +63,9 @@ function OrderConfirmation() {
             <Box display={"flex"} alignItems={"center"}>
               <img src={IconLocation} alt="" width={"56px"} />
               <Box display={"grid"} ml={"20px"}>
-                <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>Kedai Nasi Goreng</Typography>
-                <Typography variant="p">Kantin UMN, Bagian Selasar Timur</Typography>
+                <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>{cart?.tenant?.full_name}</Typography>
               </Box>
             </Box>
-          </Box>
-        </Box>
-        <Box className="minuman" mt={"30px"} display={"grid"} gap={"15px"}>
-          <Box width={"100%"} mb="10px">
-            <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Menus Detail</Typography>
-          </Box>
-          <Box sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "30px"
-          }}>
-            <CardDetailMakanan menu={{ title: "Nasi Goreng", description: "nasi goreng dari kampung", image: NasiGoreng, price: 15000 }} />
-            <CardDetailMakanan menu={{ title: "Jus Jeruk", description: "minuman dari jeruk", image: JusJeruk, price: 15000 }} />
           </Box>
         </Box>
         <Box mt={"50px"} display={"flex"}>

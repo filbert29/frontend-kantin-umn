@@ -38,7 +38,7 @@ const CardCart = ({ cart }) => {
                     gap: "10px"
                 }}>
                     <Typography variant="p" fontWeight={"bold"}>Total Price: Rp. {cart?.total.toLocaleString("id-ID")}</Typography>
-                    <Button component={Link} to={"/customer/order/orderconfirmation"} sx={{
+                    <Button component={Link} to={`/customer/order/orderconfirmation/${cart?.tenant?._id}`} sx={{
                         backgroundColor: "#3DA9FC",
                         color: "white",
                         fontFamily: "Poppins",
