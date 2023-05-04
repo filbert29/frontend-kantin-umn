@@ -49,7 +49,7 @@ const OrderCard = ({ order }) => {
                 </Box>
                 {(order.status === "completed") && (
                     order?.review ? (
-                        <Rating name="read-only" value={4.1} readOnly size="medium" precision={0.1} />
+                        <Rating name="read-only" value={order?.review?.rating} readOnly size="medium" precision={1} />
                     ) : (
                         <Typography component="p" variant="p" fontSize={13} fontWeight={500}>No review yet </Typography>
                     )

@@ -166,9 +166,14 @@ const TenantOrderDetailPage = () => {
                     {(order.status === "completed") && (
                         order?.review ? (
                             <>
+                            <DFlexJustifyContentBetween>
                                 <Rating name="read-only" value={order?.review?.rating} readOnly size="medium" precision={0.1} />
-                                <Typography component="p" variant="p" fontWeight="bold">
-                                    {order?.review?.comment}
+                                <Typography component="p" variant="p" >
+                                    {moment(order?.review?.createdAt).format("llll")}
+                                </Typography>
+                            </DFlexJustifyContentBetween>
+                                <Typography component="p" variant="p" mt={2} >
+                                    "{order?.review?.content}"
                                 </Typography>
                             </>
                         ) : (
