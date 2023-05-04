@@ -327,7 +327,7 @@ const RejectTimer = ({ time, onFinish }) => {
         expiryTimestamp: moment(time) + 1000 * 60 * 10,
         autoStart: true,
         onExpire: () => {
-            // onFinish()
+            onFinish()
         }
     })
 
