@@ -24,7 +24,7 @@ const TenantOrderPage = () => {
     const value = searchParams.get("type") || "on-progress"
 
     const handleChange = (_, newValue) => {
-        setSearchParams({type: newValue})
+        setSearchParams({ type: newValue })
     };
 
     return (
@@ -155,10 +155,13 @@ const HistoryOrder = () => {
                 return (
                     orderData.map((item) => {
                         const dateItem = moment(item?.progress?.created).format("LL")
+                        const today = moment().format("LL")
                         if (date !== dateItem) {
-                            date = dateItem
+                            if (dateItem === today) date = "Today"
+                            else date = dateItem
+
                             return (
-                                <Box key={item?._id}>  
+                                <Box key={item?._id}>
                                     <Typography component="p" variant="p" fontSize={20} fontWeight={600} mb={2} >{date}</Typography>
                                     <OrderCard order={item} />
                                 </Box>
@@ -217,7 +220,7 @@ const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
     }
 
     return (
-        <Box p={2} component={Paper} elevation={1}>
+        <Box sx={{ cursor: "pointer", ":hover": { background: "#fafafa" } }} p={2} component={Paper} elevation={1}>
             <Box onClick={() => { navigate(`/tenant/order/${order?._id}`) }}>
                 <DFlexJustifyContentBetween sx={{ mb: 1 }}>
                     <Typography variant="h6" >
@@ -337,11 +340,11 @@ const RejectTimer = ({ time, onFinish }) => {
 
 const OrderCard = ({ order }) => {
     const navigate = useNavigate()
-    
+
     return (
-        <Box onClick={() => navigate(`/tenant/order/${order?._id}`)} p={2} component={Paper} elevation={1}>
+        <Box sx={{ cursor: "pointer", ":hover": { background: "#fafafa" } }} onClick={() => navigate(`/tenant/order/${order?._id}`)} p={2} component={Paper} elevation={1}>
             <DFlexJustifyContentBetween>
-                <Typography variant="p" fontSize={12}>{order?._id}</Typography>
+                <Typography sx={{ color: "rgba(0,0,0,0.75)" }} variant="p" fontSize={12}>{order?._id}</Typography>
                 <Chip
                     size="small"
                     label={ORDER_STATUS[order?.status].label}
