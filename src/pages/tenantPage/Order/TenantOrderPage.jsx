@@ -10,10 +10,10 @@ import ErrorApi from "../../../component/state/ErrorApi";
 import moment from "moment";
 import { formatThousand } from "../../../helper/number";
 import DFlexJustifyContentBetween from "../../../component/general/DFlexJustifyContentBetween";
-import { useTimer } from "react-timer-hook";
 import axios from "axios";
 import ORDER_STATUS from "../../../config/order-status.config";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import ActionTimer from "../../../component/general/ActionTimer";
 
 const customAccordionStyle = {
     boxShadow: "none",
@@ -279,7 +279,7 @@ const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
                             <CircularProgress sx={{ color: "white" }} size={20} />
                         ) : (
                             <>
-                                Accept &nbsp; <RejectTimer time={order?.progress?.created} onFinish={() => { mutate() }} />
+                                Accept &nbsp; <ActionTimer time={order?.progress?.created} onFinish={() => { mutate() }} />
                             </>
                         )}
 
@@ -321,22 +321,6 @@ const NoOrder = () => (
         No Order
     </Typography>
 )
-
-const RejectTimer = ({ time, onFinish }) => {
-    const rejectTimer = useTimer({
-        expiryTimestamp: moment(time) + 1000 * 60 * 10,
-        autoStart: true,
-        onExpire: () => {
-            onFinish()
-        }
-    })
-
-    return (
-        <span>
-            {rejectTimer.minutes}:{rejectTimer.seconds}
-        </span>
-    )
-}
 
 const OrderCard = ({ order }) => {
     const navigate = useNavigate()

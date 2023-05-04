@@ -15,7 +15,7 @@ import LabelValue from "../../../component/admin/LabelValue";
 import { formatThousand } from "../../../helper/number";
 import DefaultImage from "../../../assets/No_Image_Available.jpg";
 import axios from "axios";
-import { useTimer } from "react-timer-hook";
+import ActionTimer from "../../../component/general/ActionTimer";
 
 const TenantOrderDetailPage = () => {
     const { id } = useParams();
@@ -149,7 +149,7 @@ const TenantOrderDetailPage = () => {
                                     <CircularProgress sx={{ color: "white" }} size={20} />
                                 ) : (
                                     <>
-                                        Accept &nbsp; <RejectTimer time={order?.progress?.created} onFinish={() => { mutate() }} />
+                                        Accept &nbsp; <ActionTimer time={order?.progress?.created} onFinish={() => { mutate() }} />
                                     </>
                                 )}
 
@@ -267,21 +267,5 @@ const OrderProgress = ({ order, isMobile }) => {
             </Accordion>
 
         </Box>
-    )
-}
-
-const RejectTimer = ({ time, onFinish }) => {
-    const rejectTimer = useTimer({
-        expiryTimestamp: moment(time) + 1000 * 60 * 10,
-        autoStart: true,
-        onExpire: () => {
-            onFinish()
-        }
-    })
-
-    return (
-        <span>
-            {rejectTimer.minutes}:{rejectTimer.seconds}
-        </span>
     )
 }
