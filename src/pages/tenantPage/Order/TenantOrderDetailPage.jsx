@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CircularProgress, Container, Divider, Grid, Paper, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, CircularProgress, Container, Divider, Grid, Rating, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
@@ -13,9 +13,9 @@ import ORDER_STATUS from "../../../config/order-status.config";
 import DFlexJustifyContentBetween from "../../../component/general/DFlexJustifyContentBetween";
 import LabelValue from "../../../component/admin/LabelValue";
 import { formatThousand } from "../../../helper/number";
-import DefaultImage from "../../../assets/No_Image_Available.jpg";
 import axios from "axios";
 import ActionTimer from "../../../component/general/ActionTimer";
+import ItemCard from "../../../component/tenant/ItemCard";
 
 const TenantOrderDetailPage = () => {
     const { id } = useParams();
@@ -58,22 +58,29 @@ const TenantOrderDetailPage = () => {
 
             <Grid container spacing={1} sx={{ mt: 0 }}>
                 <LabelValue
-                    labelSize={4}
-                    valueSize={8}
+                    labelSize={4.2}
+                    valueSize={7.8}
+                    label="Customer"
+                    value={order?.customer?.full_name}
+                    valueSx={{ textAlign: "right" }}
+                />
+                <LabelValue
+                    labelSize={4.2}
+                    valueSize={7.8}
                     label="Order Date"
                     value={moment(order?.progress?.created).format("llll")}
                     valueSx={{ textAlign: "right" }}
                 />
                 <LabelValue
-                    labelSize={4}
-                    valueSize={8}
+                    labelSize={4.2}
+                    valueSize={7.8}
                     label="Order ID"
                     value={order?._id}
                     valueSx={{ textAlign: "right" }}
                 />
                 <LabelValue
-                    labelSize={4}
-                    valueSize={8}
+                    labelSize={4.2}
+                    valueSize={7.8}
                     label="Prep Duration"
                     value={`${order?.total_prep_duration} minutes (estimated)`}
                     valueSx={{ textAlign: "right" }}
@@ -86,34 +93,8 @@ const TenantOrderDetailPage = () => {
                 </Typography>
             </Box>
             <Box sx={{ mt: 0, display: "grid", rowGap: 3 }}>
-                {order?.items?.map((item, index) => (
-                    <Card
-                        key={item?.menu?.id}
-                        component={Paper}
-                        sx={{ borderRadius: "10px", display: "flex", p: 1.5, columnGap: 2 }}
-                    >
-                        <Box
-                            component={"img"}
-                            src={item?.menu?.image || DefaultImage}
-                            sx={{ objectFit: "cover", borderRadius: "10px" }}
-                            width={112}
-                            height={112}
-                            alt={item?.menu?.title}
-                        />
-                        <Box display={"Flex"} justifyContent={"space-between"} flexDirection={"column"}>
-                            <Box>
-                                <Typography variant="h6" fontSize={16} fontWeight={500}>
-                                    {item?.menu?.title}
-                                </Typography>
-                                <Typography variant="h6" fontSize={16} fontWeight={500}>
-                                    x {item?.quantity}
-                                </Typography>
-                            </Box>
-                            <Typography variant="h6" fontSize={16} fontWeight={500}>
-                                Rp. {formatThousand(item?.price * item?.quantity)}
-                            </Typography>
-                        </Box>
-                    </Card>
+                {order?.items?.map((item) => (
+                    <ItemCard key={item?.menu?.id} item={item} />
                 ))}
                 <DFlexJustifyContentBetween>
                     <Typography variant="h6" fontSize={18} fontWeight="bold">
@@ -182,9 +163,20 @@ const TenantOrderDetailPage = () => {
                             {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Mark as complete"}
                         </Button>
                     )}
+                    {(order.status === "completed") && (
+                        order?.review ? (
+                            <>
+                                <Rating name="read-only" value={order?.review?.rating} readOnly size="medium" precision={0.1} />
+                                <Typography component="p" variant="p" fontWeight="bold">
+                                    {order?.review?.comment}
+                                </Typography>
+                            </>
+                        ) : (
+                            <Typography component="h6" variant="h6" fontSize={18} fontWeight={500}>No review yet </Typography>
+                        )
+                    )}
                 </Box>
             </Box>
-
         </Container >
     );
 }
