@@ -14,7 +14,7 @@ const NotificationCard = ({ message, type = "success", id }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             dispatch(removeNotification(id))
-        }, 3000)
+        }, 6000)
         return () => clearTimeout(timer)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

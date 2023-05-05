@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Container, IconButton, Modal, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Container, IconButton, Modal, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../../../store/Auth";
 import { Edit, Logout, Upload } from "@mui/icons-material";
@@ -15,10 +15,17 @@ import { addNotification } from "../../../store/Notification";
 
 const TenantProfilePage = () => {
     const { access_token } = useSelector((state) => state.auth.accountData)
-    const { data: profile, isLoading, isValidating, error, mutate } = useSWR(`${BASE_URL}/tenant/profile`, (url) => fetcher(url, access_token))
+    const { data: profile, isLoading, isValidating, error, mutate } = useSWR(`${BASE_URL}/tenant/profile`, (url) => fetcher(url, access_token), {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        refreshWhenOffline: false,
+        refreshWhenHidden: false,
+        refreshInterval: 0,
+    })
     const dispatch = useDispatch()
 
     const [openEditProfileImage, setOpenEditProfileImage] = useState(false)
+    const [openEditProfile, setOpenEditProfile] = useState(false)
 
     if (isLoading || isValidating) return <Loading />
     if (error) return <ErrorApi />
@@ -47,7 +54,10 @@ const TenantProfilePage = () => {
                         />
                     </Box>
                 </Box>
-                <Box sx={{ border: "4px solid rgba(0,0,0,0.2)", borderRadius: 3, p: 2.5, display: "grid", rowGap: 2 }}>
+                <Box sx={{ border: "4px solid rgba(0,0,0,0.2)", borderRadius: 3, p: 2.5, display: "grid", rowGap: 2, position: "relative" }}>
+                    <IconButton onClick={() => setOpenEditProfile(true)} sx={{ position: "absolute", top: 2, right: 2 }}>
+                        <Edit />
+                    </IconButton>
                     <Box>
                         <Typography variant="h6" fontWeight={600} fontSize={16} >Tenant Name</Typography>
                         <Typography variant="h5" fontSize={20}>{profile?.full_name}</Typography>
@@ -65,13 +75,22 @@ const TenantProfilePage = () => {
                         <Typography variant="h5" fontSize={20}>{profile?.location}</Typography>
                     </Box>
                 </Box>
-                <Typography variant="h4" sx={{ textAlign: "center" }}>Profile Page</Typography>
                 <Button onClick={handleLogout} variant="contained" endIcon={<Logout />}>
                     Logout
                 </Button>
             </Container>
 
-            <ModalEditProfileImage open={openEditProfileImage} mutate={mutate} handleClose={() => { setOpenEditProfileImage(false) }} />
+            {openEditProfileImage && <ModalEditProfileImage
+                open={openEditProfileImage}
+                mutate={mutate}
+                handleClose={() => { setOpenEditProfileImage(false) }}
+            />}
+            {openEditProfile && <ModalEditProfile
+                open={openEditProfile}
+                mutate={mutate}
+                handleClose={() => { setOpenEditProfile(false) }}
+                profile={profile}
+            />}
         </>
     );
 }
@@ -129,14 +148,12 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
     }
 
     const onClose = () => {
-        setImagePreview(undefined)
-        setNewImage(undefined)
         handleClose()
     }
 
     return (
         <Modal open={open} onClose={onClose}>
-            <Box sx={{ ...ModalStyle, width: "300px" }}>
+            <Box sx={{ ...ModalStyle, width: {xs: "280px", sm: "400px"} }}>
                 {!imagePreview ? (
                     <Box
                         onClick={handleClickEditImage}
@@ -173,6 +190,102 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
                 <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
                     <Button fullWidth color="error" onClick={onClose} variant="contained" sx={{ mr: 2 }}>Cancel</Button>
                     <Button fullWidth disabled={!newImage || loading === true} onClick={handleSubmit} variant="contained">
+                        {loading ? <CircularProgress size={16} /> : "Submit"}
+                    </Button>
+                </Box>
+            </Box>
+        </Modal>
+    )
+}
+
+const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
+    const { access_token } = useSelector((state) => state.auth.accountData)
+    const [loading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const [form, setForm] = useState({
+        full_name: profile?.full_name,
+        location: profile?.location,
+        email: profile?.email,
+        description: profile?.description
+    })
+
+    const [formError, setFormError] = useState()
+
+    const handleChangeForm = (e) => {
+        setFormError(undefined)
+        setForm((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
+    }
+
+    const handleSubmit = async () => {
+        try {
+            setLoading(true)
+            const response = await axios.put(`${BASE_URL}/tenant/profile`, form, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            })
+
+            if (response?.status === 200) {
+                dispatch(addNotification({ message: "Success edit profile", type: "success" }))
+                mutate()
+                onClose()
+            }
+        } catch (error) {
+            setFormError(error?.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const onClose = () => {
+        handleClose()
+    }
+
+    return (
+        <Modal open={open} onClose={onClose}>
+            <Box sx={{ ...ModalStyle, width: {xs: "280px", sm: "400px"} }}>
+                <Box sx={{ display: "grid", rowGap: 2 }}>
+                    <TextField
+                        fullWidth
+                        label="Full Name"
+                        variant="outlined"
+                        name="full_name"
+                        value={form.full_name}
+                        onChange={handleChangeForm}
+                    />
+                    <TextField
+                        fullWidth
+                        label="Location"
+                        variant="outlined"
+                        name="location"
+                        value={form.location}
+                        onChange={handleChangeForm}
+                    />
+                    <TextField
+                        fullWidth
+                        label="Email"
+                        variant="outlined"
+                        name="email"
+                        value={form.email}
+                        onChange={handleChangeForm}
+                    />
+                    <TextField
+                        fullWidth
+                        label="Description"
+                        variant="outlined"
+                        name="description"
+                        value={form.description}
+                        onChange={handleChangeForm}
+                        multiline={true}
+                        minRows={4}
+                    />
+                </Box>
+                {formError && <Typography color="red">{formError}</Typography>}
+                <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                    <Button fullWidth color="error" onClick={onClose} variant="contained" sx={{ mr: 2 }}>Cancel</Button>
+                    <Button fullWidth disabled={loading === true} onClick={handleSubmit} variant="contained">
                         {loading ? <CircularProgress size={16} /> : "Submit"}
                     </Button>
                 </Box>
