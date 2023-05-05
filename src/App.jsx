@@ -36,6 +36,7 @@ import TenantMenuPage from './pages/tenantPage/Menu/TenantMenuPage';
 import TenantProfilePage from './pages/tenantPage/Profile/TenantProfilePage';
 import TenantReviewPage from './pages/tenantPage/Review/TenantReviewPage';
 import TenantOrderDetailPage from './pages/tenantPage/Order/TenantOrderDetailPage';
+import NotificationCard from './component/general/NotificationCard';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
   );
 
   const { isLoggedin, accountData } = useSelector((state) => state.auth)
+  const {notification} = useSelector((state) => state.notification)
 
   const dispatch = useDispatch()
 
@@ -151,6 +153,11 @@ function App() {
 
         </Routes>
       </BrowserRouter>
+      <Box sx={{ position: "fixed", top: 10, right: 10 }}>
+        {notification?.length > 0 && notification?.map((notif) => (
+          <NotificationCard key={notif.id} message={notif.message} type={notif.type} id={notif.id} />
+        ))}
+      </Box>
     </Box>
   )
 }

@@ -11,6 +11,7 @@ import fetcher from "../../../helper/fetcher";
 import { useRef, useState } from "react";
 import { ModalStyle } from "../../admin/Tenant/TenantDetailPage";
 import axios from "axios";
+import { addNotification } from "../../../store/Notification";
 
 const TenantProfilePage = () => {
     const { access_token } = useSelector((state) => state.auth.accountData)
@@ -84,6 +85,7 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
 
     const [imagePreview, setImagePreview] = useState()
     const [newImage, setNewImage] = useState()
+    const dispatch = useDispatch()
 
     const handleClickEditImage = () => {
         imageFileRef.current.click()
@@ -115,6 +117,7 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
             })
 
             if (response?.status === 200) {
+                dispatch(addNotification({ message: "Success edit profile image", type: "success" }))
                 mutate()
                 onClose()
             }
