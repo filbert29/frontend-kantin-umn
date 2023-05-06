@@ -150,6 +150,7 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
             }
         } catch (error) {
             console.log(error)
+            dispatch(addNotification({ message: "Failed to edit profile image", type: "error" }))
         } finally {
             setLoading(false)
         }
@@ -191,6 +192,7 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
                         height: 300,
                         borderRadius: 2,
                         border: "4px dashed rgba(0,0,0,0.2)",
+                        objectFit: "contain"
                     }} component={"img"} src={imagePreview}></Box>
                 )}
                 <input ref={imageFileRef} type="file" style={{ display: "none" }} onChange={handleChangeEditImage} />
@@ -242,6 +244,7 @@ const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
             }
         } catch (error) {
             setFormError(error?.response?.data?.error)
+            dispatch(addNotification({ message: "Failed to edit profile", type: "error" }))
         } finally {
             setLoading(false)
         }
@@ -346,10 +349,11 @@ const ModalChangePassword = ({ open, handleClose }) => {
             })
 
             if (response?.status === 200) {
-                dispatch(addNotification({ message: "Success edit profile", type: "success" }))
+                dispatch(addNotification({ message: "Change password success", type: "success" }))
                 handleClose()
             }
         } catch (error) {
+            dispatch(addNotification({ message: "Change password error", type: "error" }))
             setFormError(error?.response?.data?.error)
         } finally {
             setLoading(false)
