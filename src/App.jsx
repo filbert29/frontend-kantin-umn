@@ -153,7 +153,9 @@ function App() {
 
         </Routes>
       </BrowserRouter>
-      <Box sx={{ position: "fixed", top: 10, right: 10 }}>
+
+      {/* GLOBAL NOTIFICATION STACKED */}
+      <Box sx={{ position: "fixed", top: 10, right: 10, display: "grid", rowGap: 2 }}>
         {notification?.length > 0 && notification?.map((notif) => (
           <NotificationCard key={notif.id} message={notif.message} type={notif.type} id={notif.id} />
         ))}
