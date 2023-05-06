@@ -1,7 +1,19 @@
 import { Comment, Fastfood, Home, Person, Receipt } from "@mui/icons-material";
-import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
+import { BottomNavigation, BottomNavigationAction, Box, ThemeProvider, createTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+
+const theme = createTheme({
+    components: {
+        MuiContainer: {
+            styleOverrides: {
+                root: {
+                    maxWidth: "900px !important",
+                }
+            }
+        }
+    }
+})
 
 const TenantLayout = () => {
     return (
@@ -11,9 +23,11 @@ const TenantLayout = () => {
                 bottom: 0,
             }}
         >
-            <Box sx={{ minHeight: "87vh", mt: 2, mb: 4 }} >
-                <Outlet />
-            </Box>
+            <ThemeProvider theme={theme}>
+                <Box sx={{ minHeight: "87vh", mt: 2, mb: 4 }} >
+                    <Outlet />
+                </Box>
+            </ThemeProvider>
             <TenantNavBar />
         </Box>
     );
@@ -51,7 +65,7 @@ const TenantNavBar = () => {
                 icon={<Home />}
                 LinkComponent={Link}
                 to="/tenant"
-                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
+                sx={{ p: 0, minWidth: { xs: 70, sm: 80 } }}
             />
             <BottomNavigationAction
                 label="Menu"
@@ -59,7 +73,7 @@ const TenantNavBar = () => {
                 icon={<Fastfood />}
                 LinkComponent={Link}
                 to="/tenant/menu"
-                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
+                sx={{ p: 0, minWidth: { xs: 70, sm: 80 } }}
             />
             <BottomNavigationAction
                 label="Order"
@@ -67,7 +81,7 @@ const TenantNavBar = () => {
                 icon={<Receipt />}
                 LinkComponent={Link}
                 to="/tenant/order"
-                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
+                sx={{ p: 0, minWidth: { xs: 70, sm: 80 } }}
             />
             <BottomNavigationAction
                 label="Review"
@@ -75,7 +89,7 @@ const TenantNavBar = () => {
                 icon={<Comment />}
                 LinkComponent={Link}
                 to="/tenant/review"
-                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
+                sx={{ p: 0, minWidth: { xs: 70, sm: 80 } }}
             />
             <BottomNavigationAction
                 label="Profile"
@@ -83,7 +97,7 @@ const TenantNavBar = () => {
                 icon={<Person />}
                 LinkComponent={Link}
                 to="/tenant/profile"
-                sx={{ p: 0, minWidth: {xs: 70, sm: 80} }}
+                sx={{ p: 0, minWidth: { xs: 70, sm: 80 } }}
             />
         </BottomNavigation>
     )
