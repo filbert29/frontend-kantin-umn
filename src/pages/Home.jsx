@@ -13,13 +13,30 @@ import fetcher from "../helper/fetcher";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/free-mode";
 
-import { Navigation, Pagination, Autoplay } from "swiper";
+
+import { Navigation, Pagination, Autoplay, FreeMode } from "swiper";
 import { Link, useNavigate } from "react-router-dom";
 import FoodCardComponent from "../component/FoodCardComponent";
 import BASE_URL from "../config/BASE_URL";
+import { useEffect, useRef, useState } from "react";
 
 function Home() {
+
+    const [cardAmount, setCardAmount] = useState(4)
+
+    const screenWidth = window.innerWidth
+
+    useEffect(() => {
+        if (screenWidth < 420) {
+            setCardAmount(2)
+        } else if (screenWidth < 650) {
+            setCardAmount(3)
+        } else {
+            setCardAmount(4)
+        }
+    }, [])
 
     const urlRandomTenant = `${BASE_URL}/random-tenant`
     const urlRandomMenus = `${BASE_URL}/random-menu`
@@ -33,10 +50,11 @@ function Home() {
     if (errorRandomMenus) return <div>failed to load</div>
     if (isLoadingRandomMenus) return <div>loading...</div>
 
+
     return (
         <Container
             sx={{
-                maxWidth: { md: "md", sm: "sm" }
+                maxWidth: { md: "md", sm: "md" }
             }}>
             <Box
                 className="Home"
@@ -56,18 +74,18 @@ function Home() {
                         display: "flex",
                         alignItems: "center",
                         padding: "18px 0px 18px 35px",
-                        margin: "0px 50px",
+                        margin: { md: "0px 50px", xs: "0px 20px" },
                         borderRadius: "40px",
-                        boxShadow: "1px 1px 30px -1px rgba(109, 109, 109, 0.5)",
+                        boxShadow: "1px 1px 10px -1px rgba(109, 109, 109, 0.5)",
                         textDecoration: "none"
                     }}>
                     <img src={SearchIcon} width={"35px"} alt="" />
-                    <Typography component={"p"} variant="p" ml={"30px"} color={"#626262"}>Cari Tenant atau Makanan kesukaan kamu disini</Typography>
+                    <Typography component={"p"} variant="p" ml={"30px"} color={"#626262"}>Cari di Kantin UMN</Typography>
                 </Box>
                 <Box
                     className="home-banner"
                     sx={{
-                        padding: "20px",
+                        padding: { md: "20px", xs: "10px" },
                         marginTop: "20px"
                     }}>
                     <Swiper
@@ -80,7 +98,7 @@ function Home() {
                         pagination={{
                             clickable: true,
                         }}
-                        navigation={true}
+                        // navigation={true}
                         modules={[Autoplay, Pagination, Navigation]}
                         className="mySwiper">
                         <SwiperSlide> <img src={HomeBanner} alt="" /></SwiperSlide>
@@ -90,70 +108,20 @@ function Home() {
                     </Swiper>
                 </Box>
                 <Box
-                    className="filter-icon"
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        margin: "10px 0px",
-                        gap: "5%"
-                    }}>
-                    <Box
-                        className="icon-button"
-                        sx={{
-                            display: "grid",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            textAlign: "center",
-                            width: "15%"
-                        }}>
-                        <img src={IconTenant} alt="" width={"100%"} />
-                        <Typography
-                            variant="p"
-                            textAlign={"center"}
-                            fontSize={"18px"}>Tenant</Typography>
-                    </Box>
-                    <Box
-                        className="icon-button"
-                        sx={{
-                            display: "grid",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            textAlign: "center",
-                            width: "15%"
-                        }}>
-                        <img src={IconFood} alt="" width={"100%"} />
-                        <Typography
-                            variant="p"
-                            textAlign={"center"}
-                            fontSize={"18px"}>Food</Typography>
-                    </Box>
-                    <Box
-                        className="icon-button"
-                        sx={{
-                            display: "grid",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            textAlign: "center",
-                            width: "15%"
-                        }}>
-                        <img src={IconRandom} alt="" width={"64px"} />
-                        <Typography
-                            variant="p"
-                            textAlign={"center"}
-                            fontSize={"18px"}>Random</Typography>
-                    </Box>
-                </Box>
-                <Box
                     className="section-list"
                     sx={{
-                        display: "grid",
+                        // display: "grid",
                         padding: "20px 20px",
-                        gap: "30px"
+                        // gap: "30px"
                     }}>
-                    <Box className="tenant">
+                    <Box className="tenant" mb={"20px"}>
                         <Box width={"100%"} mb="10px">
-                            <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"}>
+                            <Typography variant="p"
+                                sx={{
+                                    fontSize: { xs: "24px", md: "32px" },
+                                    fontWeight: "bold",
+                                    paddingLeft: "20px"
+                                }}>
                                 Tenant
                             </Typography>
                             <Button
@@ -168,33 +136,64 @@ function Home() {
                                     padding: "10px 25px"
                                 }}>See all</Button>
                         </Box>
-                        <Box
+                        <Swiper
+                            slidesPerView={cardAmount}
+                            spaceBetween={15}
+                            freeMode={true}
+                            modules={[FreeMode, Pagination]}
+                            className="mySwiper-tenant"
+                        >
+                            {tenants ? tenants.slice(0, 4).map(tenant => (
+                                <SwiperSlide className="tenant-swiper"> <TenantCardComponent tenant={tenant} /> </SwiperSlide>
+                            )) : <Typography variant="h1">No Data</Typography>}
+                        </Swiper>
+
+                        {/* <Box
                             className="list-tenant"
                             sx={{
                                 display: "flex",
                                 alignItems: "center",
                                 gap: "3%"
                             }}>
-                            {tenants ? tenants.slice(0, 4).map(tenant => (
+                            {tenants ? tenants.slice(0, 2).map(tenant => (
                                 <TenantCardComponent tenant={tenant} />
                             )) : <Typography variant="h1">No Data</Typography>}
-                        </Box>
+                        </Box> */}
                     </Box>
 
                     <Box className="foods">
                         <Box width={"100%"} mb="10px">
-                            <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"}>
-                                Foods
+                            <Typography variant="p"
+                                sx={{
+                                    fontSize: { xs: "24px", md: "32px" },
+                                    fontWeight: "bold",
+                                    paddingLeft: "20px"
+                                }}>
+                                Menu
                             </Typography>
-                            <Button variant="p" sx={{
-                                backgroundColor: "#D8EEFE",
-                                float: "right",
-                                color: "#3DA9FC",
-                                borderRadius: "30px",
-                                padding: "10px 25px"
-                            }}>See all</Button>
+                            <Button variant="p"
+                                component={Link}
+                                to={"/customer/search/listtenant"}
+                                sx={{
+                                    backgroundColor: "#D8EEFE",
+                                    float: "right",
+                                    color: "#3DA9FC",
+                                    borderRadius: "30px",
+                                    padding: "10px 25px"
+                                }}>See all</Button>
                         </Box>
-                        <Box
+                        <Swiper
+                            slidesPerView={cardAmount}
+                            spaceBetween={15}
+                            freeMode={true}
+                            modules={[FreeMode, Pagination]}
+                            className="mySwiper-tenant"
+                        >
+                            {menus ? menus.slice(0, 4).map(menu => (
+                                <SwiperSlide className="tenant-swiper"> <FoodCardComponent menu={menu} /> </SwiperSlide>
+                            )) : <Typography variant="h1">No Data</Typography>}
+                        </Swiper>
+                        {/* <Box
                             className="list-food"
                             sx={{
                                 display: "flex",
@@ -205,7 +204,7 @@ function Home() {
                             {menus ? menus.slice(0, 4).map(menu => (
                                 <FoodCardComponent menu={menu} />
                             )) : <Typography variant="h1">No Data</Typography>}
-                        </Box>
+                        </Box> */}
                     </Box>
                 </Box>
                 {/* <div className="App">

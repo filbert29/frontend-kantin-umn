@@ -52,8 +52,7 @@ const NavBar = ({ navbar }) => {
                     }}
                     sx={{
                         backgroundColor: "#2F64F9",
-                        height: "70px"
-
+                        height: {md: "70px", xs: "50px"}
                     }}
                 >
                     <BottomNavigationAction

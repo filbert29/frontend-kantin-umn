@@ -26,13 +26,13 @@ function SearchPage() {
                         display: "flex",
                         alignItems: "center",
                         padding: "18px 0px 18px 35px",
-                        margin: "0px 50px",
+                        margin: {md: "0px 50px", xs: "0px 20px"},
                         borderRadius: "40px",
                         boxShadow: "1px 1px 30px -1px rgba(109, 109, 109, 0.5)",
                         textDecoration: "none"
                     }}>
                     <img src={SearchIcon} width={"35px"} alt="" />
-                    <TextField autoFocus className="search-page" placeholder="Cari Tenant atau Makanan kesukaan kamu disini"></TextField>
+                    <TextField autoFocus className="search-page" placeholder="Cari di Kantin UMN"></TextField>
                 </Box>
                 <Box component={Link} to={"/customer/search/listtenant"}
                     sx={{

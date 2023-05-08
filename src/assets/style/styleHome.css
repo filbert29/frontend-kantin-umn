@@ -14,9 +14,27 @@
     align-items: center;
 }
 
-.swiper-slide img {
+.home-banner .swiper-slide img {
     /* display: block; */
     width: 100%;
-    height: 100%;
+    height: 360px;
     /* object-fit: cover; */
+}
+
+@media only screen and (max-width: 600px) {
+    .home-banner .swiper-slide img {
+        height: 180px;
+    }
+}
+
+.star {
+    width: 20px !important;
+}
+
+.tenant-img{
+    height: 150px;
+}
+
+.mySwiper-tenant {
+    padding: 10px 5px !important;
 }
