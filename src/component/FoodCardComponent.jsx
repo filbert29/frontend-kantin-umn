@@ -1,14 +1,14 @@
 import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import NoImage from "../assets/No_Image_Available.jpg"
 
-const FoodCardComponent = ({ menu, handleClick = undefined }) => {
+const FoodCardComponent = ({ menu, handleClick = undefined, width }) => {
     return (
         <Box
             onClick={handleClick || null}
             className="card-food"
             sx={{
                 // display: "grid",
-                // width: "23%",
+                width: width,
                 boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
                 borderRadius: "15px",
                 cursor: "pointer"
@@ -43,7 +43,8 @@ const FoodCardComponent = ({ menu, handleClick = undefined }) => {
                                 fontSize: { md: "14px", xs: "12px" },
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
-                                textOverflow: "ellipsis"
+                                textOverflow: "ellipsis",
+                                textAlign: "left"
                             }}
                         >{menu?.description}</Typography>
                         <Box display={"flex"} alignItems={"center"} gap={"3px"}>

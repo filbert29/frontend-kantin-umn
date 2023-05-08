@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl, InputBase, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material"
+import { Box, Button, Container, FormControl, Grid, InputBase, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import Header from "../../component/Header"
 import { useState } from "react"
@@ -149,7 +149,7 @@ function DetailTenant() {
                         backgroundColor: "#fffffe",
                         boxShadow: { md: "1px 1px 20px -10px rgba(109, 109, 109, 0.5)" },
                         minHeight: "97.5vh",
-                        padding: "20px 20px",
+                        padding: {md: "20px 20px 100px 20px", xs: "20px 0px 100px 0px"},
                         color: "#5F6C7B"
                     }}>
                     <Header title={title} />
@@ -166,10 +166,18 @@ function DetailTenant() {
                                 backgroundColor: "rgba(0,0,0,0.8)",
                                 display: "grid",
                                 borderRadius: "10px",
-                                padding: "40px 60px"
+                                padding: {md: "40px 60px", xs: "30px 30px"}
                             }}>
-                            <Typography variant="p" fontSize={"36px"} fontWeight={"bold"}>{tenant?.full_name}</Typography>
-                            <Typography variant="p" fontSize={"24px"}>{tenant?.description}</Typography>
+                            <Typography variant="p" 
+                            sx={{
+                                fontSize: {md: "36px", xs: "30px"},
+                                fontWeight: "bold"
+                            }}>{tenant?.full_name}</Typography>
+                            <Typography variant="p"
+                            sx={{
+                                fontSize: {md: "24px", xs: "18px"}
+                            }}
+                            >{tenant?.description}</Typography>
                             <Box sx={{
                                 display: "flex",
                                 alignItems: "center",
@@ -198,10 +206,10 @@ function DetailTenant() {
                                     input={<BootstrapInput />}
                                 >
                                     <MenuItem value="">
-                                        <em>None</em>
+                                        <em className="list-category">None</em>
                                     </MenuItem>
-                                    <MenuItem value={10}><span>Nasi Goreng</span></MenuItem>
-                                    <MenuItem value={20}><span>Minuman</span></MenuItem>
+                                    <MenuItem value={10}><span className="list-category">Nasi Goreng</span></MenuItem>
+                                    <MenuItem value={20}><span className="list-category">Minuman</span></MenuItem>
                                 </Select>
                             </FormControl>
                         </Box>
@@ -211,11 +219,11 @@ function DetailTenant() {
                             alignItems: "center",
                             boxShadow: "inset 0px 0px 4px 2px rgba(0,0,0,0.1)",
                             borderRadius: "50px",
-                            height: "70px",
+                            height: {xs: "57px", md: "70px"},
                             marginTop: "32px",
                             paddingLeft: "20px"
                         }}>
-                            <img src={SearchIcon} alt="" width={"50px"} height={"50px"} />
+                            <img className="img-search" src={SearchIcon} alt="" />
                             <TextField className="search-detail" placeholder="Cari">Cari</TextField>
                         </Box>
                     </Box>
@@ -226,7 +234,14 @@ function DetailTenant() {
                                 {tenant_menus[0]?.category?.title || `No Category`}
                             </Typography>
                         </Box>
-                        <Box
+
+                        <Grid className="list-food" container spacing={2}>
+                            {tenant_menus[0].menu ? tenant_menus[0].menu.slice(0, 4).map(menu => (
+                                <Grid item xs={6} sm={4} md={3}><FoodCardComponent menu={menu} handleClick={() => handleOpen(menu)} /></Grid>
+                            )) : <Typography variant="h1">No Data</Typography>}
+                        </Grid>
+
+                        {/* <Box
                             className="list-food"
                             sx={{
                                 display: "flex",
@@ -234,13 +249,9 @@ function DetailTenant() {
                                 gap: "3%"
                             }}>
                             {tenant_menus[0].menu ? tenant_menus[0].menu.slice(0, 4).map(menu => (
-                                <FoodCardComponent menu={menu} handleClick={() => handleOpen(menu)} />
+                                <FoodCardComponent width={"50%"} menu={menu} handleClick={() => handleOpen(menu)} />
                             )) : <Typography variant="h1">No Data</Typography>}
-                            {/* <FoodCardComponent foodData={food} handleClick={(id) => handleOpen(id)} />
-                            <FoodCardComponent handleClick={handleOpen} />
-                            <FoodCardComponent handleClick={handleOpen} />
-                            <FoodCardComponent handleClick={handleOpen} /> */}
-                        </Box>
+                        </Box> */}
                         <Box
                             sx={{
                                 marginTop: "20px",
@@ -261,9 +272,9 @@ function DetailTenant() {
                                             // border: "1px solid black",
                                             backgroundRepeat: "no-repeat",
                                             backgroundSize: "cover",
-                                            minHeight: "110px",
-                                            width: "280px",
-                                            padding: "40px 0px 0px 40px",
+                                            minHeight: {md: "110px", xs: "78px"},
+                                            width: {md: "280px", xs: "190px"},
+                                            padding: {md: "40px 30px 10px 40px", xs: "30px 40px 10px 30px"},
                                             display: "inline-block",
                                             marginRight: "15px"
                                         }}>
@@ -298,7 +309,7 @@ function DetailTenant() {
                                             <Box className="card-lebar"
                                                 sx={{
                                                     boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
-                                                    padding: "30px",
+                                                    padding: {md: "30px", xs: "0px"},
                                                     borderRadius: "10px",
                                                     display: "flex",
                                                     alignItems: "center",

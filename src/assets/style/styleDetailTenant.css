@@ -8,8 +8,8 @@
 
 .section-fitur .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon,
 .section-fitur .css-1mf6u8l-MuiSvgIcon-root-MuiSelect-icon {
-    font-size: 55px !important;
-    width: 80px !important;
+    font-size: 45px !important;
+    width: 70px !important;
 }
 
 .search-detail .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
@@ -53,4 +53,32 @@
 /* Handle on hover */
 .section-review::-webkit-scrollbar-thumb:hover {
     background: #1c91e6;
+}
+
+.img-search {
+    width: 30px;
+}
+
+.list-category {
+    font-size: 34px !important;
+}
+
+@media only screen and (max-width: 900px) {
+    .search-detail .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+        font-size: 20px !important;
+    }
+
+    .list-category {
+        font-size: 20px !important;
+    }
+
+    .section-fitur .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input {
+        padding: 5px 0px 5px 15px
+    }
+
+    .section-fitur .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon,
+    .section-fitur .css-1mf6u8l-MuiSvgIcon-root-MuiSelect-icon {
+        font-size: 35px !important;
+        width: 40px !important;
+    }
 }
