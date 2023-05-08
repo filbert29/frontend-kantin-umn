@@ -9,7 +9,7 @@ function SearchPage() {
     return (
         <Container
             sx={{
-                maxWidth: { md: "md", sm: "sm" }
+                maxWidth: { md: "md", sm: "md" }
             }}>
             <Box
                 sx={{
@@ -17,8 +17,7 @@ function SearchPage() {
                     boxShadow: { md: "1px 1px 20px -10px rgba(109, 109, 109, 0.5)" },
                     minHeight: "97.5vh",
                     paddingTop: "20px",
-                    color: "#5F6C7B",
-                    paddingBottom: "100px"
+                    color: "#5F6C7B"
                 }}>
                 <Box
                     className="search-box"
@@ -36,8 +35,8 @@ function SearchPage() {
                 </Box>
                 <Box component={Link} to={"/customer/search/listtenant"}
                     sx={{
-                        padding: "38px 0px 20px 50px",
-                        margin: "0px 40px",
+                        padding: {md: "38px 0px 20px 50px", xs: "38px 0px 20px 20px"},
+                        margin: {md: "0px 40px", xs: "0px 20px"},
                         fontSize: "18px",
                         borderBottom: "1px black solid",
                         display: "flex",
@@ -46,7 +45,7 @@ function SearchPage() {
                         color: "#5F6C7B"
                     }}>
                     <Typography variant="p">All Tenant</Typography>
-                    <img src={Arrow} alt="" width={"20px"} style={{ marginLeft: "auto", marginRight: "50px" }} />
+                    <img src={Arrow} alt="" width={"20px"} style={{ marginLeft: "auto", marginRight: "5%" }} />
                 </Box>
             </Box>
         </Container >

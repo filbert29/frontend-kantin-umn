@@ -31,9 +31,9 @@ const ListTenant = () => {
                     to={`/customer/tenant/detailtenant/${data._id}`}
                     className="shadow-box"
                     sx={{
-                        padding: "25px 30px",
+                        padding: {sm: "25px 30px", xs: "15px 20px"},
                         borderRadius: "10px",
-                        width: "600px",
+                        width: {md: "600px", sm: "450px", xs: "280px"},
                         display: "flex",
                         alignItems: "center",
                         textDecoration: "none",
@@ -41,12 +41,21 @@ const ListTenant = () => {
                     }}>
                     <img src={data?.profile_image || NoImage} alt="" width={"134px"} style={{ borderRadius: "15px", minHeight: "129px" }} />
                     <Box className="deskripsi" ml={"25px"} display={"grid"} gap={"2px"}>
-                        <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>{data?.full_name}</Typography>
+                        <Typography variant="p" 
+                        sx={{
+                            fontSize: {sm: "20px", xs: "16px"},
+                            fontWeight: "bold"
+                        }}
+                        >{data?.full_name}</Typography>
                         <Box display={"flex"} alignItems={"center"} gap={"5px"}>
                             <img src={Star} alt="" width={"25px"} />
                             <Typography variant="p" fontSize={"14px"}>4.7 (12)</Typography>
                         </Box>
-                        <Typography variant="p" fontSize={"14px"}>{data?.description}</Typography>
+                        <Typography variant="p"
+                        sx={{
+                            fontSize: {sm: "14px", xs: "10px"}
+                        }}
+                        >{data?.description}</Typography>
                     </Box>
                 </Box>
             </Box>
