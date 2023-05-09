@@ -11,6 +11,7 @@ import axios from "axios";
 import BASE_URL from "../../config/BASE_URL";
 import useSWR from 'swr'
 import fetcher from "../../helper/fetcher";
+import "../../assets/style/styleProfile.css"
 
 
 const MyAccount = () => {
@@ -138,7 +139,7 @@ const MyAccount = () => {
     return (
         <Container
             sx={{
-                maxWidth: { md: "md", sm: "sm" }
+                maxWidth: { md: "md", sm: "md" }
             }}>
             <Box
                 className="my-account"
@@ -146,13 +147,13 @@ const MyAccount = () => {
                     backgroundColor: "#fffffe",
                     boxShadow: { md: "1px 1px 20px -10px rgba(109, 109, 109, 0.5)" },
                     minHeight: "97.5vh",
-                    padding: "20px 20px",
+                    padding: { md: "20px 20px", xs: "20px 0px" },
                     color: "#5F6C7B"
                 }}>
                 <Header title={title} />
                 <Box className="main"
                     sx={{
-                        paddingLeft: "40px",
+                        paddingLeft: { md: "40px", xs: "20px" },
                         display: "flex",
                         alignItems: "center",
                         gap: "20px"
@@ -161,35 +162,37 @@ const MyAccount = () => {
                         <img src={ProfilePicture} alt="" width={"160px"} />
                     </Box>
                     <Box className="name-tag" display={"grid"} gap={"10px"}>
-                        <Typography variant="p" fontSize={"24px"} fontWeight={"bold"}>{customer.full_name}</Typography>
+                        <Typography variant="p" sx={{ fontSize: { md: "24px", xs: "20px" }, fontWeight: "bold" }}>{customer.full_name}</Typography>
                         <Chip label="Customer" sx={{ fontWeight: "bold", backgroundColor: "#094067", color: "white", width: "100px", paddingY: "17px" }} />
                     </Box>
 
                 </Box>
                 <Box className="data diri shadow-box"
-                    m={"30px"}
                     sx={{
-                        padding: "40px",
+                        padding: { md: "40px", xs: "20px" },
                         borderRadius: "18px",
                         display: "grid",
-                        gap: "40px"
+                        gap: "40px",
+                        margin: { md: "30px", xs: "30px 0px" }
                     }}>
                     <Box className="name" sx={{
-                        display: "grid",
-                        gap: "10px"
+                        gap: "10px",
+                        display: "flex",
+                        flexDirection: "column"
                     }}>
-                        <Typography variant="p" fontSize={"18px"}>Display Name</Typography>
-                        <Box>
-                            <Typography variant="p" fontSize={"24px"}>{customer.full_name}</Typography>
+                        <Typography variant="p" sx={{ fontSize: { md: "18px", xs: "14px" } }}>Display Name</Typography>
+                        <Box >
+                            <Typography variant="p" sx={{ fontSize: { md: "24px", xs: "16px" } }}>{customer.full_name}</Typography>
                             <Button
                                 onClick={handleClickOpenName}
                                 sx={{
+                                    minWidth: "0",
                                     float: "right",
-                                    backgroundColor: "#D8EEFE",
+                                    backgroundColor: { md: "#D8EEFE", xs: "white" },
                                     padding: "0",
                                     borderRadius: "12px",
-                                    ":hover": { backgroundColor: "#86c7f7" }
-                                }}> <span style={{ margin: "8px 20px", fontWeight: "bold" }}>Edit</span> <img src={IconEdit} alt="" width={"40px"} /></Button>
+                                    ":hover": { backgroundColor: { md: "#86c7f7", xs: "white" } }
+                                }}> <Typography variant="span" sx={{ margin: "8px 20px", fontWeight: "bold", display: { md: "block", xs: "none" } }}>Edit</Typography> <img src={IconEdit} alt="" /></Button>
                         </Box>
                         <Dialog open={openname} onClose={handleClose}>
                             <DialogTitle>Edit Name</DialogTitle>
@@ -212,22 +215,27 @@ const MyAccount = () => {
                             </DialogActions>
                         </Dialog>
                     </Box>
-                    <Box className="Email" sx={{
+                    <Box className="email" sx={{
                         display: "grid",
                         gap: "10px"
                     }}>
-                        <Typography variant="p" fontSize={"18px"}>Email</Typography>
+                        <Typography variant="p" sx={{ fontSize: { md: "18px", xs: "14px" } }}>Email</Typography>
                         <Box>
-                            <Typography variant="p" fontSize={"24px"}>{accountData.email}</Typography>
+                            <Typography variant="p"
+                                sx={{
+                                    fontSize: { md: "24px", xs: "16px" }
+                                }}>{accountData.email}
+                            </Typography>
                             <Button
                                 onClick={handleClickOpenEmail}
                                 sx={{
+                                    minWidth: "0",
                                     float: "right",
-                                    backgroundColor: "#D8EEFE",
+                                    backgroundColor: { md: "#D8EEFE", xs: "white" },
                                     padding: "0",
                                     borderRadius: "12px",
-                                    ":hover": { backgroundColor: "#86c7f7" }
-                                }}> <span style={{ margin: "8px 20px", fontWeight: "bold" }}>Edit</span> <img src={IconEdit} alt="" width={"40px"} /></Button>
+                                    ":hover": { backgroundColor: { md: "#86c7f7", xs: "white" } }
+                                }}> <Typography variant="span" sx={{ margin: "8px 20px", fontWeight: "bold", display: { md: "block", xs: "none" } }}>Edit</Typography> <img src={IconEdit} alt="" /></Button>
                         </Box>
                         <Dialog open={openemail} onClose={handleClose}>
                             <DialogTitle>Edit Email</DialogTitle>
@@ -250,22 +258,23 @@ const MyAccount = () => {
                             </DialogActions>
                         </Dialog>
                     </Box>
-                    <Box className="Email" sx={{
+                    <Box className="password" sx={{
                         display: "grid",
                         gap: "10px"
                     }}>
-                        <Typography variant="p" fontSize={"18px"}>Password</Typography>
+                        <Typography variant="p" sx={{ fontSize: { md: "18px", xs: "14px" } }}>Password</Typography>
                         <Box>
-                            <Typography variant="p" fontSize={"24px"}>********</Typography>
+                            <Typography variant="p" sx={{ fontSize: { md: "24px", xs: "18px" } }}>********</Typography>
                             <Button
                                 onClick={handleClickOpenPassword}
                                 sx={{
+                                    minWidth: "0",
                                     float: "right",
-                                    backgroundColor: "#D8EEFE",
+                                    backgroundColor: { md: "#D8EEFE", xs: "white" },
                                     padding: "0",
                                     borderRadius: "12px",
-                                    ":hover": { backgroundColor: "#86c7f7" }
-                                }}> <span style={{ margin: "8px 20px", fontWeight: "bold" }}>Change Password</span> <img src={IconEdit} alt="" width={"40px"} /></Button>
+                                    ":hover": { backgroundColor: { md: "#86c7f7", xs: "white" } }
+                                }}> <Typography variant="span" sx={{ margin: "8px 20px", fontWeight: "bold", display: { md: "block", xs: "none" } }}>Change Password</Typography> <img src={IconEdit} alt="" /></Button>
                         </Box>
                     </Box>
                     <Dialog open={openpassword} onClose={handleClose}>
@@ -310,26 +319,27 @@ const MyAccount = () => {
                     </Dialog>
                 </Box>
                 <Box className="balance shadow-box"
-                    m={"30px"}
                     sx={{
-                        padding: "40px",
+                        padding: { md: "40px", xs: "20px" },
                         borderRadius: "18px",
                         display: "grid",
-                        gap: "40px"
+                        gap: "40px",
+                        margin: { md: "30px", xs: "30px 0px" }
                     }}>
                     <Box className="balance" sx={{
                         display: "grid",
                         gap: "10px"
                     }}>
-                        <Typography variant="p" fontSize={"18px"}>Balance</Typography>
+                        <Typography variant="p" sx={{ fontSize: { md: "18px", xs: "14px" } }}>Balance</Typography>
                         <Box>
-                            <Typography variant="p" fontSize={"24px"}>Rp. <span style={{ fontSize: "48px" }}>124.000</span></Typography>
+                            <Typography variant="p" sx={{ fontSize: { md: "24px", xs: "18px" } }}>Rp. <Typography variant="span" sx={{ fontSize: { md: "48px", xs: "28px" } }}>124.000</Typography></Typography>
                             <Button sx={{
+                                minWidth: "0",
                                 float: "right",
                                 backgroundColor: "#3DA9FC",
                                 borderRadius: "12px",
                                 ":hover": { backgroundColor: "#0090ff" }
-                            }}> <img src={IconPlus} alt="" width={"40px"} /> <span style={{ margin: "8px 20px", fontWeight: "bold", color: "white" }}>Top up</span></Button>
+                            }}> <img src={IconPlus} alt="" width={"40px"} /> <Typography variant="span" sx={{ margin: "8px 20px", fontWeight: "bold", display: { md: "block", xs: "none" } }}>Top up</Typography></Button>
                         </Box>
                     </Box>
                 </Box>
@@ -342,8 +352,9 @@ const MyAccount = () => {
                             borderRadius: "12px",
                             padding: "10px 20px 10px 30px",
                             borderRadius: "30px",
-                            ":hover": { backgroundColor: "#ff0030" }
-                        }}>  <span style={{ marginRight: "10px", fontWeight: "bold", color: "white" }}>Top up</span><img src={IconLogout} alt="" width={"40px"} /></Button>
+                            ":hover": { backgroundColor: "#ff0030" },
+                            marginBottom: "60px"
+                        }}>  <span style={{ marginRight: "10px", fontWeight: "bold", color: "white" }}>Logout</span><img src={IconLogout} alt="" width={"40px"} /></Button>
                 </Box>
             </Box>
         </Container>

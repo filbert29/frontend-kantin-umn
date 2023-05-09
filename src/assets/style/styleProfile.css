@@ -1,0 +1,17 @@
+.name img, .email img, .password img, .balance img {
+    width: 40px;
+}
+
+.profile-ficture img {
+    width: 160px;
+}
+
+@media only screen and (max-width: 600px) {
+    .name img, .email img, .password img, .balance img {
+        width: 30px;
+    }
+
+    .profile-ficture img {
+        width: 100px;
+    }
+}
