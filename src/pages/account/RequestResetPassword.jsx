@@ -40,7 +40,7 @@ const RequestResetPassword = () => {
             <Box sx={{
                 // width: "100vw",
                 minHeight: "100vh",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                backgroundColor: { sm: "rgba(0, 0, 0, 0.5)", xs: "#094067" },
                 display: "flex",
                 alignItems: "center"
             }}>
@@ -48,17 +48,22 @@ const RequestResetPassword = () => {
                     backgroundColor: "#094067",
                     width: "fit-content",
                     height: "fit-content",
-                    padding: { sm: "20px 70px 70px 70px", xs: "20px 40px" },
+                    padding: { sm: "20px 70px 70px 70px", xs: "20px 20px" },
                     borderRadius: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center"
                 }}>
                     <Box sx={{
                         marginBottom: "30px"
                     }}>
-                        <h1 style={{
-                            fontSize: "48px",
+                        <Typography variant="h1" sx={{
+                            fontSize: { sm: "48px", xs: "40px" },
                             textAlign: "center",
-                            marginBottom: "10px"
-                        }} >Reset Password</h1>
+                            margin: { sm: "50px", xs: "30px" },
+                            fontWeight: "bold",
+                            fontFamily: "Poppins"
+                        }} >Reset Password</Typography>
                         <Typography
                             variant="p"
                             component={"p"}
@@ -75,7 +80,7 @@ const RequestResetPassword = () => {
                             InputProps={{
                                 sx: {
                                     backgroundColor: "white",
-                                    width: { sm: "450px", xs: "350px" },
+                                    width: { sm: "450px", xs: "320px" },
                                     marginBottom: "10px",
                                 }
                             }}

@@ -32,7 +32,7 @@ const Register = () => {
             const data = { email, full_name, password, confirm_password };
             const response = await axios.post(BASE_URL + "/account/register", data)
             const title = "Email Confirmation"
-            const message = `We have sent  email to `+email+` to confirm the validity of your email address. After receiving the email follow link provided to complete your registration`
+            const message = `We have sent  email to ` + email + ` to confirm the validity of your email address. After receiving the email follow link provided to complete your registration`
             navigate("/account/email-confirmation", { state: { title: title, message: message } })
         } catch (err) {
             setErrorMessage('*Confirm New Password must be matched with New Password');
@@ -55,8 +55,8 @@ const Register = () => {
             <Box sx={{
                 // width: "100vw",
                 minHeight: "100vh",
-                padding: "40px 0",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                padding: { sm: "40px 0", xs: "0" },
+                backgroundColor: { sm: "rgba(0, 0, 0, 0.5)", xs: "#094067" },
                 display: "flex",
                 alignItems: "center"
             }}>
@@ -64,14 +64,17 @@ const Register = () => {
                     backgroundColor: "#094067",
                     width: "fit-content",
                     height: "fit-content",
-                    padding: { sm: "20px 70px 80px 70px", xs: "20px 40px" },
+                    padding: { sm: "20px 70px 80px 70px", xs: "20px 0px" },
                     borderRadius: "20px",
                     maxWidth: "450px"
                 }}>
-                    <h1 style={{
-                        fontSize: "48px",
-                        textAlign: "center"
-                    }} >Register</h1>
+                    <Typography variant="h1" sx={{
+                        fontSize: {sm: "48px", xs: "40px"},
+                        textAlign: "center",
+                        margin: { sm: "50px", xs: "30px" },
+                        fontWeight: "bold",
+                        fontFamily: "Poppins"
+                    }} >Register</Typography>
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Email</Typography>
                         <TextField
@@ -81,7 +84,7 @@ const Register = () => {
                             InputProps={{
                                 sx: {
                                     backgroundColor: "white",
-                                    width: { sm: "450px", xs: "350px" },
+                                    width: { sm: "450px", xs: "320px" },
                                     marginBottom: "30px",
                                 }
                             }}
@@ -97,7 +100,7 @@ const Register = () => {
                             InputProps={{
                                 sx: {
                                     backgroundColor: "white",
-                                    width: { sm: "450px", xs: "350px" },
+                                    width: { sm: "450px", xs: "320px" },
                                     marginBottom: "30px",
                                 }
                             }}
@@ -111,7 +114,10 @@ const Register = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
                             InputProps={{
-                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "350px" }, marginBottom: "30px" },
+                                sx: {
+                                    backgroundColor: "white", width: { sm: "450px", xs: "320px" },
+                                    marginBottom: "30px"
+                                },
                                 endAdornment:
                                     <InputAdornment position="end">
                                         <IconButton
@@ -133,7 +139,10 @@ const Register = () => {
                             onChange={(e) => setCpassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
                             InputProps={{
-                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "350px" }, marginBottom: "10px" },
+                                sx: {
+                                    backgroundColor: "white", width: { sm: "450px", xs: "320px" },
+                                    marginBottom: "10px"
+                                },
                                 endAdornment:
                                     <InputAdornment position="end">
                                         <IconButton

@@ -56,7 +56,7 @@ const ResetPassword = () => {
                 // width: "100vw",
                 minHeight: "100vh",
                 padding: "40px 0",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                backgroundColor: { sm: "rgba(0, 0, 0, 0.5)", xs: "#094067" },
                 display: "flex",
                 alignItems: "center"
             }}>
@@ -64,13 +64,19 @@ const ResetPassword = () => {
                     backgroundColor: "#094067",
                     width: "fit-content",
                     height: "fit-content",
-                    padding: { sm: "20px 70px 80px 70px", xs: "20px 40px" },
+                    padding: { sm: "20px 70px 80px 70px", xs: "20px 0px" },
                     borderRadius: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center"
                 }}>
-                    <h1 style={{
-                        fontSize: "48px",
-                        textAlign: "center"
-                    }} >Reset Password</h1>
+                    <Typography variant="h1" sx={{
+                            fontSize: { sm: "48px", xs: "40px" },
+                            textAlign: "center",
+                            margin: { sm: "50px", xs: "30px" },
+                            fontWeight: "bold",
+                            fontFamily: "Poppins"
+                        }} >Reset Password</Typography>
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>New Password</Typography>
                         <TextField
@@ -79,7 +85,7 @@ const ResetPassword = () => {
                             onChange={(e) => setNewPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
                             InputProps={{
-                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "350px" }, marginBottom: "30px" },
+                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "320px" }, marginBottom: "30px" },
                                 endAdornment:
                                     <InputAdornment position="end">
                                         <IconButton
@@ -101,7 +107,7 @@ const ResetPassword = () => {
                             onChange={(e) => setConfirmNewPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
                             InputProps={{
-                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "350px" }, marginBottom: "10px" },
+                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "320px" }, marginBottom: "10px" },
                                 endAdornment:
                                     <InputAdornment position="end">
                                         <IconButton

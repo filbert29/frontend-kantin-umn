@@ -51,8 +51,8 @@ const Login = () => {
             <Box sx={{
                 // width: "100vw",
                 minHeight: "100vh",
-                padding: "40px 0",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                padding: { sm: "40px 0", xs: "0" },
+                backgroundColor: { sm: "rgba(0, 0, 0, 0.5)", xs: "#094067" },
                 display: "flex",
                 alignItems: "center"
             }}>
@@ -60,13 +60,16 @@ const Login = () => {
                     backgroundColor: "#094067",
                     width: "fit-content",
                     height: "fit-content",
-                    padding: { sm: "20px 70px", xs: "20px 40px" },
+                    padding: { sm: "20px 70px", xs: "20px 0px" },
                     borderRadius: "20px",
                 }}>
-                    <h1 style={{
-                        fontSize: "48px",
-                        textAlign: "center"
-                    }} >LOGIN</h1>
+                    <Typography variant="h1" sx={{
+                        fontSize: {sm: "48px", xs: "40px"},
+                        textAlign: "center",
+                        margin: { sm: "50px", xs: "30px" },
+                        fontWeight: "bold",
+                        fontFamily: "Poppins"
+                    }} >LOGIN</Typography>
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Username</Typography>
                         <TextField
@@ -76,7 +79,7 @@ const Login = () => {
                             InputProps={{
                                 sx: {
                                     backgroundColor: "white",
-                                    width: { sm: "450px", xs: "350px" },
+                                    width: { sm: "450px", xs: "320px" },
                                     marginBottom: "30px",
                                 }
                             }}
@@ -91,7 +94,7 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
                             InputProps={{
-                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "350px" }, marginBottom: "10px" },
+                                sx: { backgroundColor: "white", width: { sm: "450px", xs: "320px" }, marginBottom: "10px" },
                                 endAdornment:
                                     <InputAdornment position="end">
                                         <IconButton
@@ -117,7 +120,12 @@ const Login = () => {
                         }}>Login</Button>
                     </Box>
                     <Box>
-                        <Typography textAlign={"center"} sx={{ mt: "80px", mb: "80px" }} component="p">or sign up Using <br /> <Typography color={"white"} component={Link} to="/account/register" >Sign Up</Typography> </Typography>
+                        <Typography textAlign={"center"}
+                            sx={{
+                                mt: {sm: "80px", xs: "40px"},
+                                mb: {sm: "80px", xs: "40px"}
+                            }}
+                            component="p">or sign up Using <br /> <Typography color={"white"} component={Link} to="/account/register" >Sign Up</Typography> </Typography>
                     </Box>
                 </Box>
             </Box>
