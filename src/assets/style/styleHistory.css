@@ -1,0 +1,12 @@
+
+
+.box-history img{
+    width: 130px !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .box-history img{
+        width: 90px !important;
+    }
+    
+}

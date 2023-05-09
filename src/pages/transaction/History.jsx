@@ -4,6 +4,7 @@ import PicTenant from "../../assets/pic-tenant.png"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
+import '../../assets/style/styleHistory.css'
 
 const History = () => {
     const title = "Cart"
@@ -19,11 +20,12 @@ const History = () => {
             <Box display={"grid"} justifyContent={"center"}>
                 <Box className="shadow-box"
                     sx={{
-                        padding: "25px 30px",
+                        padding: { sm: "25px 30px", xs: "15px 20px" },
                         borderRadius: "10px",
-                        width: "600px"
+                        width: { md: "600px", sm: "500px", xs: "280px" },
                     }}>
                     <Box
+                        className="box-history"
                         sx={{
                             display: "flex",
                             alignItems: "center",
@@ -33,17 +35,29 @@ const History = () => {
                         <Box className="deskripsi" sx={{
                             display: "grid"
                         }}>
-                            <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>{data?.tenant}</Typography>
-                            <Typography variant="p" fontSize={"16px"}>{data?.foods}</Typography>
+                            <Typography variant="p"
+                                sx={{
+                                    fontSize: { sm: "20px", xs: "16px" },
+                                    fontWeight: "bold"
+                                }}>{data?.tenant}</Typography>
+                            <Typography variant="p"
+                                sx={{
+                                    fontSize: { sm: "16px", xs: "12px" }
+                                }}>{data?.foods}</Typography>
                         </Box>
                     </Box>
                     <Box className="price-control" sx={{
                         display: "flex",
                         justifyContent: "flex-end",
                         alignItems: "center",
-                        gap: "10px"
+                        gap: "10px",
+                        marginTop: "20px"
                     }}>
-                        <Typography variant="p" fontWeight={"bold"}>Total Price: Rp. {data?.price}</Typography>
+                        <Typography variant="p"
+                            sx={{
+                                fontSize: { sm: "20px", xs: "14px" },
+                                fontWeight: "bold"
+                            }}>Total Price: Rp. {data?.price}</Typography>
                         <Button component={Link} to={"/customer/order/orderdetail"} sx={{
                             backgroundColor: "#3DA9FC",
                             color: "white",
@@ -84,8 +98,8 @@ const History = () => {
                         <TabContext value={value}>
                             <Box sx={{ borderBottom: 1, borderColor: 'white' }}>
                                 <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
-                                    <Tab sx={{ width: "50%", textTransform: "capitalize", fontFamily: "Poppins", fontSize: "25px" }} label="On Progress" value="1" />
-                                    <Tab sx={{ width: "50%", textTransform: "capitalize", fontFamily: "Poppins", fontSize: "25px" }} label="History" value="2" />
+                                    <Tab sx={{ width: "50%", textTransform: "capitalize", fontFamily: "Poppins", fontSize: { md: "25px", xs: "15px" } }} label="On Progress" value="1" />
+                                    <Tab sx={{ width: "50%", textTransform: "capitalize", fontFamily: "Poppins", fontSize: { md: "25px", xs: "15px" } }} label="History" value="2" />
                                 </TabList>
                             </Box>
                             <TabPanel value="1">
