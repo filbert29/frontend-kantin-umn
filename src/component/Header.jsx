@@ -31,7 +31,7 @@ const Header = ({ title }) => {
             </Box>
             <Box className="page-title">
                 <Typography variant="p" sx={{
-                    fontSize: "28px",
+                    fontSize: {sm: "28px", xs: "24px"},
                     fontWeight: "bold"
                 }}>{title}</Typography>
             </Box>

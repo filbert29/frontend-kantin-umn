@@ -1,0 +1,15 @@
+.img-card-order{
+    width: 150px;
+    height: 150px;
+}
+
+@media only screen and (max-width: 420px) {
+    .img-card-order{
+        width: 110px;
+        height: 110px;
+    }
+
+    .css-1hv8oq8-MuiStepLabel-label {
+        font-size: 13px;
+    }
+}

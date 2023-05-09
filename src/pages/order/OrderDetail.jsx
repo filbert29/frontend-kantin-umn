@@ -6,6 +6,7 @@ import Check from "../../assets/check.png"
 import IconLocation from "../../assets/icon-location.png"
 import JusJeruk from "../../assets/jus-jeruk.png"
 import NasiGoreng from "../../assets/pic-food.png"
+import "../../assets/style/styleOrderDetail.css"
 
 function OrderDetail() {
   const title = "Order Detail"
@@ -87,7 +88,7 @@ function OrderDetail() {
   return (
     <Container
       sx={{
-        maxWidth: { md: "md", sm: "sm" }
+        maxWidth: { md: "md", sm: "md" }
       }}>
       <Box
         className="order-detail"
@@ -95,13 +96,18 @@ function OrderDetail() {
           backgroundColor: "#fffffe",
           boxShadow: { md: "1px 1px 20px -10px rgba(109, 109, 109, 0.5)" },
           minHeight: "97.5vh",
-          padding: "20px 20px",
+          padding: { sm: "20px 20px", xs: "20px 0px" },
           color: "#5F6C7B",
           paddingBottom: "120px"
         }}>
         <Header title={title} />
         <Box className="status-order" display={"grid"} gap={"15px"}>
-          <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Status Order</Typography>
+          <Typography ml={"20px"} variant="p" 
+          sx={{
+            fontSize: { sm: "24px", xs: "20px" },
+            fontWeight: "bold",
+            color: "#094067"
+          }}>Status Order</Typography>
           <Box className="shadow-box" py={"20px"} borderRadius={"10px"}>
             <Stack sx={{ width: '100%' }} spacing={4}>
               <Stepper alternativeLabel activeStep={2} connector={<QontoConnector />}>
@@ -115,8 +121,21 @@ function OrderDetail() {
           </Box>
         </Box>
         <Box className="detail-makanan" display={"grid"} gap={"15px"} mt={"30px"}>
-          <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Foods Detail</Typography>
-          <Box className="shadow-box" p={"30px 60px 30px 50px"} fontSize={"18px"} borderRadius={"10px"} display={"grid"} gap={"25px"}>
+          <Typography ml={"20px"} variant="p"
+            sx={{
+              fontSize: { sm: "24px", xs: "20px" },
+              fontWeight: "bold",
+              color: "#094067"
+            }}
+          >Foods Detail</Typography>
+          <Box className="shadow-box"
+            sx={{
+              padding: { sm: "30px 60px 30px 50px", xs: "20px 30px" },
+              fontSize: { sm: "18px", xs: "14px" },
+              borderRadius: "10px",
+              display: "grid",
+              gap: { sm: "25px", xs: "15px" },
+            }}>
             <Box>
               <Typography variant="p">Order time</Typography>
               <Typography variant="p" sx={{ float: "right" }}>15.02.2023 - 11.31</Typography>
@@ -128,44 +147,91 @@ function OrderDetail() {
           </Box>
         </Box>
         <Box className="detail-makanan" display={"grid"} gap={"15px"} mt={"30px"}>
-          <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Price</Typography>
-          <Box className="shadow-box" p={"30px 40px 30px 30px"} fontSize={"18px"} borderRadius={"10px"} display={"grid"} gap={"25px"}>
-            <Box px={"40px"}>
+          <Typography ml={"20px"} variant="p"
+            sx={{
+              fontSize: { sm: "24px", xs: "20px" },
+              fontWeight: "bold",
+              color: "#094067"
+            }}>Price</Typography>
+          <Box className="shadow-box"
+            sx={{
+              padding: { sm: "30px 60px 30px 50px", xs: "20px 30px" },
+              fontSize: { sm: "18px", xs: "14px" },
+              borderRadius: "10px",
+              display: "grid",
+              gap: { sm: "25px", xs: "15px" },
+            }}>
+            <Box sx={{ paddingX: { sm: "40px", xs: "0px" } }}>
               <Typography variant="p">Nasi Goreng</Typography>
               <Typography variant="p" sx={{ float: "right" }}>Rp. 15.000,00</Typography>
             </Box>
-            <Box px={"40px"}>
+            <Box sx={{ paddingX: { sm: "40px", xs: "0px" } }}>
               <Typography variant="p">Jus Jeruk</Typography>
               <Typography variant="p" sx={{ float: "right" }}>Rp. 7.000,00</Typography>
             </Box>
             <Box sx={{ borderBottom: "1px solid black" }} />
-            <Box px={"40px"}>
+            <Box sx={{ paddingX: { sm: "40px", xs: "0px" } }}>
               <Typography variant="p" fontWeight={"bold"}>Total</Typography>
               <Typography variant="p" fontWeight={"bold"} sx={{ float: "right", color: "#094067" }}>Rp. 22.000,00</Typography>
             </Box>
           </Box>
         </Box>
         <Box className="tenant-name" display={"grid"} gap={"15px"} mt={"30px"}>
-          <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Foods Detail</Typography>
-          <Box className="shadow-box" p={"20px 40px"} fontSize={"18px"} borderRadius={"10px"} display={"grid"} gap={"25px"}>
+          <Typography ml={"20px"} variant="p"
+            sx={{
+              fontSize: { sm: "24px", xs: "20px" },
+              fontWeight: "bold",
+              color: "#094067"
+            }}>Foods Detail</Typography>
+          <Box className="shadow-box" sx={{
+            padding: { sm: "30px 60px 30px 50px", xs: "20px 30px" },
+            fontSize: { sm: "18px", xs: "14px" },
+            borderRadius: "10px",
+            display: "grid",
+            gap: { sm: "25px", xs: "15px" },
+          }}>
             <Box display={"flex"} alignItems={"center"}>
               <img src={IconLocation} alt="" width={"56px"} />
               <Box display={"grid"} ml={"20px"}>
-                <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>Kedai Nasi Goreng</Typography>
-                <Typography variant="p">Kantin UMN, Bagian Selasar Timur</Typography>
+                <Typography variant="p"
+                  sx={{
+                    fontSize: { sm: "20px", xs: "15px" },
+                    fontWeight: "bold",
+                  }}
+                >Kedai Nasi Goreng</Typography>
+                <Typography variant="p"
+                  sx={{
+                    fontSize: { sm: "20px", xs: "15px" }
+                  }}>Kantin UMN, Bagian Selasar Timur</Typography>
               </Box>
             </Box>
           </Box>
         </Box>
         <Box className="tenant-name" display={"grid"} gap={"15px"} mt={"30px"}>
-          <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Payment Method</Typography>
-          <Box className="shadow-box" p={"20px 40px"} fontSize={"18px"} borderRadius={"10px"} display={"grid"} gap={"25px"}>
-            <Typography variant="p" fontSize={"24px"}>e-Katar</Typography>
+          <Typography ml={"20px"} variant="p"
+            sx={{
+              fontSize: { sm: "24px", xs: "20px" },
+              fontWeight: "bold",
+              color: "#094067"
+            }}>Payment Method</Typography>
+          <Box className="shadow-box" sx={{
+            padding: { sm: "30px 60px 30px 50px", xs: "20px 30px" },
+            fontSize: { sm: "18px", xs: "14px" },
+            borderRadius: "10px",
+            display: "grid",
+            gap: { sm: "25px", xs: "15px" },
+          }}>
+            <Typography variant="p" sx={{ fontSize: { sm: "24px", xs: "20px" } }}>e-Katar</Typography>
           </Box>
         </Box>
         <Box className="minuman" mt={"30px"} display={"grid"} gap={"15px"}>
           <Box width={"100%"} mb="10px">
-            <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Menus Detail</Typography>
+            <Typography ml={"20px"} variant="p"
+              sx={{
+                fontSize: { sm: "24px", xs: "20px" },
+                fontWeight: "bold",
+                color: "#094067"
+              }}>Menus Detail</Typography>
           </Box>
           <Box sx={{
             display: "flex",
@@ -173,22 +239,7 @@ function OrderDetail() {
             gap: "30px"
           }}>
             <CardDetailMakanan menu={{ title: "Nasi Goreng", description: "Tes", image: NasiGoreng, price: 1000000 }} />
-            <Box className="card-lebar shadow-box"
-              sx={{
-                padding: "30px",
-                borderRadius: "10px",
-                display: "flex",
-                alignItems: "center",
-                width: "45%",
-                flex: "50"
-              }}>
-              <img src={JusJeruk} alt="" width={"150px"} />
-              <Box className="deskripsi" ml={"25px"} display={"grid"}>
-                <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Jus Jeruk</Typography>
-                <Typography variant="p" fontSize={"14px"}>minuman dari jeruk</Typography>
-                <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. 7.000</Typography>
-              </Box>
-            </Box>
+            <CardDetailMakanan menu={{ title: "Jus Jeruk", description: "Tes", image: JusJeruk, price: 2000000 }} />
           </Box>
         </Box>
         <Box mt={"50px"} display={"flex"}>
@@ -196,9 +247,10 @@ function OrderDetail() {
             backgroundImage: "linear-gradient(270deg, #1A73E9, #6C92F4)",
             color: "white",
             padding: "15px 30px",
-            fontSize: "18px",
+            fontSize: {sm: "18px", xs: "14px"},
             borderRadius: "8px",
-            marginX: "auto"
+            marginX: "auto",
+            marginBottom: "80px"
           }}>ALL ORDERS READY TO PICK UP</Button>
         </Box>
       </Box>
@@ -212,18 +264,32 @@ const CardDetailMakanan = ({ menu }) => {
   return (
     <Box className="card-lebar shadow-box"
       sx={{
-        padding: "30px",
+        padding: {sm: "30px", xs: "0px"},
         borderRadius: "10px",
         display: "flex",
         alignItems: "center",
-        width: "45%",
+        width: "50%",
         flex: "50"
       }}>
-      <img src={menu?.image} alt="" width={"150px"} />
+      <img className="img-card-order" src={menu?.image} alt="" />
       <Box className="deskripsi" ml={"25px"} display={"grid"}>
-        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu?.title}</Typography>
-        <Typography variant="p" fontSize={"14px"}>{menu?.descirption}</Typography>
-        <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp.{menu?.price}</Typography>
+        <Typography variant="p"
+          sx={{
+            fontSize: {sm: "18px", xs: "14px"},
+            fontWeight: "bold"
+          }}
+        >{menu?.title}</Typography>
+        <Typography variant="p"
+          sx={{
+            fontSize: {sm: "14px", xs: "12px"}
+          }}
+        >{menu?.description}</Typography>
+        <Typography variant="p"
+          sx={{
+            fontSize: {sm: "18px", xs: "14px"},
+            fontWeight: "bold"
+          }}
+        >Rp.{menu?.price}</Typography>
       </Box>
     </Box>
   )

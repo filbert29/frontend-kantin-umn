@@ -11,6 +11,7 @@ import { useSelector } from "react-redux"
 import { useState } from "react"
 import NoImage from "../../assets/No_Image_Available.jpg"
 import axios from "axios"
+import "../../assets/style/styleOrderConfirmation.css"
 
 function OrderConfirmation() {
   const title = "Order Confirmation"
@@ -131,18 +132,27 @@ function OrderConfirmation() {
             backgroundColor: "#fffffe",
             boxShadow: { md: "1px 1px 20px -10px rgba(109, 109, 109, 0.5)" },
             minHeight: "97.5vh",
-            padding: "20px 20px",
+            padding: { sm: "20px 20px", xs: "20px 0px" },
             color: "#5F6C7B",
             paddingBottom: "120px"
           }}>
           <Header title={title} />
           <Box className="detail-makanan" display={"grid"} gap={"15px"} mt={"30px"}>
             <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Price</Typography>
-            <Box className="shadow-box" p={"30px 40px 30px 30px"} fontSize={"18px"} borderRadius={"10px"} display={"grid"} gap={"25px"}>
+            <Box className="shadow-box"
+              sx={{
+                padding: { sm: "30px 60px 30px 50px", xs: "20px 20px" },
+                fontSize: { sm: "18px", xs: "14px" },
+                borderRadius: "10px",
+                display: "grid",
+                gap: { sm: "25px", xs: "15px" },
+              }}>
               {cart.items.map(menus => (
-                <Box px={"40px"}>
+                <Box sx={{
+                  paddingX: { sm: "40px", xs: "0px" }
+                }}>
                   <Box>
-                    <Typography variant="p"><span style={{ fontWeight: "bold", padding: "5px 7px", marginRight: "15px", borderRadius: "5px", border: "1px solid #D9D9D9" }}>{menus.quantity}x</span> {menus.menu.title}  </Typography>
+                    <Typography variant="p"><Typography variant="span" sx={{ fontWeight: "bold", padding: "5px 7px", marginRight: { sm: "15px", xs: "8px" }, borderRadius: "5px", border: "1px solid #D9D9D9" }}>{menus.quantity}x</Typography> {menus.menu.title}  </Typography>
                     <Typography variant="p" sx={{ float: "right" }}>Rp. {(menus.menu.price * menus.quantity).toLocaleString("id-ID")}</Typography>
                   </Box>
                   <Button
@@ -150,12 +160,14 @@ function OrderConfirmation() {
                     sx={{
                       backgroundColor: "white",
                       color: "#357DED",
-                      margin: "5px 0px 0px 40px"
+                      margin: { sm: "5px 0px 0px 40px", xs: "5px 0px 0px 28px" }
                     }}>edit</Button>
                 </Box>
               ))}
               <Box sx={{ borderBottom: "1px solid black" }} />
-              <Box px={"40px"}>
+              <Box sx={{
+                paddingX: { sm: "40px", xs: "0px" }
+              }}>
                 <Typography variant="p" fontWeight={"bold"}>Total</Typography>
                 <Typography variant="p" fontWeight={"bold"} sx={{ float: "right", color: "#094067" }}>Rp. {cart?.total.toLocaleString("id-ID")}</Typography>
               </Box>
@@ -163,11 +175,22 @@ function OrderConfirmation() {
           </Box>
           <Box className="tenant-name" display={"grid"} gap={"15px"} mt={"30px"}>
             <Typography ml={"20px"} variant="p" fontSize="24px" fontWeight={"bold"} color={"#094067"}>Foods Detail</Typography>
-            <Box className="shadow-box" p={"20px 40px"} fontSize={"18px"} borderRadius={"10px"} display={"grid"} gap={"25px"}>
+            <Box className="shadow-box"
+              sx={{
+                padding: { sm: "30px 60px 30px 50px", xs: "20px 20px" },
+                fontSize: { sm: "18px", xs: "14px" },
+                borderRadius: "10px",
+                display: "grid",
+                gap: { sm: "25px", xs: "15px" },
+              }}>
               <Box display={"flex"} alignItems={"center"}>
-                <img src={IconLocation} alt="" width={"56px"} />
+                <img className="img-order-confirm" src={IconLocation} alt="" />
                 <Box display={"grid"} ml={"20px"}>
-                  <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>{cart?.tenant?.full_name}</Typography>
+                  <Typography variant="p"
+                    sx={{
+                      fontSize: { sm: "20px", xs: "15px" },
+                      fontWeight: "bold",
+                    }}>{cart?.tenant?.full_name}</Typography>
                 </Box>
               </Box>
             </Box>
@@ -177,9 +200,10 @@ function OrderConfirmation() {
               backgroundImage: "linear-gradient(270deg, #1A73E9, #6C92F4)",
               color: "white",
               padding: "15px 30px",
-              fontSize: "18px",
+              fontSize: { sm: "18px", xs: "14px" },
               borderRadius: "8px",
-              marginX: "auto"
+              marginX: "auto",
+              marginBottom: "80px"
             }}>ALL ORDERS READY TO PICK UP</Button>
           </Box>
         </Box>

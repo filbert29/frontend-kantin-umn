@@ -1,0 +1,9 @@
+.img-order-confirm {
+    width: 56px;
+}
+
+@media only screen and (max-width: 420px) {
+    .img-order-confirm {
+        width: 36px;
+    }
+}
