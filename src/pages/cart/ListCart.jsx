@@ -47,8 +47,11 @@ const ListCart = () => {
                         paddingBottom: "120px"
                     }}>
                     <Header title={title} />
-                    <Box mb={"10px"}>
-                        <Typography variant="p" ml={"80px"} fontSize={"20px"} fontWeight={"bold"}>Order List</Typography>
+                    <Box mb={"10px"} sx={{
+                        paddingLeft: {md: "80px", xs: "0px"}
+                    }}>
+                        <Typography variant="p"
+                        fontSize={"20px"} fontWeight={"bold"}>Order List</Typography>
                     </Box>
                     {cart ? cart.map(cart => (
                         <Box>
