@@ -1,4 +1,4 @@
-import { Box, Button, Card, Container, MenuItem, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Card, Chip, Container, MenuItem, Modal, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
@@ -22,6 +22,7 @@ const TenantMenuPage = () => {
     const [openModalAddEdit, setOpenModalAddEdit] = useState(false)
     const [openModalAddCategory, setOpenModalAddCategory] = useState(false)
     const [menuSelected, setMenuSelected] = useState()
+    const dispatch = useDispatch()
 
     const handleAddMenu = () => {
         setMenuSelected(undefined)
@@ -36,6 +37,24 @@ const TenantMenuPage = () => {
     if (isLoading) return <Loading />
     if (error) return <ErrorApi />
 
+    const toggleMenuAvailable = async (menu, status) => {
+        try {
+            if (status === menu?.is_available) return
+
+            const response = await axios.patch(`${BASE_URL}/menu/toggle-availability/${menu?._id}`, { is_available: !menu?.is_available }, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            })
+            if (response?.status === 200) {
+                dispatch(addNotification({ message: "Set menu available success", type: "success" }))
+                mutate()
+            }
+        } catch (error) {
+            dispatch(addNotification({ message: "Set menu out of stock failed", type: "error" }))
+        }
+    }
+
     return (
         <>
             <Container>
@@ -47,47 +66,57 @@ const TenantMenuPage = () => {
                         </DFlexJustifyContentBetween>
                         <Box sx={{ display: "grid", rowGap: 3 }}>
                             {allMenu.map((item) => (
-                                <Card key={item?._id} sx={{ display: "flex", gap: 2, p: 1.8 }}>
-                                    <Box>
-                                        <Box
-                                            component={"img"}
-                                            src={item?.image || DefaultImage}
-                                            alt=""
-
-                                            sx={{
-                                                borderRadius: "10px",
-                                                objectFit: "cover",
-                                                minWidth: 110,
-                                                minHeight: 110,
-                                                width: 110,
-                                                height: 110,
-                                            }}
-                                        />
-                                        <br />
-                                        <Typography textAlign={"center"} component={"p"} fontWeight={500} variant="p" fontSize={14}>Rp. {formatThousand(item?.price)}</Typography>
-                                    </Box>
-                                    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%" }}>
+                                <Card key={item?._id} sx={{ p: 1.8 }} >
+                                    <Box sx={{ display: "flex", gap: 2 }}>
                                         <Box>
-                                            <Typography variant="p" fontSize={13} >{item?.category?.title || "No Category"} │ {item?.prep_duration} Minutes</Typography>
-                                            <Typography component="h3" fontSize={18} fontWeight={600} >{item?.title}</Typography>
-                                            <Typography variant="p" sx={{
-                                                display: "-webkit-box",
-                                                WebkitLineClamp: "2",
-                                                WebkitBoxOrient: "vertical",
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                                fontSize: 12,
-                                                minHeight: "2ch"
-                                            }}>{item?.description}</Typography>
+                                            <Box
+                                                component={"img"}
+                                                src={item?.image || DefaultImage}
+                                                alt=""
+
+                                                sx={{
+                                                    borderRadius: "10px",
+                                                    objectFit: "cover",
+                                                    minWidth: 110,
+                                                    minHeight: 110,
+                                                    width: 110,
+                                                    height: 110,
+                                                }}
+                                            />
                                         </Box>
-                                        <Box sx={{ display: "flex", justifyContent: "flex-end", columnGap: 2 }}>
-                                            <Button color="error" variant="contained" size="small" endIcon={<Delete />} >
+                                        <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%" }}>
+                                            <Box>
+                                                <DFlexJustifyContentBetween>
+                                                    <Typography variant="p" fontSize={13} >{item?.category?.title || "No Category"} │ {item?.prep_duration} Minutes</Typography>
+                                                    <Chip label={item?.is_available ? "Available" : "Out Of Stock"} color={item?.is_available ? "info" : "warning"} size="small" sx={{display: {xs: "none", sm: "block"}}} />
+                                                </DFlexJustifyContentBetween>
+                                                <Typography component="h3" fontSize={18} fontWeight={600} >{item?.title}</Typography>
+                                                <Typography variant="p" sx={{
+                                                    display: "-webkit-box",
+                                                    WebkitLineClamp: "3",
+                                                    WebkitBoxOrient: "vertical",
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    fontSize: 12,
+                                                    minHeight: "2ch"
+                                                }}>{item?.description}</Typography>
+                                                <Typography component={"p"} fontWeight={500} variant="p" fontSize={14}>Rp. {formatThousand(item?.price)}</Typography>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                    <Box sx={{ display: "flex", justifyContent: "flex-end", flexDirection: { xs: "column", sm: "row" }, gap: 2, mt: 1 }}>
+                                        <Box sx={{ display: "flex", gap: 2 }}>
+                                            <Button fullWidth={{ xs: true, sm: false }} color="error" variant="contained" size="small" endIcon={<Delete />} >
                                                 Delete
                                             </Button>
-                                            <Button onClick={() => handleEditMenu(item)} variant="contained" size="small" endIcon={<Edit />} >
+                                            <Button fullWidth={{ xs: true, sm: false }} onClick={() => handleEditMenu(item)} variant="contained" size="small" endIcon={<Edit />} >
                                                 Edit
                                             </Button>
                                         </Box>
+                                        <ButtonGroup disableElevation={true}  size="small" variant="outlined" aria-label="outlined button group">
+                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => toggleMenuAvailable(item, true)} color="info" variant={item?.is_available === true ? "contained" : "outlined"} >Available</Button>
+                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => toggleMenuAvailable(item, false)} color="warning" variant={item?.is_available === false ? "contained" : "outlined"} >Out Of Stock</Button>
+                                        </ButtonGroup>
                                     </Box>
                                 </Card>
                             ))}
@@ -118,7 +147,7 @@ export default TenantMenuPage;
 
 const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory }) => {
     const { access_token } = useSelector((state) => state.auth.accountData)
-    const { data: categories} = useSWR(`${BASE_URL}/menu/category`, (url) => fetcher(url, access_token))
+    const { data: categories } = useSWR(`${BASE_URL}/menu/category`, (url) => fetcher(url, access_token))
     const dispatch = useDispatch()
 
     const [isLoading, setIsLoading] = useState(false)
@@ -237,14 +266,14 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                             </Box>
                         ) : (
                             <Box
-                            onClick={handleClickAddImage}
-                             sx={{
-                                width: 300,
-                                height: 300,
-                                borderRadius: 2,
-                                border: "4px dashed rgba(0,0,0,0.2)",
-                                objectFit: "contain"
-                            }} component={"img"} src={menuImage?.preview || menuSelected?.image}></Box>
+                                onClick={handleClickAddImage}
+                                sx={{
+                                    width: 300,
+                                    height: 300,
+                                    borderRadius: 2,
+                                    border: "4px dashed rgba(0,0,0,0.2)",
+                                    objectFit: "contain"
+                                }} component={"img"} src={menuImage?.preview || menuSelected?.image}></Box>
                         )}
                     </Box>
                     <input ref={imageFileRef} type="file" style={{ display: "none" }} onChange={handleChangeEditImage} />
