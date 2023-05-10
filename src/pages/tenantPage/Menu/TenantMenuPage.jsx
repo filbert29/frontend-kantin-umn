@@ -167,16 +167,32 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                 formData.append("image", menuImage?.raw)
             }
 
-            const response = await axios.post(`${BASE_URL}/menu`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "Authorization": `Bearer ${access_token}`
-                }
-            })
+            if (menuSelected) {
+                const response = await axios.put(`${BASE_URL}/menu/${menuSelected?._id}`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${access_token}`
+                    }
+                })
 
-            if (response?.status === 200) {
-                dispatch(addNotification({ message: "Add menu success", type: "success" }))
-                handleClose()
+                if (response?.status === 200) {
+                    dispatch(addNotification({ message: "Edit menu success", type: "success" }))
+                    mutate()
+                    handleClose()
+                }
+            } else {
+                const response = await axios.post(`${BASE_URL}/menu`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${access_token}`
+                    }
+                })
+
+                if (response?.status === 200) {
+                    dispatch(addNotification({ message: "Add menu success", type: "success" }))
+                    mutate()
+                    handleClose()
+                }
             }
         } catch (error) {
             setError(true)
@@ -195,7 +211,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                 <Typography textAlign={"center"} variant="h5" mb={2} >{menuSelected ? "Edit" : "Add"} Menu</Typography>
                 <Box component={"form"} sx={{ display: "flex", flexDirection: "column", rowGap: 2 }} onSubmit={handleSubmit}>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        {!menuImage.preview ? (
+                        {!menuImage.preview && !menuSelected?.image ? (
                             <Box
                                 onClick={handleClickAddImage}
                                 sx={{
@@ -220,13 +236,15 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                                 </Box>
                             </Box>
                         ) : (
-                            <Box sx={{
+                            <Box
+                            onClick={handleClickAddImage}
+                             sx={{
                                 width: 300,
                                 height: 300,
                                 borderRadius: 2,
                                 border: "4px dashed rgba(0,0,0,0.2)",
                                 objectFit: "contain"
-                            }} component={"img"} src={menuImage?.preview}></Box>
+                            }} component={"img"} src={menuImage?.preview || menuSelected?.image}></Box>
                         )}
                     </Box>
                     <input ref={imageFileRef} type="file" style={{ display: "none" }} onChange={handleChangeEditImage} />
