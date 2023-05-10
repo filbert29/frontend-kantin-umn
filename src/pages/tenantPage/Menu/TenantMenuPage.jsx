@@ -14,6 +14,7 @@ import { ModalStyle } from "../../admin/Tenant/TenantDetailPage";
 import axios from "axios";
 import { addNotification } from "../../../store/Notification";
 import { mutate as mutateGlobal } from "swr";
+import { ModalDelete } from "../../../component/admin/TableData";
 
 const TenantMenuPage = () => {
     const { access_token } = useSelector((state) => state.auth.accountData)
@@ -22,6 +23,9 @@ const TenantMenuPage = () => {
     const [openModalAddEdit, setOpenModalAddEdit] = useState(false)
     const [openModalAddCategory, setOpenModalAddCategory] = useState(false)
     const [menuSelected, setMenuSelected] = useState()
+
+    const [deleteMenu, setDeleteMenu] = useState(undefined)
+
     const dispatch = useDispatch()
 
     const handleAddMenu = () => {
@@ -54,6 +58,23 @@ const TenantMenuPage = () => {
             dispatch(addNotification({ message: "Set menu out of stock failed", type: "error" }))
         }
     }
+
+    const handleDeleteMenu = async (menu) => {
+        try {
+            const response = await axios.delete(`${BASE_URL}/menu/${menu?._id}`, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            })
+            if (response?.status === 200) {
+                dispatch(addNotification({ message: "Delete menu success", type: "success" }))
+                mutate()
+            }
+        } catch (error) {
+            dispatch(addNotification({ message: "Delete menu failed", type: "error" }))
+        }
+    }
+
 
     return (
         <>
@@ -88,7 +109,7 @@ const TenantMenuPage = () => {
                                             <Box>
                                                 <DFlexJustifyContentBetween>
                                                     <Typography variant="p" fontSize={13} >{item?.category?.title || "No Category"} │ {item?.prep_duration} Minutes</Typography>
-                                                    <Chip label={item?.is_available ? "Available" : "Out Of Stock"} color={item?.is_available ? "info" : "warning"} size="small" sx={{display: {xs: "none", sm: "block"}}} />
+                                                    <Chip label={item?.is_available ? "Available" : "Out Of Stock"} color={item?.is_available ? "info" : "warning"} size="small" sx={{ display: { xs: "none", sm: "block" } }} />
                                                 </DFlexJustifyContentBetween>
                                                 <Typography component="h3" fontSize={18} fontWeight={600} >{item?.title}</Typography>
                                                 <Typography variant="p" sx={{
@@ -106,14 +127,14 @@ const TenantMenuPage = () => {
                                     </Box>
                                     <Box sx={{ display: "flex", justifyContent: "flex-end", flexDirection: { xs: "column", sm: "row" }, gap: 2, mt: 1 }}>
                                         <Box sx={{ display: "flex", gap: 2 }}>
-                                            <Button fullWidth={{ xs: true, sm: false }} color="error" variant="contained" size="small" endIcon={<Delete />} >
+                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => setDeleteMenu({delete: () => handleDeleteMenu(item) })} color="error" variant="contained" size="small" endIcon={<Delete />} >
                                                 Delete
                                             </Button>
-                                            <Button fullWidth={{ xs: true, sm: false }} onClick={() => handleEditMenu(item)} variant="contained" size="small" endIcon={<Edit />} >
+                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => handleEditMenu(item)} variant="contained" size="small" endIcon={<Edit />} >
                                                 Edit
                                             </Button>
                                         </Box>
-                                        <ButtonGroup disableElevation={true}  size="small" variant="outlined" aria-label="outlined button group">
+                                        <ButtonGroup disableElevation={true} size="small" variant="outlined" aria-label="outlined button group">
                                             <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => toggleMenuAvailable(item, true)} color="info" variant={item?.is_available === true ? "contained" : "outlined"} >Available</Button>
                                             <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => toggleMenuAvailable(item, false)} color="warning" variant={item?.is_available === false ? "contained" : "outlined"} >Out Of Stock</Button>
                                         </ButtonGroup>
@@ -135,9 +156,17 @@ const TenantMenuPage = () => {
                 addCategory={() => setOpenModalAddCategory(true)}
             />}
 
-            {openModalAddCategory && <ModalAddCategory
-                open={openModalAddCategory}
-                handleClose={() => setOpenModalAddCategory(false)}
+            {
+                openModalAddCategory && <ModalAddCategory
+                    open={openModalAddCategory}
+                    handleClose={() => setOpenModalAddCategory(false)}
+                />
+            }
+
+            {deleteMenu !== undefined && <ModalDelete
+                open={deleteMenu !== undefined}
+                submitDelete={deleteMenu.delete}
+                handleClose={() => setDeleteMenu(undefined)}
             />}
         </>
     );
