@@ -401,7 +401,7 @@ const ModalAddCategory = ({ open, handleClose }) => {
             })
 
             if (response?.status === 200) {
-                mutateGlobal(`${BASE_URL}/tenant/category`)
+                mutateGlobal(`${BASE_URL}/menu/category`)
                 handleClose()
             }
         } catch (error) {
