@@ -19,7 +19,7 @@ const CardCart = ({ cart }) => {
                         alignItems: "center",
                         gap: "25px",
                     }}>
-                    <img src={PicTenant} alt="" />
+                    <img src={cart?.tenant?.profile_image} alt="" />
                     <Box className="deskripsi" sx={{
                         display: "grid"
                     }}>

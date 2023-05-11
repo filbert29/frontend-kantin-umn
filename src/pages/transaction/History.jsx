@@ -2,18 +2,39 @@ import { Box, Button, Container, Tab, Tabs, Typography } from "@mui/material";
 import Header from "../../component/Header";
 import PicTenant from "../../assets/pic-tenant.png"
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import '../../assets/style/styleHistory.css'
+import BASE_URL from "../../config/BASE_URL";
+import useSWR from 'swr'
+import fetcher from "../../helper/fetcher"
+import { useSelector } from "react-redux";
 
 const History = () => {
-    const title = "Cart"
+    const title = "History"
+
+    const [value, setValue] = useState('1');
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const { accountData } = useSelector((state) => state.auth)
 
     const Liner = () => {
         return (
             <Box my={"30px"} sx={{ border: "1px solid #D6D6D6" }} />
         )
     }
+
+    const urlOrder = `${BASE_URL}/order`
+    const { data: order, isLoading, error, mutate } = useSWR(urlOrder, (url) => fetcher(url, accountData?.access_token))
+
+
+    if (isLoading) return <div>loading...</div>
+    if (error) return <div>failed to load</div>
+
+    console.log(order)
 
     const CardCart = ({ data }) => {
         return (
@@ -31,19 +52,26 @@ const History = () => {
                             alignItems: "center",
                             gap: "25px",
                         }}>
-                        <img src={PicTenant} alt="" />
+                        <img src={data?.tenant?.profile_image} alt="" />
                         <Box className="deskripsi" sx={{
                             display: "grid"
                         }}>
                             <Typography variant="p"
                                 sx={{
-                                    fontSize: { sm: "20px", xs: "16px" },
+                                    fontSize: { sm: "20px", xs: "14px" },
                                     fontWeight: "bold"
-                                }}>{data?.tenant}</Typography>
+                                }}>{data?.tenant?.full_name}</Typography>
                             <Typography variant="p"
                                 sx={{
                                     fontSize: { sm: "16px", xs: "12px" }
-                                }}>{data?.foods}</Typography>
+                                }}>{data?.items ? data?.items.map(menus => (
+                                    <>{menus?.menu?.title},</>
+                                )) : <Typography variant="h1">No Data</Typography>}</Typography>
+                            <Typography variant="p"
+                                sx={{
+                                    fontSize: { sm: "20px", xs: "14px" },
+                                    fontWeight: "bold"
+                                }}>{data?.status}</Typography>
                         </Box>
                     </Box>
                     <Box className="price-control" sx={{
@@ -57,7 +85,7 @@ const History = () => {
                             sx={{
                                 fontSize: { sm: "20px", xs: "14px" },
                                 fontWeight: "bold"
-                            }}>Total Price: Rp. {data?.price}</Typography>
+                            }}>Total Price: Rp. {data?.total_price}</Typography>
                         <Button component={Link} to={"/customer/order/orderdetail"} sx={{
                             backgroundColor: "#3DA9FC",
                             color: "white",
@@ -70,12 +98,6 @@ const History = () => {
             </Box>
         )
     }
-
-    const [value, setValue] = useState('1');
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
     return (
         <div>
@@ -103,14 +125,33 @@ const History = () => {
                                 </TabList>
                             </Box>
                             <TabPanel value="1">
-                                <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
+                            {order ? order.map(order => {
+                                    if (order?.status == "ready") {
+                                        return (
+                                            <Box>
+                                                <CardCart data={order} />
+                                                <Liner />
+                                            </Box>
+                                        )
+                                    }
+                                }) : <Typography variant="h1">No Data</Typography>}
                             </TabPanel>
                             <TabPanel value="2">
-                                <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
+                                {order ? order.map(order => {
+                                    if (order?.status == "completed" || order?.status == "rejected") {
+                                        return (
+                                            <Box>
+                                                <CardCart data={order} />
+                                                <Liner />
+                                            </Box>
+                                        )
+                                    }
+                                }) : <Typography variant="h1">No Data</Typography>}
+                                {/* <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
                                 <Liner />
                                 <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
                                 <Liner />
-                                <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} />
+                                <CardCart data={{ tenant: "Kedai Nasi Goreng", foods: "Nasi Goreng, Jus jeruk", price: 23000 }} /> */}
                             </TabPanel>
                         </TabContext>
                     </Box>
