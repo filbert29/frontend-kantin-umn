@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PicTenant from "../assets/pic-tenant.png"
 
 
-const CardCart = ({ cart }) => {
+const CardCart = ({ cart, toogleDelete }) => {
     return (
         <Box display={"grid"} justifyContent={"center"}>
             <Box className="shadow-box"
@@ -54,15 +54,17 @@ const CardCart = ({ cart }) => {
                         color: "white",
                         fontFamily: "Poppins",
                         ":hover": { backgroundColor: "#058ffa" },
-                        fontSize: {sm: "14px", xs: "10px"}
+                        fontSize: { sm: "14px", xs: "10px" }
                     }}>Checkout</Button>
-                    <Button sx={{
-                        backgroundColor: "#EF4565",
-                        color: "white",
-                        fontFamily: "Poppins",
-                        ":hover": { backgroundColor: "#f00a35" },
-                        fontSize: {sm: "14px", xs: "10px"}
-                    }}>Delete</Button>
+                    <Button
+                        onClick={ toogleDelete }
+                        sx={{
+                            backgroundColor: "#EF4565",
+                            color: "white",
+                            fontFamily: "Poppins",
+                            ":hover": { backgroundColor: "#f00a35" },
+                            fontSize: { sm: "14px", xs: "10px" }
+                        }}>Delete</Button>
                 </Box>
             </Box>
         </Box>

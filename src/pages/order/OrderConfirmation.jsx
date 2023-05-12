@@ -199,12 +199,12 @@ function OrderConfirmation() {
             <Button sx={{
               backgroundImage: "linear-gradient(270deg, #1A73E9, #6C92F4)",
               color: "white",
-              padding: "15px 30px",
+              padding: "15px 60px",
               fontSize: { sm: "18px", xs: "14px" },
               borderRadius: "8px",
               marginX: "auto",
               marginBottom: "80px"
-            }}>ALL ORDERS READY TO PICK UP</Button>
+            }}>ORDER</Button>
           </Box>
         </Box>
       </Container >
