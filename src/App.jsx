@@ -28,6 +28,15 @@ import axios from 'axios';
 import CustomerDetailPage from './pages/admin/Customer/CustomerDetailPage';
 import CustomerPage from './pages/admin/Customer/CustomerPage';
 import OrderPage from './pages/admin/Order/OrderPage';
+import MenuPage from './pages/admin/Menu/MenuPage';
+import TenantLayout from './layout/TenantLayout';
+import TenantHomePage from './pages/tenantPage/Home/TenantHomePage';
+import TenantOrderPage from './pages/tenantPage/Order/TenantOrderPage';
+import TenantMenuPage from './pages/tenantPage/Menu/TenantMenuPage';
+import TenantProfilePage from './pages/tenantPage/Profile/TenantProfilePage';
+import TenantReviewPage from './pages/tenantPage/Review/TenantReviewPage';
+import TenantOrderDetailPage from './pages/tenantPage/Order/TenantOrderDetailPage';
+import NotificationCard from './component/general/NotificationCard';
 
 function App() {
 
@@ -42,6 +51,7 @@ function App() {
   );
 
   const { isLoggedin, accountData } = useSelector((state) => state.auth)
+  const {notification} = useSelector((state) => state.notification)
 
   const dispatch = useDispatch()
 
@@ -115,12 +125,41 @@ function App() {
             <Route path='order'>
               <Route index element={<OrderPage />} />
             </Route>
+            <Route path='menu'>
+              <Route index element={<MenuPage />} />
+            </Route>
             <Route path='register-tenant' element={<RegisterTenantPage />} />
           </Route>
           {/* END OF ADMIN ROUTES */}
-          \
+
+          {/* TENANT ROUTES */}
+          <Route path="/tenant" element={accountData?.role === "tenant" ? <TenantLayout /> : <Navigate to={"/account/login"} />}>
+            <Route index element={<TenantHomePage />} />
+            <Route path='order'>
+              <Route index element={<TenantOrderPage />} />
+              <Route path=':id' element={<TenantOrderDetailPage />} />
+            </Route>
+            <Route path='menu'>
+              <Route index element={<TenantMenuPage />} />
+            </Route>
+            <Route path='profile'>
+              <Route index element={<TenantProfilePage />} />
+            </Route>
+            <Route path='review'>
+              <Route index element={<TenantReviewPage />} />
+            </Route>
+          </Route>
+          {/* END OF TENANT ROUTES */}
+
         </Routes>
       </BrowserRouter>
+
+      {/* GLOBAL NOTIFICATION STACKED */}
+      <Box sx={{ position: "fixed", top: 10, right: 10, display: "grid", rowGap: 2 }}>
+        {notification?.length > 0 && notification?.map((notif) => (
+          <NotificationCard key={notif.id} message={notif.message} type={notif.type} id={notif.id} />
+        ))}
+      </Box>
     </Box>
   )
 }

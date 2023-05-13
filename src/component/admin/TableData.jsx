@@ -234,7 +234,7 @@ const TableData = ({
 
 export default TableData;
 
-const ModalDelete = ({ open, handleClose, submitDelete }) => {
+export const ModalDelete = ({ open, handleClose, submitDelete }) => {
     return (
         <Modal
             open={open}

@@ -1,3 +1,5 @@
-const BASE_URL = "https://backend-kantin-umn.fly.dev";
+// const BASE_URL = "https://backend-kantin-umn.fly.dev";
+// const BASE_URL = "http://192.168.1.5:3005";
+const BASE_URL = "http://localhost:3005";
 
 export default BASE_URL;

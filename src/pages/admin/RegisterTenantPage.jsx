@@ -11,7 +11,6 @@ const RegisterTenantPage = () => {
         full_name: "",
         location: "",
         email: "",
-        password: "",
         description: ""
     });
     const [tenantDataError, setTenantDataError] = useState();
@@ -19,6 +18,7 @@ const RegisterTenantPage = () => {
 
 
     const handleTenantDataChange = (e) => {
+        setTenantDataError(undefined)
         setTenantData((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
     }
 
@@ -34,6 +34,7 @@ const RegisterTenantPage = () => {
             alert("Register Tenant Success")
             setModalOpen(false)
         } catch (err) {
+            alert("Register Tenant Failed")
             setTenantDataError("Something went wrong")
         }
     }
@@ -106,16 +107,6 @@ const RegisterTenantPage = () => {
                                     type="email"
                                     required={true}
                                     name="email"
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Password"
-                                    variant="standard"
-                                    type="text"
-                                    name="password"
-                                    required={true}
                                     fullWidth
                                 />
                             </Grid>
