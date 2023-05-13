@@ -74,6 +74,7 @@ function DetailTenant() {
                 },
             })
             handleClose();
+            setAmount(1)
             setMessage('*Success add to cart');
         } catch (err) {
             setMessage('*Cannot add to cart');

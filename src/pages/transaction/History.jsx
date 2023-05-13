@@ -126,7 +126,7 @@ const History = () => {
                             </Box>
                             <TabPanel value="1">
                             {order ? order.map(order => {
-                                    if (order?.status == "ready") {
+                                    if (order?.status == "ready" || order?.status == "created") {
                                         return (
                                             <Box>
                                                 <CardCart data={order} />

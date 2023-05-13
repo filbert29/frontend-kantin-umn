@@ -6,7 +6,7 @@ import NasiGoreng from "../../assets/pic-food.png"
 import useSWR from 'swr'
 import fetcher from "../../helper/fetcher"
 import BASE_URL from "../../config/BASE_URL"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useState } from "react"
 import NoImage from "../../assets/No_Image_Available.jpg"
@@ -20,6 +20,8 @@ function OrderConfirmation() {
   const [selectedMenu, setSelectedMenu] = useState()
   const [amount, setAmount] = useState(1)
   const [message, setMessage] = useState('')
+
+  const navigate = useNavigate()
 
   const handleOpen = (menu) => {
     setOpen(true)
@@ -94,8 +96,26 @@ function OrderConfirmation() {
         setMessage('*Cannot change amount');
       }
     }
-
   }
+
+  const handleOrder = async (e) => {
+    e.preventDefault();
+
+    try {
+      const id_cart = cart?._id
+      const response = await axios.post(BASE_URL + `/order/create`, id_cart, {
+        headers: {
+          Authorization: `Bearer ${accountData?.access_token}`
+        },
+      })
+      setMessage('*Success add to order');
+      navigate('/customer/transaction/history')
+    } catch (err) {
+      setMessage('*Cannot add to order');
+    }
+  }
+
+  console.log(message)
 
   return (
     <>
@@ -196,15 +216,17 @@ function OrderConfirmation() {
             </Box>
           </Box>
           <Box mt={"50px"} display={"flex"}>
-            <Button sx={{
-              backgroundImage: "linear-gradient(270deg, #1A73E9, #6C92F4)",
-              color: "white",
-              padding: "15px 60px",
-              fontSize: { sm: "18px", xs: "14px" },
-              borderRadius: "8px",
-              marginX: "auto",
-              marginBottom: "80px"
-            }}>ORDER</Button>
+            <Button
+              onClick={handleOrder}
+              sx={{
+                backgroundImage: "linear-gradient(270deg, #1A73E9, #6C92F4)",
+                color: "white",
+                padding: "15px 60px",
+                fontSize: { sm: "18px", xs: "14px" },
+                borderRadius: "8px",
+                marginX: "auto",
+                marginBottom: "80px"
+              }}>ORDER</Button>
           </Box>
         </Box>
       </Container >
