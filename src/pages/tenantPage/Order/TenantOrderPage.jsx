@@ -5,7 +5,7 @@ import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
 import { useSelector } from "react-redux";
-import Loading from "../../../component/state/loading";
+import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import moment from "moment";
 import ORDER_STATUS from "../../../config/order-status.config";
@@ -48,7 +48,13 @@ export default TenantOrderPage;
 const OnProgressOrder = () => {
     const [priority, setPriority] = useState("fcfs")
     const { access_token } = useSelector((state) => state.auth.accountData)
-    const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress?priority=${priority}`, (url) => fetcher(url, access_token))
+    const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress?priority=${priority}`, (url) => fetcher(url, access_token), {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        refreshWhenOffline: false,
+        refreshWhenHidden: false,
+        refreshInterval: 0,
+    })
 
     if (isLoading) return <Loading />
     if (error) return <ErrorApi />

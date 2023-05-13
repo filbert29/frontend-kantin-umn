@@ -1,7 +1,12 @@
 import { Comment, Fastfood, Home, Person, Receipt } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Box, ThemeProvider, createTheme } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { io } from "socket.io-client";
+import { mutate } from "swr";
+import BASE_URL from "../config/BASE_URL";
+import { addNotification } from "../store/Notification";
 
 const theme = createTheme({
     components: {
@@ -15,7 +20,36 @@ const theme = createTheme({
     }
 })
 
+const socket = io("http://localhost:3005", { transports: ["websocket"], autoConnect: false })
+
 const TenantLayout = () => {
+    const accountData = useSelector((state) => state.auth.accountData)
+    const dispatch = useDispatch()
+
+    const connectWebsocket = () => {
+        socket.connect()
+        socket.emit("tenant:join", accountData?._id)
+    }
+
+    const socketListener = () => {
+        socket.on(`tenant/update/${accountData?._id}`, (data) => {
+            const refetchUrl = `${BASE_URL}${data.url}`
+            mutate(refetchUrl)
+            dispatch(addNotification({
+                message: data?.message,
+                type: "info"
+            }))
+        })
+    }
+
+    useEffect(() => {
+        connectWebsocket()
+        socketListener()
+        return () => {
+            socket.disconnect()
+        }
+    }, [])
+
     return (
         <Box
             sx={{

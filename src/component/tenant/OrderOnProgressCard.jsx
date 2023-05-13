@@ -23,8 +23,6 @@ const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
                     Authorization: `Bearer ${access_token}`
                 }
             })
-
-            console.log("sini")
         } catch (error) {
             console.log(error)
         } finally {
