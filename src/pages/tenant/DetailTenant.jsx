@@ -1,5 +1,5 @@
-import { Box, Button, Container, FormControl, Grid, InputBase, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Box, Button, Container, FormControl, Grid, InputBase, MenuItem, Modal, Select, TextField, Typography } from "@mui/material"
+import { useParams } from "react-router-dom"
 import Header from "../../component/Header"
 import { useState } from "react"
 import YellowStar from "../../assets/yellow-star.png"
@@ -8,23 +8,19 @@ import "../../assets/style/styleDetailTenant.css"
 import SearchIcon from "../../assets/search-icon.png"
 import FoodCardComponent from "../../component/FoodCardComponent"
 import BoxReview from "../../assets/box-review.png"
-import JusJeruk from "../../assets/jus-jeruk.png"
-import BgBanner from "../../assets/bg-banner-detail.png"
 import useSWR from 'swr'
 import fetcher from "../../helper/fetcher"
 import BASE_URL from "../../config/BASE_URL"
 import NoImage from "../../assets/No_Image_Available.jpg"
 import axios from "axios";
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { addNotification } from "../../store/Notification"
 
 
 function DetailTenant() {
     const title = "Detail Tenant"
-    const [tenantname, setTenantName] = useState('Kedai Nasi Goreng')
-    const [deskripsi, setDeskripsi] = useState('Aneka Nasi Goreng')
     const [rating, setRating] = useState('4.7 (12)')
     const [age, setAge] = useState('');
-    const [message, setMessage] = useState('')
 
     const [selectedMenu, setSelectedMenu] = useState()
 
@@ -33,6 +29,8 @@ function DetailTenant() {
     const { accountData } = useSelector((state) => state.auth)
 
     const [open, setOpen] = useState(false)
+
+    const dispatch = useDispatch()
 
     const handleOpen = (menu) => {
         setOpen(true)
@@ -75,9 +73,17 @@ function DetailTenant() {
             })
             handleClose();
             setAmount(1)
-            setMessage('*Success add to cart');
+            dispatch(addNotification({
+                message: "Success add to cart",
+                type: "success"
+            }))
         } catch (err) {
-            setMessage('*Cannot add to cart');
+            handleClose();
+            setAmount(1)
+            dispatch(addNotification({
+                message: "Failed add to cart",
+                type: "error"
+            }))
         }
     }
 
@@ -114,6 +120,8 @@ function DetailTenant() {
         p: 4,
         borderRadius: "10px"
     };
+
+    console.log(tenant)
 
     return (
         <>
@@ -186,7 +194,7 @@ function DetailTenant() {
                                 gap: "5px"
                             }}>
                                 <img src={YellowStar} alt="" width={"30px"} />
-                                <Typography variant="p" fontSize={"18px"}>{rating}</Typography>
+                                <Typography variant="p" fontSize={"18px"}>{tenant?.rating} ({tenant?.total_review})</Typography>
                             </Box>
                         </Box>
                     </Box>

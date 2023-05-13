@@ -1,6 +1,5 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from "@mui/material";
 import Header from "../../component/Header";
-import { Link } from "react-router-dom";
 import useSWR from 'swr'
 import fetcher from "../../helper/fetcher"
 import BASE_URL from "../../config/BASE_URL"
@@ -49,6 +48,7 @@ const ListCart = () => {
                     Authorization: `Bearer ${accountData?.access_token}`
                 }
             })
+            mutate()
             setMessage('*Success remove from cart');
             handleClose()
         } catch (err) {

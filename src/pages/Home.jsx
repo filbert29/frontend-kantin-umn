@@ -3,9 +3,6 @@ import SearchIcon from "../assets/icons8-search-32.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../assets/style/styleHome.css"
 import HomeBanner from "../assets/home-banner1.png"
-import IconTenant from "../assets/icon-tenant.png"
-import IconFood from "../assets/icon-food.png"
-import IconRandom from "../assets/icon-random.png"
 import TenantCardComponent from "../component/TenantCardComponent";
 import useSWR from 'swr'
 import fetcher from "../helper/fetcher";

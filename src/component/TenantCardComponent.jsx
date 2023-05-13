@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import NoImage from "../assets/No_Image_Available.jpg"
 
 const TenantCardComponent = ({ tenant }) => {
+
     return (
         <Box
             component={Link}
@@ -65,7 +66,7 @@ const TenantCardComponent = ({ tenant }) => {
                         >{tenant?.description}</Typography>
                         <Box display={"flex"} alignItems={"center"} gap={"3px"}>
                             <img className="star" src={Star} alt="" />
-                            <Typography variant="p" fontSize={"14px"}>4.7 (12)</Typography>
+                            <Typography variant="p" fontSize={"14px"}>{tenant?.rating} ({tenant?.total_review})</Typography>
                         </Box>
                     </Box>
                 </CardContent>

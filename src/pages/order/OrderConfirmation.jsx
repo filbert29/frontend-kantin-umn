@@ -1,8 +1,6 @@
 import { Box, Button, Container, Modal, TextField, Typography } from "@mui/material"
 import Header from "../../component/Header"
 import IconLocation from "../../assets/icon-location.png"
-import JusJeruk from "../../assets/jus-jeruk.png"
-import NasiGoreng from "../../assets/pic-food.png"
 import useSWR from 'swr'
 import fetcher from "../../helper/fetcher"
 import BASE_URL from "../../config/BASE_URL"
@@ -40,7 +38,7 @@ function OrderConfirmation() {
 
   const url = `${BASE_URL}/cart/${id}`
 
-  const { data: cart, isLoading, error, mutate } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
+  const { data: cart, isLoading, error } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
 
   if (isLoading) return <div>loading...</div>
   if (error) return <div>failed to load</div>
@@ -68,7 +66,7 @@ function OrderConfirmation() {
 
     console.log(menu_id)
 
-    if (amount == 0) {
+    if (amount === 0) {
       try {
         const remove_item = { menu_id };
         const response = await axios.delete(BASE_URL + `/cart/${id}`, remove_item, {
@@ -102,8 +100,7 @@ function OrderConfirmation() {
     e.preventDefault();
 
     try {
-      const id_cart = cart?._id
-      const response = await axios.post(BASE_URL + `/order/create`, id_cart, {
+      const response = await axios.post(BASE_URL + `/order/create`, {cart_id: cart._id}, {
         headers: {
           Authorization: `Bearer ${accountData?.access_token}`
         },
