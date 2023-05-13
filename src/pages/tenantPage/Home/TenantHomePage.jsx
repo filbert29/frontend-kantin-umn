@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import fetcher from "../../../helper/fetcher";
 import { useSelector } from "react-redux";
-import Loading from "../../../component/state/loading";
+import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import BASE_URL from "../../../config/BASE_URL";
 import { formatThousand } from "../../../helper/number";
