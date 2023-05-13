@@ -4,7 +4,7 @@ import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
 import { useSelector } from "react-redux";
-import Loading from "../../../component/state/loading";
+import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import { AccessTime, ArrowBackIos, Cached, Cancel, Done, ExpandMore, LocalDining } from "@mui/icons-material";
 import { useState } from "react";
