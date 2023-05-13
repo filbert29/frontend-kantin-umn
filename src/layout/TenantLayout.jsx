@@ -20,7 +20,7 @@ const theme = createTheme({
     }
 })
 
-const socket = io("http://localhost:3005", { transports: ["websocket"], autoConnect: false })
+const socket = io(BASE_URL, { transports: ["websocket"], autoConnect: false })
 
 const TenantLayout = () => {
     const accountData = useSelector((state) => state.auth.accountData)
