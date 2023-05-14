@@ -7,9 +7,27 @@ import IconLocation from "../../assets/icon-location.png"
 import JusJeruk from "../../assets/jus-jeruk.png"
 import NasiGoreng from "../../assets/pic-food.png"
 import "../../assets/style/styleOrderDetail.css"
+import { useParams } from "react-router-dom";
+import useSWR from 'swr'
+import fetcher from "../../helper/fetcher"
+import BASE_URL from "../../config/BASE_URL"
+import { useSelector } from "react-redux";
+import NoImage from "../../assets/No_Image_Available.jpg"
+import { useEffect, useState } from "react";
 
 function OrderDetail() {
   const title = "Order Detail"
+
+  const statusToStep = {
+    'created': 0,
+    'preparing': 1,
+    'ready': 2,
+    'completed': 4,
+    'rejected': 4
+  };
+
+  const [activeStep, setActiveStep] = useState();
+  const [final, setFinal] = useState('Completed')
 
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -83,7 +101,27 @@ function OrderDetail() {
     completed: PropTypes.bool,
   };
 
-  const steps = ['Sedang menunggu konfirmasi', 'Makanan sedang dibuat', 'Siap disajikan', 'Selesai'];
+  const { accountData } = useSelector((state) => state.auth)
+
+  const { id } = useParams();
+
+  const urlCart = `${BASE_URL}/order/${id}`
+
+  const { data: cart, isLoading, error } = useSWR(urlCart, (url) => fetcher(url, accountData?.access_token))
+
+  useEffect(() => {
+    setActiveStep(statusToStep[cart?.status])
+    if (cart?.status === "rejected"){
+      setFinal('Rejected')
+    }
+  }, [cart])
+  
+  if (isLoading) return <div>loading...</div>
+  if (error) return <div>failed to load</div>
+
+  const steps = ['Pending', 'Preparing', 'Ready', final];
+
+  console.log(final)
 
   return (
     <Container
@@ -102,15 +140,15 @@ function OrderDetail() {
         }}>
         <Header title={title} />
         <Box className="status-order" display={"grid"} gap={"15px"}>
-          <Typography ml={"20px"} variant="p" 
-          sx={{
-            fontSize: { sm: "24px", xs: "20px" },
-            fontWeight: "bold",
-            color: "#094067"
-          }}>Status Order</Typography>
+          <Typography ml={"20px"} variant="p"
+            sx={{
+              fontSize: { sm: "24px", xs: "20px" },
+              fontWeight: "bold",
+              color: "#094067"
+            }}>Order Status</Typography>
           <Box className="shadow-box" py={"20px"} borderRadius={"10px"}>
             <Stack sx={{ width: '100%' }} spacing={4}>
-              <Stepper alternativeLabel activeStep={2} connector={<QontoConnector />}>
+              <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
                 {steps.map((label) => (
                   <Step key={label}>
                     <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
@@ -127,7 +165,7 @@ function OrderDetail() {
               fontWeight: "bold",
               color: "#094067"
             }}
-          >Foods Detail</Typography>
+          >Order Time</Typography>
           <Box className="shadow-box"
             sx={{
               padding: { sm: "30px 60px 30px 50px", xs: "20px 30px" },
@@ -138,11 +176,11 @@ function OrderDetail() {
             }}>
             <Box>
               <Typography variant="p">Order time</Typography>
-              <Typography variant="p" sx={{ float: "right" }}>15.02.2023 - 11.31</Typography>
+              <Typography variant="p" sx={{ float: "right" }}>{cart?.createdAt}</Typography>
             </Box>
             <Box>
-              <Typography variant="p">Queue number</Typography>
-              <Typography variant="p" sx={{ float: "right" }}>12</Typography>
+              <Typography variant="p">Estimated time</Typography>
+              <Typography variant="p" sx={{ float: "right" }}>{cart?.total_prep_duration} Min</Typography>
             </Box>
           </Box>
         </Box>
@@ -161,18 +199,22 @@ function OrderDetail() {
               display: "grid",
               gap: { sm: "25px", xs: "15px" },
             }}>
-            <Box sx={{ paddingX: { sm: "40px", xs: "0px" } }}>
-              <Typography variant="p">Nasi Goreng</Typography>
-              <Typography variant="p" sx={{ float: "right" }}>Rp. 15.000,00</Typography>
-            </Box>
-            <Box sx={{ paddingX: { sm: "40px", xs: "0px" } }}>
-              <Typography variant="p">Jus Jeruk</Typography>
-              <Typography variant="p" sx={{ float: "right" }}>Rp. 7.000,00</Typography>
-            </Box>
+            {cart.items.map(menus => (
+              <Box key={menus.menu._id} sx={{
+                paddingX: { sm: "40px", xs: "0px" }
+              }}>
+                <Box>
+                  <Typography variant="p"><Typography variant="span" sx={{ fontWeight: "bold", padding: "5px 7px", marginRight: { sm: "15px", xs: "8px" }, borderRadius: "5px", border: "1px solid #D9D9D9" }}>{menus.quantity}x</Typography> {menus.menu.title}  </Typography>
+                  <Typography variant="p" sx={{ float: "right" }}>Rp. {(menus.price * menus.quantity).toLocaleString("id-ID")}</Typography>
+                </Box>
+              </Box>
+            ))}
             <Box sx={{ borderBottom: "1px solid black" }} />
-            <Box sx={{ paddingX: { sm: "40px", xs: "0px" } }}>
+            <Box sx={{
+              paddingX: { sm: "40px", xs: "0px" }
+            }}>
               <Typography variant="p" fontWeight={"bold"}>Total</Typography>
-              <Typography variant="p" fontWeight={"bold"} sx={{ float: "right", color: "#094067" }}>Rp. 22.000,00</Typography>
+              <Typography variant="p" fontWeight={"bold"} sx={{ float: "right", color: "#094067" }}>Rp. {cart?.total_price.toLocaleString("id-ID")}</Typography>
             </Box>
           </Box>
         </Box>
@@ -182,7 +224,7 @@ function OrderDetail() {
               fontSize: { sm: "24px", xs: "20px" },
               fontWeight: "bold",
               color: "#094067"
-            }}>Foods Detail</Typography>
+            }}>Tenant Detail</Typography>
           <Box className="shadow-box" sx={{
             padding: { sm: "30px 60px 30px 50px", xs: "20px 30px" },
             fontSize: { sm: "18px", xs: "14px" },
@@ -198,11 +240,7 @@ function OrderDetail() {
                     fontSize: { sm: "20px", xs: "15px" },
                     fontWeight: "bold",
                   }}
-                >Kedai Nasi Goreng</Typography>
-                <Typography variant="p"
-                  sx={{
-                    fontSize: { sm: "20px", xs: "15px" }
-                  }}>Kantin UMN, Bagian Selasar Timur</Typography>
+                >{cart?.tenant?.full_name}</Typography>
               </Box>
             </Box>
           </Box>
@@ -221,7 +259,7 @@ function OrderDetail() {
             display: "grid",
             gap: { sm: "25px", xs: "15px" },
           }}>
-            <Typography variant="p" sx={{ fontSize: { sm: "24px", xs: "20px" } }}>e-Katar</Typography>
+            <Typography variant="p" sx={{ fontSize: { sm: "24px", xs: "20px" } }}>{cart?.payment_method}</Typography>
           </Box>
         </Box>
         <Box className="minuman" mt={"30px"} display={"grid"} gap={"15px"}>
@@ -238,8 +276,9 @@ function OrderDetail() {
             flexWrap: "wrap",
             gap: "30px"
           }}>
-            <CardDetailMakanan menu={{ title: "Nasi Goreng", description: "Tes", image: NasiGoreng, price: 1000000 }} />
-            <CardDetailMakanan menu={{ title: "Jus Jeruk", description: "Tes", image: JusJeruk, price: 2000000 }} />
+            {cart?.items.map(menus => (
+              <CardDetailMakanan key={menus._id} menu={{ title: menus.menu.title, description: menus.menu.description, image: menus.menu.image, price: menus.price }} />
+            ))}
           </Box>
         </Box>
         <Box mt={"50px"} display={"flex"}>
@@ -247,7 +286,7 @@ function OrderDetail() {
             backgroundImage: "linear-gradient(270deg, #1A73E9, #6C92F4)",
             color: "white",
             padding: "15px 30px",
-            fontSize: {sm: "18px", xs: "14px"},
+            fontSize: { sm: "18px", xs: "14px" },
             borderRadius: "8px",
             marginX: "auto",
             marginBottom: "80px"
@@ -264,29 +303,29 @@ const CardDetailMakanan = ({ menu }) => {
   return (
     <Box className="card-lebar shadow-box"
       sx={{
-        padding: {sm: "30px", xs: "0px"},
+        padding: { sm: "30px", xs: "0px" },
         borderRadius: "10px",
         display: "flex",
         alignItems: "center",
         width: "50%",
         flex: "50"
       }}>
-      <img className="img-card-order" src={menu?.image} alt="" />
+      <img className="img-card-order" src={menu?.image || NoImage} alt="" />
       <Box className="deskripsi" ml={"25px"} display={"grid"}>
         <Typography variant="p"
           sx={{
-            fontSize: {sm: "18px", xs: "14px"},
+            fontSize: { sm: "18px", xs: "14px" },
             fontWeight: "bold"
           }}
         >{menu?.title}</Typography>
         <Typography variant="p"
           sx={{
-            fontSize: {sm: "14px", xs: "12px"}
+            fontSize: { sm: "14px", xs: "12px" }
           }}
         >{menu?.description}</Typography>
         <Typography variant="p"
           sx={{
-            fontSize: {sm: "18px", xs: "14px"},
+            fontSize: { sm: "18px", xs: "14px" },
             fontWeight: "bold"
           }}
         >Rp.{menu?.price}</Typography>

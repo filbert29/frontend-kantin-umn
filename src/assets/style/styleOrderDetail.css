@@ -1,6 +1,7 @@
 .img-card-order{
     width: 150px;
     height: 150px;
+    border-radius: 15px;
 }
 
 @media only screen and (max-width: 420px) {

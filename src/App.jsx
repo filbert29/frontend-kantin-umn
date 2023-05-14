@@ -94,7 +94,7 @@ function App() {
             </Route>
             <Route path='order'>
               <Route path='orderconfirmation/:id' element={<OrderConfirmation />} />
-              <Route path='orderdetail' element={<OrderDetail />} />
+              <Route path='orderdetail/:id' element={<OrderDetail />} />
             </Route>
             <Route path='profile'>
               <Route path='myaccount' element={<MyAccount />} />

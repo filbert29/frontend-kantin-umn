@@ -86,7 +86,7 @@ const History = () => {
                                 fontSize: { sm: "20px", xs: "14px" },
                                 fontWeight: "bold"
                             }}>Total Price: Rp. {data?.total_price}</Typography>
-                        <Button component={Link} to={"/customer/order/orderdetail"} sx={{
+                        <Button component={Link} to={`/customer/order/orderdetail/${data?._id}`} sx={{
                             backgroundColor: "#3DA9FC",
                             color: "white",
                             fontFamily: "Poppins",
