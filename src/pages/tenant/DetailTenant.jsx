@@ -245,7 +245,7 @@ function DetailTenant() {
                         </Box>
 
                         <Grid className="list-food" container spacing={2}>
-                            {tenant_menus[0].menu ? tenant_menus[0].menu.slice(0, 4).map(menu => (
+                            {tenant_menus[0]?.menu ? tenant_menus[0].menu.slice(0, 4).map(menu => (
                                 <Grid item xs={6} sm={4} md={3}><FoodCardComponent menu={menu} handleClick={() => handleOpen(menu)} /></Grid>
                             )) : <Typography variant="h1">No Data</Typography>}
                         </Grid>
