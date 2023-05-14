@@ -1,4 +1,4 @@
-import { Box, Button, Container, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Rating, Tab, Tabs, TextField, Typography } from "@mui/material";
 import Header from "../../component/Header";
 import PicTenant from "../../assets/pic-tenant.png"
 import { Link } from "react-router-dom";
@@ -8,12 +8,26 @@ import '../../assets/style/styleHistory.css'
 import BASE_URL from "../../config/BASE_URL";
 import useSWR from 'swr'
 import fetcher from "../../helper/fetcher"
-import { useSelector } from "react-redux";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addNotification } from "../../store/Notification";
 
 const History = () => {
     const title = "History"
 
     const [value, setValue] = useState('1');
+    const [valueRating, setValueRating] = useState(1);
+    const [open, setOpen] = useState(false)
+    const [review, setReview] = useState('')
+    const [idOrder, setIdOrder] = useState('')
+
+    const dispatch = useDispatch()
+
+    const handleOpen = (id) => {
+        setIdOrder(id)
+        setOpen(true);
+        console.log(id)
+    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -34,7 +48,36 @@ const History = () => {
     if (isLoading) return <div>loading...</div>
     if (error) return <div>failed to load</div>
 
-    console.log(order)
+    const handleAddReview = async (e) => {
+        e.preventDefault();
+
+        try {
+            const content = review;
+            const rating = valueRating;
+            const id = idOrder;
+            const add_review = { rating, content };
+            const response = await axios.post(BASE_URL + `/order/review/${id}`, add_review, {
+                headers: {
+                    Authorization: `Bearer ${accountData?.access_token}`
+                },
+            })
+            setReview('');
+            setOpen(false)
+            setValueRating(1)
+            dispatch(addNotification({
+                message: "Success add review to tenant",
+                type: "success"
+            }))
+        } catch (err) {
+            setReview('');
+            setOpen(false)
+            setValueRating(1)
+            dispatch(addNotification({
+                message: "Failed add review to tenant",
+                type: "error"
+            }))
+        }
+    }
 
     const CardCart = ({ data }) => {
         return (
@@ -65,7 +108,7 @@ const History = () => {
                                 sx={{
                                     fontSize: { sm: "16px", xs: "12px" }
                                 }}>{data?.items ? data?.items.map(menus => (
-                                    <>{menus?.menu?.title},</>
+                                    <span key={menus.menu._id}>{menus?.menu?.title},</span>
                                 )) : <Typography variant="h1">No Data</Typography>}</Typography>
                             <Typography variant="p"
                                 sx={{
@@ -93,14 +136,61 @@ const History = () => {
                             paddingX: "20px",
                             ":hover": { backgroundColor: "#058ffa" }
                         }}>Detail</Button>
+                        {data?.status === "completed" && !data?.review ? (
+                            <Button
+                                onClick={() => handleOpen(data?._id)}
+                                sx={{
+                                    backgroundColor: "white",
+                                    color: "#3DA9FC",
+                                    fontFamily: "Poppins",
+                                    paddingX: "20px",
+                                    border: "1px solid #3DA9FC"
+                                }}>Review</Button>
+                        ) : (<></>)}
                     </Box>
                 </Box>
             </Box>
         )
     }
 
+    const handleClose = () => {
+        setReview('');
+        setOpen(false)
+        setValueRating(1)
+        setIdOrder(undefined)
+    };
+
+    console.log(order)
+
     return (
         <div>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Review</DialogTitle>
+                <DialogContent>
+                    <Rating
+                        name="simple-controlled"
+                        value={valueRating}
+                        onChange={(event, newValue) => {
+                            setValueRating(newValue);
+                        }}
+                    />
+                    <TextField
+                        onChange={(e) => setReview(e.target.value)}
+                        value={review}
+                        margin="dense"
+                        id="review"
+                        label="How was the food?"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button color="error" onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleAddReview}>Submit</Button>
+                </DialogActions>
+            </Dialog>
+
             <Container
                 sx={{
                     maxWidth: { md: "md", sm: "sm" }
@@ -125,10 +215,10 @@ const History = () => {
                                 </TabList>
                             </Box>
                             <TabPanel value="1">
-                            {order ? order.map(order => {
+                                {order ? order.map(order => {
                                     if (order?.status == "ready" || order?.status == "created") {
                                         return (
-                                            <Box>
+                                            <Box key={order?._id}>
                                                 <CardCart data={order} />
                                                 <Liner />
                                             </Box>
@@ -140,7 +230,7 @@ const History = () => {
                                 {order ? order.map(order => {
                                     if (order?.status == "completed" || order?.status == "rejected") {
                                         return (
-                                            <Box>
+                                            <Box key={order?._id}>
                                                 <CardCart data={order} />
                                                 <Liner />
                                             </Box>
