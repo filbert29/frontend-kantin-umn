@@ -60,7 +60,7 @@ const TenantProfilePage = () => {
                         <Edit />
                     </IconButton>
                     <Box>
-                        <Typography variant="h6" fontWeight={600} fontSize={16} >Tenant Name</Typography>
+                        <Typography variant="h6" fontWeight={600} fontSize={16} >Nama Toko</Typography>
                         <Typography variant="h5" fontSize={20}>{profile?.full_name}</Typography>
                     </Box>
                     <Box>
@@ -68,16 +68,16 @@ const TenantProfilePage = () => {
                         <Typography variant="h5" fontSize={20}>{profile?.email}</Typography>
                     </Box>
                     <Box>
-                        <Typography variant="h6" fontWeight={600} fontSize={16} >Description</Typography>
+                        <Typography variant="h6" fontWeight={600} fontSize={16} >Deskripsi</Typography>
                         <Typography variant="h5" fontSize={20}>{profile?.description}</Typography>
                     </Box>
                     <Box>
-                        <Typography variant="h6" fontWeight={600} fontSize={16} >Location</Typography>
+                        <Typography variant="h6" fontWeight={600} fontSize={16} >Lokasi</Typography>
                         <Typography variant="h5" fontSize={20}>{profile?.location}</Typography>
                     </Box>
                 </Box>
                 <Button onClick={() => setOpenChangePassword(true)} variant="contained" color="warning" endIcon={<Lock />}>
-                    Change Password
+                    Ubah Password
                 </Button>
                 <Button onClick={handleLogout} variant="contained" endIcon={<Logout />}>
                     Logout
@@ -144,13 +144,13 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
             })
 
             if (response?.status === 200) {
-                dispatch(addNotification({ message: "Success edit profile image", type: "success" }))
+                dispatch(addNotification({ message: "Berhasil ubah foto profil", type: "success" }))
                 mutate()
                 onClose()
             }
         } catch (error) {
             console.log(error)
-            dispatch(addNotification({ message: "Failed to edit profile image", type: "error" }))
+            dispatch(addNotification({ message: "Gagal mengubah foto profil", type: "error" }))
         } finally {
             setLoading(false)
         }
@@ -182,7 +182,7 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
                             <Typography variant="h5" sx={{ textAlign: "center" }}>
                                 <Upload sx={{ fontSize: 80, color: "gray" }} />
                                 <br />
-                                Upload your image
+                                Unggah foto profil
                             </Typography>
                         </Box>
                     </Box>
@@ -198,7 +198,7 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
                 <input ref={imageFileRef} type="file" style={{ display: "none" }} onChange={handleChangeEditImage} />
 
                 <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-                    <Button fullWidth color="error" onClick={onClose} variant="contained" sx={{ mr: 2 }}>Cancel</Button>
+                    <Button fullWidth color="error" onClick={onClose} variant="contained" sx={{ mr: 2 }}>Batal</Button>
                     <Button fullWidth disabled={!newImage || loading === true} onClick={handleSubmit} variant="contained">
                         {loading ? <CircularProgress size={16} /> : "Submit"}
                     </Button>
@@ -238,13 +238,13 @@ const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
             })
 
             if (response?.status === 200) {
-                dispatch(addNotification({ message: "Success edit profile", type: "success" }))
+                dispatch(addNotification({ message: "Berhasil mengubah profil", type: "success" }))
                 mutate()
                 onClose()
             }
         } catch (error) {
             setFormError(error?.response?.data?.error)
-            dispatch(addNotification({ message: "Failed to edit profile", type: "error" }))
+            dispatch(addNotification({ message: "Gagak mengubah profil", type: "error" }))
         } finally {
             setLoading(false)
         }
@@ -261,7 +261,7 @@ const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
                     <TextField
                         fullWidth
                         type="text"
-                        label="Full Name"
+                        label="Nama Toko"
                         variant="outlined"
                         name="full_name"
                         value={form.full_name}
@@ -270,7 +270,7 @@ const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
                     <TextField
                         fullWidth
                         type="text"
-                        label="Location"
+                        label="Lokasi"
                         variant="outlined"
                         name="location"
                         value={form.location}
@@ -287,7 +287,7 @@ const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
                     />
                     <TextField
                         fullWidth
-                        label="Description"
+                        label="Deskripsi"
                         variant="outlined"
                         name="description"
                         value={form.description}
@@ -298,7 +298,7 @@ const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
                 </Box>
                 {formError && <Typography color="red">{formError}</Typography>}
                 <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-                    <Button fullWidth color="error" onClick={onClose} variant="contained" sx={{ mr: 2 }}>Cancel</Button>
+                    <Button fullWidth color="error" onClick={onClose} variant="contained" sx={{ mr: 2 }}>Batal</Button>
                     <Button fullWidth disabled={loading === true} onClick={handleSubmit} variant="contained">
                         {loading ? <CircularProgress size={16} /> : "Submit"}
                     </Button>
@@ -349,11 +349,11 @@ const ModalChangePassword = ({ open, handleClose }) => {
             })
 
             if (response?.status === 200) {
-                dispatch(addNotification({ message: "Change password success", type: "success" }))
+                dispatch(addNotification({ message: "Berhasil mengubah password", type: "success" }))
                 handleClose()
             }
         } catch (error) {
-            dispatch(addNotification({ message: "Change password error", type: "error" }))
+            dispatch(addNotification({ message: "Gagal mengubah password", type: "error" }))
             setFormError(error?.response?.data?.error)
         } finally {
             setLoading(false)
@@ -379,7 +379,7 @@ const ModalChangePassword = ({ open, handleClose }) => {
                         <TextField
                             fullWidth
                             required
-                            label="New Password"
+                            label="Password Baru"
                             variant="outlined"
                             name="new_password"
                             value={form.new_password}
@@ -389,7 +389,7 @@ const ModalChangePassword = ({ open, handleClose }) => {
                         <TextField
                             fullWidth
                             required
-                            label="Confirm New Password"
+                            label="Konfirmasi Password Baru"
                             variant="outlined"
                             name="confirm_new_password"
                             value={form.confirm_new_password}
@@ -399,7 +399,7 @@ const ModalChangePassword = ({ open, handleClose }) => {
                     </Box>
                     {formError && <Typography color="red">{formError}</Typography>}
                     <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-                        <Button fullWidth color="error" onClick={handleClose} variant="contained" sx={{ mr: 2 }}>Cancel</Button>
+                        <Button fullWidth color="error" onClick={handleClose} variant="contained" sx={{ mr: 2 }}>Batal</Button>
                         <Button fullWidth disabled={loading === true || !isFormValid} type="submit" variant="contained">
                             {loading ? <CircularProgress size={16} /> : "Submit"}
                         </Button>

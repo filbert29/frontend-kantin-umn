@@ -35,10 +35,10 @@ const TenantReviewPage = () => {
                     ))
                 )
             } else {
-                return <Typography variant="p" textAlign={"center"}>--- No Review ---</Typography>
+                return <Typography variant="p" textAlign={"center"}>--- Tidak Ada Penilaian ---</Typography>
             }
         } else {
-            return <Typography variant="p" textAlign={"center"}>--- No Review ---</Typography>
+            return <Typography variant="p" textAlign={"center"}>--- Tidak Ada Penilaian ---</Typography>
         }
     }
 
@@ -54,8 +54,8 @@ const TenantReviewPage = () => {
                 </Box>
             </Box>
             <Box sx={{ my: 4 }}>
-                <Typography variant="h6">Total Review : {reviewData?.total_review}</Typography>
-                <Typography variant="h6">Average : {reviewData?.average_rating}</Typography>
+                <Typography variant="h6">Total Penilaian : {reviewData?.total_review}</Typography>
+                <Typography variant="h6">Rata-rata : {reviewData?.average_rating}</Typography>
             </Box>
             <Box sx={{ display: "flex", py: 2, gap: 2, overflowX: "auto", mb: 2 }}>
                 <Chip variant={activeFilter === "all" ? "filled" : "outlined"} onClick={() => setActiveFilter("all")} sx={{ px: 1 }} label="All" />

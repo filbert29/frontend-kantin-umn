@@ -51,11 +51,11 @@ const TenantMenuPage = () => {
                 }
             })
             if (response?.status === 200) {
-                dispatch(addNotification({ message: "Set menu available success", type: "success" }))
+                dispatch(addNotification({ message: "Berhasil menandai menu tersedia", type: "success" }))
                 mutate()
             }
         } catch (error) {
-            dispatch(addNotification({ message: "Set menu out of stock failed", type: "error" }))
+            dispatch(addNotification({ message: "Gagal menandai menu tersedia", type: "error" }))
         }
     }
 
@@ -67,11 +67,11 @@ const TenantMenuPage = () => {
                 }
             })
             if (response?.status === 200) {
-                dispatch(addNotification({ message: "Delete menu success", type: "success" }))
+                dispatch(addNotification({ message: "Berhasil menghapus menu", type: "success" }))
                 mutate()
             }
         } catch (error) {
-            dispatch(addNotification({ message: "Delete menu failed", type: "error" }))
+            dispatch(addNotification({ message: "Gagal menghapus menu", type: "error" }))
         }
     }
 
@@ -83,7 +83,7 @@ const TenantMenuPage = () => {
                     <>
                         <DFlexJustifyContentBetween sx={{ mb: 3 }}>
                             <Typography variant="h5">({allMenu?.length}) Menu</Typography>
-                            <Button onClick={handleAddMenu} variant="contained" color="success" startIcon={<Add />} size="small">Add Menu</Button>
+                            <Button onClick={handleAddMenu} variant="contained" color="success" startIcon={<Add />} size="small">Tambah Menu</Button>
                         </DFlexJustifyContentBetween>
                         <Box sx={{ display: "grid", rowGap: 3 }}>
                             {allMenu.map((item) => (
@@ -108,8 +108,8 @@ const TenantMenuPage = () => {
                                         <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%" }}>
                                             <Box>
                                                 <DFlexJustifyContentBetween>
-                                                    <Typography variant="p" fontSize={13} >{item?.category?.title || "No Category"} │ {item?.prep_duration} Minutes</Typography>
-                                                    <Chip label={item?.is_available ? "Available" : "Out Of Stock"} color={item?.is_available ? "info" : "warning"} size="small" sx={{ display: { xs: "none", sm: "block" } }} />
+                                                    <Typography variant="p" fontSize={13} >{item?.category?.title || "Tanpa kategori"} │ {item?.prep_duration} Menit</Typography>
+                                                    <Chip label={item?.is_available ? "Tersedia" : "Tidak Tersedia"} color={item?.is_available ? "info" : "warning"} size="small" sx={{ display: { xs: "none", sm: "block" } }} />
                                                 </DFlexJustifyContentBetween>
                                                 <Typography component="h3" fontSize={18} fontWeight={600} >{item?.title}</Typography>
                                                 <Typography variant="p" sx={{
@@ -128,15 +128,15 @@ const TenantMenuPage = () => {
                                     <Box sx={{ display: "flex", justifyContent: "flex-end", flexDirection: { xs: "column", sm: "row" }, gap: 2, mt: 1 }}>
                                         <Box sx={{ display: "flex", gap: 2 }}>
                                             <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => setDeleteMenu({delete: () => handleDeleteMenu(item) })} color="error" variant="contained" size="small" endIcon={<Delete />} >
-                                                Delete
+                                                Hapus
                                             </Button>
                                             <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => handleEditMenu(item)} variant="contained" size="small" endIcon={<Edit />} >
                                                 Edit
                                             </Button>
                                         </Box>
                                         <ButtonGroup disableElevation={true} size="small" variant="outlined" aria-label="outlined button group">
-                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => toggleMenuAvailable(item, true)} color="info" variant={item?.is_available === true ? "contained" : "outlined"} >Available</Button>
-                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => toggleMenuAvailable(item, false)} color="warning" variant={item?.is_available === false ? "contained" : "outlined"} >Out Of Stock</Button>
+                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => toggleMenuAvailable(item, true)} color="info" variant={item?.is_available === true ? "contained" : "outlined"} >Tersedia</Button>
+                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => toggleMenuAvailable(item, false)} color="warning" variant={item?.is_available === false ? "contained" : "outlined"} >Tidak Tersedia</Button>
                                         </ButtonGroup>
                                     </Box>
                                 </Card>
@@ -144,7 +144,7 @@ const TenantMenuPage = () => {
                         </Box>
                     </>
                 ) : (
-                    <Typography variant="p" textAlign={"center"}>--- No Menu ---</Typography>
+                    <Typography variant="p" textAlign={"center"}>--- Tidak ada menu ---</Typography>
                 )}
             </Container>
 
@@ -234,7 +234,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                 })
 
                 if (response?.status === 200) {
-                    dispatch(addNotification({ message: "Edit menu success", type: "success" }))
+                    dispatch(addNotification({ message: "Berhasil mengedit menu", type: "success" }))
                     mutate()
                     handleClose()
                 }
@@ -247,7 +247,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                 })
 
                 if (response?.status === 200) {
-                    dispatch(addNotification({ message: "Add menu success", type: "success" }))
+                    dispatch(addNotification({ message: "Berhasil menambahkan menu", type: "success" }))
                     mutate()
                     handleClose()
                 }
@@ -266,7 +266,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
     return (
         <Modal open={open} onClose={handleClose}>
             <Box sx={{ ...ModalStyle, overflowY: "auto", maxHeight: "80vh", width: { xs: 300, sm: 600 } }}>
-                <Typography textAlign={"center"} variant="h5" mb={2} >{menuSelected ? "Edit" : "Add"} Menu</Typography>
+                <Typography textAlign={"center"} variant="h5" mb={2} >{menuSelected ? "Edit" : "Tambah"} Menu</Typography>
                 <Box component={"form"} sx={{ display: "flex", flexDirection: "column", rowGap: 2 }} onSubmit={handleSubmit}>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                         {!menuImage.preview && !menuSelected?.image ? (
@@ -289,7 +289,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                                     <Typography variant="h5" sx={{ textAlign: "center" }}>
                                         <Upload sx={{ fontSize: 80, color: "gray" }} />
                                         <br />
-                                        Upload your image
+                                        Unggah Foto Menu
                                     </Typography>
                                 </Box>
                             </Box>
@@ -309,8 +309,8 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                     <TextField
                         variant="standard"
                         name="title"
-                        label="Menu Title"
-                        placeholder="Enter Menu Tile"
+                        label="Judul Menu"
+                        placeholder="Masukkan Judul Menu"
                         value={form?.title}
                         onChange={handleChange}
                         fullWidth
@@ -319,8 +319,8 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                     <TextField
                         variant="standard"
                         name="description"
-                        label="Menu Description"
-                        placeholder="Enter Menu Description"
+                        label="Deskripsi Menu"
+                        placeholder="Masukkan Deskripsi Menu"
                         value={form?.description}
                         onChange={handleChange}
                         fullWidth
@@ -328,8 +328,8 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                     <TextField
                         variant="standard"
                         name="price"
-                        label="Menu Price"
-                        placeholder="Enter Menu Price"
+                        label="Harga Menu"
+                        placeholder="Masukkan Harga Menu"
                         value={form?.price}
                         onChange={handleChange}
                         fullWidth
@@ -339,8 +339,8 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                     <TextField
                         variant="standard"
                         name="prep_duration"
-                        label="Menu Preparation Duration (Menit)"
-                        placeholder="Enter Menu Preparation Duration"
+                        label="Durasi Persiapan Menu (Menit)"
+                        placeholder="Masukkan Durasi Persiapan Menu"
                         value={form?.prep_duration}
                         onChange={handleChange}
                         fullWidth
@@ -352,8 +352,8 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                             select
                             variant="standard"
                             name="category"
-                            label="Menu Category"
-                            placeholder="Enter Menu Category"
+                            label="Kategori Menu"
+                            placeholder="Pilih Kategori Menu"
                             value={form?.category}
                             onChange={handleChange}
                             fullWidth
@@ -363,15 +363,15 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                                     <MenuItem key={item?._id} value={item?._id}>{item?.title}</MenuItem>
                                 ))
                             ) : (
-                                <MenuItem value="" disabled={true}>No Category</MenuItem>
+                                <MenuItem value="" disabled={true}>Tidak ada kategori</MenuItem>
                             )}
 
                         </TextField>
-                        <Button onClick={addCategory} variant="contained" color="primary" sx={{ mt: 1, width: 180 }}>Add Category</Button>
+                        <Button onClick={addCategory} variant="contained" color="primary" sx={{ mt: 1, width: 180 }}>+ Kategori</Button>
                     </Box>
-                    {error && <Typography variant="p" color="error">Something went wrong</Typography>}
+                    {error && <Typography variant="p" color="error">Terdapat kesalahan pada sistem..</Typography>}
                     <Button variant="contained" color="success" type="submit" disabled={isLoading} sx={{ mt: 2 }}>
-                        {isLoading ? "Loading..." : menuSelected ? "Edit Menu" : "Add Menu"}
+                        {isLoading ? "Loading..." : menuSelected ? "Edit Menu" : "Tambah Menu"}
                     </Button>
                 </Box>
             </Box>
@@ -419,16 +419,16 @@ const ModalAddCategory = ({ open, handleClose }) => {
                     <TextField
                         variant="standard"
                         name="title"
-                        label="Category Title"
-                        placeholder="Enter Category Tile"
+                        label="Judul Kategori"
+                        placeholder="Masukkan Judul Kategori"
                         value={title}
                         onChange={handleChange}
                         fullWidth
                         required
                     />
-                    {error && <Typography variant="p" color="error">Something went wrong</Typography>}
+                    {error && <Typography variant="p" color="error">Terdapat kesalahan pada sistem</Typography>}
                     <Button variant="contained" color="success" type="submit" disabled={isLoading} sx={{ mt: 2 }}>
-                        {isLoading ? "Loading..." : "Add Category"}
+                        {isLoading ? "Loading..." : "Tambah Kategori"}
                     </Button>
                 </Box>
             </Box>

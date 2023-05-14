@@ -4,19 +4,19 @@ const ORDER_STATUS = {
         color: "warning"
     },
     preparing: {
-        label: "On Progress",
+        label: "Dalam Proses",
         color: "secondary"
     },
     ready: {
-        label: "Ready to Pickup",
+        label: "Siap Diambil",
         color: "success"
     },
     completed: {
-        label: "Completed",
+        label: "Selesai",
         color: "primary"
     },
     rejected: {
-        label: "Rejected",
+        label: "Dibatalkan",
         color: "error"
     }
 }

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import { AccessTime, ArrowBackIos, Cached, Cancel, Done, ExpandMore, LocalDining } from "@mui/icons-material";
@@ -16,6 +16,7 @@ import { formatThousand } from "../../../helper/number";
 import axios from "axios";
 import ActionTimer from "../../../component/general/ActionTimer";
 import ItemCard from "../../../component/tenant/ItemCard";
+import { addNotification } from "../../../store/Notification";
 
 const TenantOrderDetailPage = () => {
     const { id } = useParams();
@@ -23,6 +24,8 @@ const TenantOrderDetailPage = () => {
     const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/${id}`, (url) => fetcher(url, access_token))
 
     const [isMobile] = useState(window.matchMedia("(max-width: 500px)").matches)
+
+    const dispatch = useDispatch()
 
     const [loading, setLoading] = useState({ action: undefined, state: false })
     const handleAction = async (action) => {
@@ -34,9 +37,16 @@ const TenantOrderDetailPage = () => {
                 }
             })
 
-            console.log("sini")
+            dispatch(addNotification({
+                message: `Berhasil mengubah status pesanan: ${ORDER_STATUS[action].label}`,
+                type: "success"
+            }))
+
         } catch (error) {
-            console.log(error)
+            dispatch(addNotification({
+                message: `Gagal mengubah status pesanan: ${ORDER_STATUS[action].label}`,
+                type: "error"
+            }))
         } finally {
             mutate()
             setLoading({ action: undefined, state: false })
@@ -51,7 +61,7 @@ const TenantOrderDetailPage = () => {
     return (
         <Container>
             <Button sx={{ color: "black" }} startIcon={<ArrowBackIos />} onClick={() => navigate(-1)}>
-                Back to order history
+                Kembali ke histori pesanan
             </Button>
 
             <OrderProgress order={order} isMobile={isMobile} />
@@ -67,7 +77,7 @@ const TenantOrderDetailPage = () => {
                 <LabelValue
                     labelSize={4.2}
                     valueSize={7.8}
-                    label="Order Date"
+                    label="Tanggal Pesan"
                     value={moment(order?.progress?.created).format("llll")}
                     valueSx={{ textAlign: "right" }}
                 />
@@ -81,15 +91,15 @@ const TenantOrderDetailPage = () => {
                 <LabelValue
                     labelSize={4.2}
                     valueSize={7.8}
-                    label="Prep Duration"
-                    value={`${order?.total_prep_duration} minutes (estimated)`}
+                    label="Durasi Persiapan"
+                    value={`${order?.total_prep_duration} Menit (Estimasi)`}
                     valueSx={{ textAlign: "right" }}
                 />
             </Grid>
             <Divider sx={{ my: 2 }} />
             <Box>
                 <Typography variant="h6" component="h6" fontWeight="bold">
-                    Order Detail
+                    Detail Pesanan
                 </Typography>
             </Box>
             <Box sx={{ mt: 0, display: "grid", rowGap: 3 }}>
@@ -116,7 +126,7 @@ const TenantOrderDetailPage = () => {
                                 color="error"
                                 disabled={loading.state}
                             >
-                                {loading.state && loading.action === "reject" ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Reject"}
+                                {loading.state && loading.action === "reject" ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Tolak"}
                             </Button>
                             <Button
                                 onClick={() => handleAction("confirm")}
@@ -130,7 +140,7 @@ const TenantOrderDetailPage = () => {
                                     <CircularProgress sx={{ color: "white" }} size={20} />
                                 ) : (
                                     <>
-                                        Accept &nbsp; <ActionTimer time={order?.progress?.created} onFinish={() => { mutate() }} />
+                                        Terima &nbsp; <ActionTimer time={order?.progress?.created} onFinish={() => { mutate() }} />
                                     </>
                                 )}
 
@@ -147,7 +157,7 @@ const TenantOrderDetailPage = () => {
                             color="secondary"
                             disabled={loading.state}
                         >
-                            {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Mark as ready"}
+                            {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Siap diambil"}
                         </Button>
                     )}
 
@@ -160,7 +170,7 @@ const TenantOrderDetailPage = () => {
                             color="success"
                             disabled={loading.state}
                         >
-                            {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Mark as complete"}
+                            {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Selesai"}
                         </Button>
                     )}
                     {(order.status === "completed") && (
@@ -198,7 +208,7 @@ const OrderProgress = ({ order, isMobile }) => {
                             {ORDER_STATUS[order?.status].label}
                         </Typography>
                         <Typography component="p" variant="p">
-                            See Detail
+                            Lihat Detail
                         </Typography>
                     </DFlexJustifyContentBetween>
                 </AccordionSummary>
@@ -219,7 +229,7 @@ const OrderProgress = ({ order, isMobile }) => {
                                 StepIconProps={{ sx: { color: !!(order?.progress?.preparing) ? "#1976d2" : "gray" } }}
                                 StepIconComponent={Cached}
                             >
-                                On Progress {isMobile ? "-" : <br />} {order?.progress.preparing && (
+                                Dalam Proses {isMobile ? "-" : <br />} {order?.progress.preparing && (
                                     moment(order?.progress?.preparing).format("DD MMM YYYY HH:mm")
                                 )}
                             </StepLabel>
@@ -230,7 +240,7 @@ const OrderProgress = ({ order, isMobile }) => {
                                 StepIconComponent={LocalDining}
                             >
                                 <Typography variant="" sx={{ color: "gray" }}>
-                                    Ready to Pickup {isMobile ? "-" : <br />} {order?.progress.ready && (
+                                    Siap diambil {isMobile ? "-" : <br />} {order?.progress.ready && (
                                         moment(order?.progress?.ready).format("DD MMM YYYY HH:mm")
                                     )}
                                 </Typography>
@@ -241,7 +251,7 @@ const OrderProgress = ({ order, isMobile }) => {
                                 StepIconProps={{ sx: { color: !!(order?.progress?.completed) ? "#1976d2" : "gray" } }}
                                 StepIconComponent={Done}
                             >
-                                Completed {isMobile ? "-" : <br />} {order?.progress.completed && (
+                                Selesai {isMobile ? "-" : <br />} {order?.progress.completed && (
                                     moment(order?.progress?.completed).format("DD MMM YYYY HH:mm")
                                 )}
                             </StepLabel>
@@ -253,7 +263,7 @@ const OrderProgress = ({ order, isMobile }) => {
                                     StepIconComponent={Cancel}
                                     error={true}
                                 >
-                                    Rejected {isMobile ? "-" : <br />} {order?.progress.rejected && (
+                                    Dibatalkan {isMobile ? "-" : <br />} {order?.progress.rejected && (
                                         moment(order?.progress?.rejected).format("DD MMM YYYY HH:mm")
                                     )}
                                 </StepLabel>

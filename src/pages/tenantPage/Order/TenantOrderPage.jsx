@@ -62,10 +62,10 @@ const OnProgressOrder = () => {
     return (
         <Box sx={{ mt: 2 }}>
             <Box my={2} >
-                <Typography component="p" variant="p" fontWeight={600} mb={1} >Order Priority</Typography>
+                <Typography component="p" variant="p" fontWeight={600} mb={1} >Prioritas</Typography>
                 <Select fullWidth={true} value={priority} onChange={(event) => { setPriority(event.target.value) }}>
-                    <MenuItem value="fcfs">First Come First</MenuItem>
-                    <MenuItem value="sjf">Shortest Job First</MenuItem>
+                    <MenuItem value="fcfs">Pesanan paling dahulu</MenuItem>
+                    <MenuItem value="sjf">Pesanan paling singkat</MenuItem>
                 </Select>
             </Box>
             <Accordion defaultExpanded={true} sx={customAccordionStyle}>
@@ -98,7 +98,7 @@ const OnProgressOrder = () => {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                 >
                     <Typography sx={{ width: "100%" }} fontWeight={"bold"}>
-                        On Progress
+                        Dalam Proses
                     </Typography>
                     {order?.preparing?.length > 0 &&
                         <Chip label={order?.preparing?.length} color="info" size="small" />
@@ -122,7 +122,7 @@ const OnProgressOrder = () => {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                 >
                     <Typography sx={{ width: "100%" }} fontWeight={"bold"}>
-                        Ready
+                        Siap Diambil
                     </Typography>
                     {order?.ready?.length > 0 &&
                         <Chip label={order?.ready?.length} color="info" size="small" />
@@ -193,7 +193,7 @@ const HistoryOrder = () => {
     return (
         <Box sx={{ mt: 2, display: "grid", rowGap: 3 }}>
             <Box sx={{ overflowX: "auto", display: "flex", gap: 2, pb: 2 }}>
-                <Chip sx={{ px: 1 }} onClick={() => setFilter("all")} label={"All"} variant={filter === "all" ? "filled" : "outlined"} />
+                <Chip sx={{ px: 1 }} onClick={() => setFilter("all")} label={"Semua"} variant={filter === "all" ? "filled" : "outlined"} />
                 {Object.entries(ORDER_STATUS).map(([key, value]) => (
                     <Chip sx={{ px: 1 }} onClick={() => setFilter(key)} color={value.color} label={value.label} variant={filter === key ? "filled" : "outlined"} key={key} />
                 ))}
@@ -206,6 +206,6 @@ const HistoryOrder = () => {
 
 const NoOrder = () => (
     <Typography variant="p" fontSize={14} fontWeight={500} textAlign="center">
-        No Order
+        Tidak ada pesanan
     </Typography>
 )

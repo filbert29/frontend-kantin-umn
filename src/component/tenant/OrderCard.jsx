@@ -44,14 +44,14 @@ const OrderCard = ({ order }) => {
                         Rp. {formatThousand(order?.total_price)}
                     </Typography>
                     <Typography component="p" variant="p" fontSize={12} fontWeight={500}>
-                        {order?.items?.reduce((acc, item) => acc + item?.quantity, 0)} Items
+                        {order?.items?.reduce((acc, item) => acc + item?.quantity, 0)} barang
                     </Typography>
                 </Box>
                 {(order.status === "completed") && (
                     order?.review ? (
                         <Rating name="read-only" value={order?.review?.rating} readOnly size="medium" precision={1} />
                     ) : (
-                        <Typography component="p" variant="p" fontSize={13} fontWeight={500}>No review yet </Typography>
+                        <Typography component="p" variant="p" fontSize={13} fontWeight={500}>Tidak ada review </Typography>
                     )
                 )}
             </DFlexJustifyContentBetween>

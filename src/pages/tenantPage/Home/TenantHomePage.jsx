@@ -53,7 +53,7 @@ const TenantHomePage = () => {
                         >
                             {tenant?.description}
                         </Typography>
-                        <Typography component={"span"} variant="p" sx={{ cursor: "pointer" }} onClick={() => setMaximizeDescription(!maximizeDescription)}>{maximizeDescription ? " Show Less" : " Show More"}</Typography>
+                        <Typography component={"span"} variant="p" sx={{ cursor: "pointer" }} onClick={() => setMaximizeDescription(!maximizeDescription)}>{maximizeDescription ? " Lihat Sedikit" : " Lihat Semua"}</Typography>
                         <Typography
                             variant="p"
                             component="p"
@@ -81,20 +81,20 @@ const TenantHomePage = () => {
                 <Grid container spacing={2}>
                     <Grid item md={12} sm={6} xs={12}>
                         <CardStatistics
-                            title={"Your Balance"}
+                            title={"Jumlah Saldo"}
                             value={`Rp. ${formatThousand(tenant?.balance)}`}
                             handleClick={() => { }}
                             clickLabel={"Withdraw"}
                         />
                     </Grid>
                     <Grid item md={4} sm={6} xs={12}>
-                        <CardStatistics title={"Total Order"} value={tenant?.total_order} />
+                        <CardStatistics title={"Jumlah Pesanan"} value={tenant?.total_order} />
                     </Grid>
                     <Grid item md={4} sm={6} xs={12}>
-                        <CardStatistics title={"Total Order Today"} value={tenant?.total_order_today} />
+                        <CardStatistics title={"Pesanan Hari Ini"} value={tenant?.total_order_today} />
                     </Grid>
                     <Grid item md={4} sm={6} xs={12}>
-                        <CardStatistics title={"Total Review"} value={tenant?.total_review} />
+                        <CardStatistics title={"Total Penilaian"} value={tenant?.total_review} />
                     </Grid>
                 </Grid>
             </Box>
@@ -102,28 +102,28 @@ const TenantHomePage = () => {
                 <Grid container spacing={2}>
                     <Grid item md={3} xs={6}>
                         <CardActionMenu
-                            title={"All Menu"}
+                            title={"Semua Menu"}
                             image={MenuImage}
                             path={"/tenant/menu"}
                         />
                     </Grid>
                     <Grid item md={3} xs={6}>
                         <CardActionMenu
-                            title={"All Order"}
+                            title={"Semua Pesanan"}
                             image={OrderImage}
                             path={"/tenant/order"}
                         />
                     </Grid>
                     <Grid item md={3} xs={6}>
                         <CardActionMenu
-                            title={"All Review"}
+                            title={"Semua Penilaian"}
                             image={ReviewImage}
                             path={"/tenant/review"}
                         />
                     </Grid>
                     <Grid item md={3} xs={6}>
                         <CardActionMenu
-                            title={"Profile"}
+                            title={"Profil"}
                             image={ProfileImage}
                             path={"/tenant/profile"}
                         />
