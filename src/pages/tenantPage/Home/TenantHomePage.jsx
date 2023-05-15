@@ -190,7 +190,7 @@ const CardActionMenu = ({ title, image, path }) => {
                 width={128}
                 height={128}
                 sx={{ borderRadius: "10px", objectFit: "contain" }} />
-            <Typography variant="h5" fontWeight={"bold"}>{title}</Typography>
+            <Typography variant="h6" fontWeight={"bold"}>{title}</Typography>
         </Box>
     )
 }
