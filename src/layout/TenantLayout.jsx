@@ -7,6 +7,7 @@ import { io } from "socket.io-client";
 import { mutate } from "swr";
 import BASE_URL from "../config/BASE_URL";
 import { addNotification } from "../store/Notification";
+import browserNotification from "../helper/browserNotification";
 
 const theme = createTheme({
     components: {
@@ -35,6 +36,7 @@ const TenantLayout = () => {
         socket.on(`tenant/update/${accountData?._id}`, (data) => {
             const refetchUrl = `${BASE_URL}${data.url}`
             mutate(refetchUrl)
+            browserNotification(data?.message)
             dispatch(addNotification({
                 message: data?.message,
                 type: "info"

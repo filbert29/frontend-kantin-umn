@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { mutate } from "swr";
 import { addNotification } from "../store/Notification";
 import { useEffect } from "react";
+import browserNotification from "../helper/browserNotification";
 
 const socket = io(BASE_URL, { transports: ["websocket"], autoConnect: false })
 
@@ -30,12 +31,15 @@ const CustomerLayout = () => {
                 const refetchUrl = `${BASE_URL}${data?.url}`
                 mutate(refetchUrl)
             }
+            browserNotification(data?.message)
             dispatch(addNotification({
                 message: data?.message,
                 type: data?.severity || "info"
             }))
         })
     }
+
+    
 
     useEffect(() => {
         connectWebsocket()
