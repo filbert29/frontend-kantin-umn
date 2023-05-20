@@ -27,12 +27,12 @@ const NotificationCard = ({ message, type = "success", id }) => {
 
     return (
         <Snackbar sx={{position: "static"}} open={open}>
-            <Alert variant="filled" onClose={handleClose} severity={type} sx={{ minWidth: '250px' }}>
+            <Alert variant="filled" onClose={handleClose} severity={type} sx={{ minWidth: '250px', maxWidth: "339px" }}>
                 <Box>
-                    <Typography variant="h6" fontWeight={400} fontSize={16} >
+                    <Typography variant="h6" fontWeight={400} fontSize={16} marginBottom={1} >
                         {message}
                     </Typography>
-                    <Typography component={"p"} fontWeight={400} fontSize={10} >
+                    <Typography component={"p"} fontWeight={400} fontSize={12} >
                         {moment(id).format("DD MMMM YYYY, HH:mm:ss")}
                     </Typography>
                 </Box>
