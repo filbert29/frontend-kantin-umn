@@ -127,7 +127,7 @@ const TenantMenuPage = () => {
                                     </Box>
                                     <Box sx={{ display: "flex", justifyContent: "flex-end", flexDirection: { xs: "column", sm: "row" }, gap: 2, mt: 1 }}>
                                         <Box sx={{ display: "flex", gap: 2 }}>
-                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => setDeleteMenu({delete: () => handleDeleteMenu(item) })} color="error" variant="contained" size="small" endIcon={<Delete />} >
+                                            <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => setDeleteMenu({ delete: () => handleDeleteMenu(item) })} color="error" variant="contained" size="small" endIcon={<Delete />} >
                                                 Hapus
                                             </Button>
                                             <Button sx={{ width: { xs: "100%", sm: "auto" } }} onClick={() => handleEditMenu(item)} variant="contained" size="small" endIcon={<Edit />} >
@@ -144,7 +144,13 @@ const TenantMenuPage = () => {
                         </Box>
                     </>
                 ) : (
-                    <Typography variant="p" textAlign={"center"}>--- Tidak ada menu ---</Typography>
+                    <>
+                        <DFlexJustifyContentBetween sx={{ mb: 3 }}>
+                            <Typography variant="h5">({allMenu?.length}) Menu</Typography>
+                            <Button onClick={handleAddMenu} variant="contained" color="success" startIcon={<Add />} size="small">Tambah Menu</Button>
+                        </DFlexJustifyContentBetween>
+                        <Typography variant="p" textAlign={"center"}>--- Tidak ada menu ---</Typography>
+                    </>
                 )}
             </Container>
 
