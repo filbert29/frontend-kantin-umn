@@ -1,15 +1,14 @@
-.css-co5tlx-MuiButtonBase-root-MuiBottomNavigationAction-root svg {
+.MuiButtonBase-root svg {
     fill: white;
     padding: 3px;
-
 }
 
-.css-co5tlx-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected {
+.MuiBottomNavigation-root .Mui-selected {
     background-color: white;
     padding: 3px;
 }
 
-.css-co5tlx-MuiButtonBase-root-MuiBottomNavigationAction-root.Mui-selected svg {
+.MuiBottomNavigation-root .Mui-selected svg {
     fill: #2F64F9;
     padding: 3px;
 }
