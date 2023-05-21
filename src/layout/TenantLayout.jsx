@@ -7,6 +7,7 @@ import { io } from "socket.io-client";
 import { mutate } from "swr";
 import BASE_URL from "../config/BASE_URL";
 import { addNotification } from "../store/Notification";
+import browserNotification from "../helper/browserNotification";
 
 const theme = createTheme({
     components: {
@@ -35,6 +36,7 @@ const TenantLayout = () => {
         socket.on(`tenant/update/${accountData?._id}`, (data) => {
             const refetchUrl = `${BASE_URL}${data.url}`
             mutate(refetchUrl)
+            browserNotification(data?.message)
             dispatch(addNotification({
                 message: data?.message,
                 type: "info"
@@ -48,6 +50,7 @@ const TenantLayout = () => {
         return () => {
             socket.disconnect()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -94,7 +97,7 @@ const TenantNavBar = () => {
             value={value}
         >
             <BottomNavigationAction
-                label="Home"
+                label="Beranda"
                 value="home"
                 icon={<Home />}
                 LinkComponent={Link}
@@ -110,7 +113,7 @@ const TenantNavBar = () => {
                 sx={{ p: 0, minWidth: { xs: 70, sm: 80 } }}
             />
             <BottomNavigationAction
-                label="Order"
+                label="Pesanan"
                 value="order"
                 icon={<Receipt />}
                 LinkComponent={Link}
@@ -118,7 +121,7 @@ const TenantNavBar = () => {
                 sx={{ p: 0, minWidth: { xs: 70, sm: 80 } }}
             />
             <BottomNavigationAction
-                label="Review"
+                label="Penilaian"
                 value="review"
                 icon={<Comment />}
                 LinkComponent={Link}
@@ -126,7 +129,7 @@ const TenantNavBar = () => {
                 sx={{ p: 0, minWidth: { xs: 70, sm: 80 } }}
             />
             <BottomNavigationAction
-                label="Profile"
+                label="Profil"
                 value="profile"
                 icon={<Person />}
                 LinkComponent={Link}

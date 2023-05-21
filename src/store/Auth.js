@@ -19,6 +19,7 @@ export const authSlice = createSlice({
             state.isLoggedin = false
             state.accountData = null
             localstorage.removeFromLocalStorage("auth")
+            window.location.reload()
         },
     },
 })

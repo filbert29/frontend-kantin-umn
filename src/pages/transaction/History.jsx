@@ -41,7 +41,7 @@ const History = () => {
         )
     }
 
-    const urlOrder = `${BASE_URL}/order`
+    const urlOrder = `${BASE_URL}/order/`
     const { data: order, isLoading, error, mutate } = useSWR(urlOrder, (url) => fetcher(url, accountData?.access_token))
 
 
@@ -216,7 +216,7 @@ const History = () => {
                             </Box>
                             <TabPanel value="1">
                                 {order ? order.map(order => {
-                                    if (order?.status == "ready" || order?.status == "created") {
+                                    if (order?.status == "ready" || order?.status == "created" || order?.status == "preparing" ) {
                                         return (
                                             <Box key={order?._id}>
                                                 <CardCart data={order} />

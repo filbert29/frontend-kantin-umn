@@ -39,7 +39,7 @@ const TenantHomePage = () => {
             >
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={8}>
-                        <Typography variant="h4" fontWeight={"bold"}>{tenant?.full_name}</Typography>
+                        <Typography variant="h4" fontSize={28} fontWeight={"bold"}>{tenant?.full_name}</Typography>
                         <Typography
                             variant="p"
                             sx={{
@@ -102,21 +102,21 @@ const TenantHomePage = () => {
                 <Grid container spacing={2}>
                     <Grid item md={3} xs={6}>
                         <CardActionMenu
-                            title={"Semua Menu"}
+                            title={"Menu"}
                             image={MenuImage}
                             path={"/tenant/menu"}
                         />
                     </Grid>
                     <Grid item md={3} xs={6}>
                         <CardActionMenu
-                            title={"Semua Pesanan"}
+                            title={"Pesanan"}
                             image={OrderImage}
                             path={"/tenant/order"}
                         />
                     </Grid>
                     <Grid item md={3} xs={6}>
                         <CardActionMenu
-                            title={"Semua Penilaian"}
+                            title={"Penilaian"}
                             image={ReviewImage}
                             path={"/tenant/review"}
                         />
