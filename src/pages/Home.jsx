@@ -47,6 +47,7 @@ function Home() {
     if (errorRandomMenus) return <div>failed to load</div>
     if (isLoadingRandomMenus) return <div>loading...</div>
 
+    console.log(menus)
 
     return (
         <Container
@@ -187,7 +188,7 @@ function Home() {
                             className="mySwiper-tenant"
                         >
                             {menus ? menus.slice(0, 4).map(menu => (
-                                <SwiperSlide className="tenant-swiper"> <FoodCardComponent menu={menu} /> </SwiperSlide>
+                                <SwiperSlide className="tenant-swiper"> <Box sx={{textDecoration: "none"}} component={Link} to={`/customer/tenant/detailtenant/${menu?.tenant?._id}`}><FoodCardComponent menu={menu} /></Box>  </SwiperSlide>
                             )) : <Typography variant="h1">No Data</Typography>}
                         </Swiper>
                         {/* <Box
