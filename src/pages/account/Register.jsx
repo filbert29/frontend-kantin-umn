@@ -1,7 +1,7 @@
 import { Box, Button, IconButton, InputAdornment, Link as LinkMaterial, TextField, Typography } from "@mui/material";
 import Background from "../../assets/background-login.png"
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BASE_URL from "../../config/BASE_URL";
 import Eye from "../../assets/eye.png";
 import Invisible from "../../assets/invisible.png"
@@ -9,6 +9,7 @@ import axios from "axios";
 
 const Register = () => {
     const [email, setEmail] = useState('');
+    const [temp_full_name, setTempName] = useState('');
     const [full_name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirm_password, setCpassword] = useState('');
@@ -25,6 +26,17 @@ const Register = () => {
         event.preventDefault();
     };
 
+    function capitalizeFirstLetter(str) {
+        return str.split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    }
+
+    useEffect(() => {
+        setName(capitalizeFirstLetter(temp_full_name))
+        console.log(full_name)
+    }, [temp_full_name])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -38,7 +50,6 @@ const Register = () => {
                 const message = `We have sent  email to ` + email + ` to confirm the validity of your email address. After receiving the email follow link provided to complete your registration`
                 navigate("/account/email-confirmation", { state: { title: title, message: message } })
             } catch (err) {
-                console.log(err)
                 setErrorMessage('*Invalid Name or Password');
                 setEmail("")
                 setName("")
@@ -101,9 +112,9 @@ const Register = () => {
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Name</Typography>
                         <TextField
                             required
-                            value={full_name}
+                            value={temp_full_name}
                             placeholder="Name"
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) => setTempName(e.target.value)}
                             InputProps={{
                                 sx: {
                                     backgroundColor: "white",
