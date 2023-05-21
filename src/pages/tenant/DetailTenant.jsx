@@ -131,12 +131,12 @@ function DetailTenant() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={styleModal}>
+                <Box sx={styleModal} className="modal-box">
                     <Box sx={{
                         display: "grid",
                         gap: "10px"
                     }}>
-                        <img src={selectedMenu?.image || NoImage} width={"100%"} alt="" />
+                        <img src={selectedMenu?.image || NoImage} alt="" />
                         <Typography variant="p" fontSize={"20px"} fontWeight={"bold"}>{selectedMenu?.title}</Typography>
                         <Typography variant="p">{selectedMenu?.price}</Typography>
                         <Box display={"flex"}>
@@ -237,7 +237,6 @@ function DetailTenant() {
                         </Box>
                     </Box>
                     <Box className="foods" mt={"10px"}>
-                        {/* {menus[0] ? menus.slice(0,4)} */}
                         <Box width={"100%"} mb="10px">
                             <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
                                 {tenant_menus[0]?.category?.title || `No Category`}
@@ -249,18 +248,6 @@ function DetailTenant() {
                                 <Grid item xs={6} sm={4} md={3}><FoodCardComponent menu={menu} handleClick={() => handleOpen(menu)} /></Grid>
                             )) : <Typography variant="h1">No Data</Typography>}
                         </Grid>
-
-                        {/* <Box
-                            className="list-food"
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "3%"
-                            }}>
-                            {tenant_menus[0].menu ? tenant_menus[0].menu.slice(0, 4).map(menu => (
-                                <FoodCardComponent width={"50%"} menu={menu} handleClick={() => handleOpen(menu)} />
-                            )) : <Typography variant="h1">No Data</Typography>}
-                        </Box> */}
                         <Box
                             sx={{
                                 marginTop: "20px",
@@ -274,7 +261,7 @@ function DetailTenant() {
                                 whiteSpace: "nowrap",
                                 paddingBottom: "10px"
                             }}>
-                                {tenant_reviews.map(review => (
+                                {tenant_reviews ? tenant_reviews.map(review => (
                                     <Box className="box-review"
                                         sx={{
                                             backgroundImage: `url(${BoxReview})`,
@@ -298,7 +285,7 @@ function DetailTenant() {
                                             <Typography variant="p">{review.rating} . {review.customer.full_name}</Typography>
                                         </Box>
                                     </Box>
-                                ))}
+                                )): <Typography>No Review</Typography>}
                             </Box>
                         </Box>
                         <Box className="minuman" mt={"25px"}>
@@ -316,16 +303,17 @@ function DetailTenant() {
                                     }}>
                                         {menus?.menu.map(menu => (
                                             <Box className="card-lebar"
+                                                onClick={() => handleOpen(menu)}
                                                 sx={{
                                                     boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
                                                     padding: {md: "30px", xs: "0px"},
                                                     borderRadius: "10px",
                                                     display: "flex",
                                                     alignItems: "center",
-                                                    width: "45%",
+                                                    width: "50%",
                                                     flex: "50"
                                                 }}>
-                                                <img src={menu?.image || NoImage} alt="" width={"150px"} />
+                                                <img src={menu?.image || NoImage} alt="" />
                                                 <Box className="deskripsi" ml={"25px"} display={"grid"}>
                                                     <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu.title}</Typography>
                                                     <Typography variant="p" fontSize={"14px"}>{menu.description}</Typography>

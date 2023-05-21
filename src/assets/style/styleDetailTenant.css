@@ -1,4 +1,4 @@
-.section-fitur .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input {
+.section-fitur .MuiInputBase-root div {
     display: flex;
     align-items: center;
     padding: 9px 0px 13px 40px;
@@ -6,19 +6,18 @@
     font-weight: bold;
 }
 
-.section-fitur .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon,
-.section-fitur .css-1mf6u8l-MuiSvgIcon-root-MuiSelect-icon {
+.section-fitur .MuiSvgIcon-root {
     font-size: 45px !important;
     width: 70px !important;
 }
 
-.search-detail .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+.search-detail .MuiInputBase-input {
     font-size: 32px !important;
     font-weight: bold !important;
     font-family: "Poppins" !important;
 }
 
-.search-page .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+.search-page .MuiInputBase-input {
     /* margin-left: 30px; */
     padding: 0px 0px 0px 30px;
     font-family: "Poppins" !important;
@@ -26,8 +25,8 @@
     width: 600px;
 }
 
-.section-fitur .css-1d3z3hw-MuiOutlinedInput-notchedOutline,
-.search-box .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+.section-fitur .MuiOutlinedInput-notchedOutline,
+.search-box .MuiOutlinedInput-notchedOutline {
     border-color: white !important;
 }
 
@@ -63,8 +62,20 @@
     font-size: 34px !important;
 }
 
+.card-lebar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+.modal-box img {
+    width: 100%;
+    height: 250px;
+    border-radius: 15px;
+}
+
 @media only screen and (max-width: 900px) {
-    .search-detail .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    .search-detail .MuiInputBase-input {
         font-size: 20px !important;
     }
 
@@ -72,12 +83,12 @@
         font-size: 20px !important;
     }
 
-    .section-fitur .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input {
+    .section-fitur .MuiInputBase-root div {
         padding: 5px 0px 5px 15px
     }
 
-    .section-fitur .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon,
-    .section-fitur .css-1mf6u8l-MuiSvgIcon-root-MuiSelect-icon {
+    .section-fitur .MuiOutlinedInput-notchedOutline,
+    .search-box .MuiOutlinedInput-notchedOutline {
         font-size: 35px !important;
         width: 40px !important;
     }
