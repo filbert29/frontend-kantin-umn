@@ -50,9 +50,10 @@ const Register = () => {
                 const message = `We have sent  email to ` + email + ` to confirm the validity of your email address. After receiving the email follow link provided to complete your registration`
                 navigate("/account/email-confirmation", { state: { title: title, message: message } })
             } catch (err) {
-                setErrorMessage('*Invalid Name or Password');
+                console.log(err.response.data.error)
+                setErrorMessage(err.response.data.error);
                 setEmail("")
-                setName("")
+                setTempName("")
                 setPassword("")
                 setCpassword("")
             }
