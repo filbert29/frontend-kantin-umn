@@ -32,8 +32,15 @@ const MyAccount = () => {
     const [new_password, setNewPassword] = useState('')
     const [confirm_new_password, setConfirmPassword] = useState('')
 
+    const [openbalance, setOpenBalance] = useState(false);
+    const [amount, setAmount] = useState()
+
     const handleClickOpenName = () => {
         setOpenName(true);
+    };
+
+    const handleClickOpenBalance = () => {
+        setOpenBalance(true);
     };
 
     const handleClickOpenEmail = () => {
@@ -45,6 +52,7 @@ const MyAccount = () => {
     };
 
     const handleClose = () => {
+        setOpenBalance(false)
         setOpenName(false);
         setOpenEmail(false);
         setOpenPassword(false);
@@ -135,6 +143,27 @@ const MyAccount = () => {
             setConfirmPassword("")
         }
     }
+
+    const handleChangeBalance = async (e) => {
+        e.preventDefault();
+
+        try {
+            const balance = {amount}
+            const response = await axios.patch(BASE_URL + "/customer/balance", balance, {
+                headers: {
+                    Authorization: `Bearer ${accountData?.access_token}`
+                },
+            })
+            setAmount(0)
+            setOpenBalance(false);
+        } catch (err) {
+            console.log(err)
+            setErrorMessage('*' + err.response.data.message);
+            setAmount(0)
+        }
+    }
+
+    console.log(customer)
 
     return (
         <Container
@@ -332,15 +361,37 @@ const MyAccount = () => {
                     }}>
                         <Typography variant="p" sx={{ fontSize: { md: "18px", xs: "14px" } }}>Balance</Typography>
                         <Box>
-                            <Typography variant="p" sx={{ fontSize: { md: "24px", xs: "18px" } }}>Rp. <Typography variant="span" sx={{ fontSize: { md: "48px", xs: "28px" } }}>124.000</Typography></Typography>
-                            <Button sx={{
-                                minWidth: "0",
-                                float: "right",
-                                backgroundColor: "#3DA9FC",
-                                borderRadius: "12px",
-                                ":hover": { backgroundColor: "#0090ff" }
-                            }}> <img src={IconPlus} alt="" width={"40px"} /> <Typography variant="span" sx={{ margin: "8px 20px", fontWeight: "bold", display: { md: "block", xs: "none" } }}>Top up</Typography></Button>
+                            <Typography variant="p" sx={{ fontSize: { md: "24px", xs: "18px" } }}>Rp. <Typography variant="span" sx={{ fontSize: { md: "48px", xs: "28px" } }}>{customer.balance.toLocaleString("id-ID")}</Typography></Typography>
+                            <Button
+                                onClick={handleClickOpenBalance}
+                                sx={{
+                                    minWidth: "0",
+                                    float: "right",
+                                    backgroundColor: "#3DA9FC",
+                                    borderRadius: "12px",
+                                    ":hover": { backgroundColor: "#0090ff" }
+                                }}> <img src={IconPlus} alt="" width={"40px"} /> <Typography variant="span" sx={{ margin: "8px 20px", fontWeight: "bold", display: { md: "block", xs: "none" } }}>Top up</Typography></Button>
                         </Box>
+                        <Dialog open={openbalance} onClose={handleClose}>
+                            <DialogTitle>Top Up</DialogTitle>
+                            <DialogContent>
+                                <TextField
+                                    autoFocus
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    value={amount}
+                                    margin="dense"
+                                    id="balance"
+                                    label="Top Up"
+                                    type="text"
+                                    fullWidth
+                                    variant="standard"
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose}>Cancel</Button>
+                                <Button onClick={handleChangeBalance}>Edit</Button>
+                            </DialogActions>
+                        </Dialog>
                     </Box>
                 </Box>
                 <Box width={"auto"} display={"flex"}>
