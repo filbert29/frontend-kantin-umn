@@ -3,7 +3,7 @@
     padding: 3px;
 }
 
-.MuiBottomNavigation-root .Mui-selected {
+.MuiBottomNavigation-root .Mui-selected{
     background-color: white;
     padding: 3px;
 }
@@ -11,4 +11,8 @@
 .MuiBottomNavigation-root .Mui-selected svg {
     fill: #2F64F9;
     padding: 3px;
+}
+
+.Mui-unselected .MuiBottomNavigationAction-label {
+    background-color: #2F64F9;
 }

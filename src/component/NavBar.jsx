@@ -20,23 +20,33 @@ const NavBar = ({ navbar }) => {
 
         if (location?.pathname?.includes("/customer/")) {
             refHome.current.classList.remove("Mui-selected")
+            refHome.current.classList.add("Mui-unselected")
         } else {
+            refHome.current.classList.remove("Mui-unselected")
             refHome.current.classList.add("Mui-selected")
         }
 
         if (location?.pathname?.includes("/search")) {
+            refSearch.current.classList.remove("Mui-unselected")
             refSearch.current.classList.add("Mui-selected")
         } else if (location?.pathname?.includes("/history")) {
+            refHistory.current.classList.remove("Mui-unselected")
             refHistory.current.classList.add("Mui-selected")
         } else if (location?.pathname?.includes("/cart")) {
+            refCart.current.classList.remove("Mui-unselected")
             refCart.current.classList.add("Mui-selected")
         } else if (location?.pathname?.includes("/profile")) {
+            refProfile.current.classList.remove("Mui-unselected")
             refProfile.current.classList.add("Mui-selected")
         } else {
             refSearch.current.classList.remove("Mui-selected")
+            refSearch.current.classList.add("Mui-unselected")
             refCart.current.classList.remove("Mui-selected")
+            refCart.current.classList.add("Mui-unselected")
             refHistory.current.classList.remove("Mui-selected")
+            refHistory.current.classList.add("Mui-unselected")
             refProfile.current.classList.remove("Mui-selected")
+            refProfile.current.classList.add("Mui-unselected")
         }
 
     }, [location.pathname])
