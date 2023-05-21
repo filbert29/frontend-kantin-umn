@@ -28,18 +28,23 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const data = { email, full_name, password, confirm_password };
-            const response = await axios.post(BASE_URL + "/account/register", data)
-            const title = "Email Confirmation"
-            const message = `We have sent  email to ` + email + ` to confirm the validity of your email address. After receiving the email follow link provided to complete your registration`
-            navigate("/account/email-confirmation", { state: { title: title, message: message } })
-        } catch (err) {
+        if (password != confirm_password) {
             setErrorMessage('*Confirm New Password must be matched with New Password');
-            setEmail("")
-            setName("")
-            setPassword("")
-            setCpassword("")
+        } else {
+            try {
+                const data = { email, full_name, password, confirm_password };
+                const response = await axios.post(BASE_URL + "/account/register", data)
+                const title = "Email Confirmation"
+                const message = `We have sent  email to ` + email + ` to confirm the validity of your email address. After receiving the email follow link provided to complete your registration`
+                navigate("/account/email-confirmation", { state: { title: title, message: message } })
+            } catch (err) {
+                console.log(err)
+                setErrorMessage('*Invalid Name or Password');
+                setEmail("")
+                setName("")
+                setPassword("")
+                setCpassword("")
+            }
         }
     }
 
@@ -69,7 +74,7 @@ const Register = () => {
                     maxWidth: "450px"
                 }}>
                     <Typography variant="h1" sx={{
-                        fontSize: {sm: "48px", xs: "40px"},
+                        fontSize: { sm: "48px", xs: "40px" },
                         textAlign: "center",
                         margin: { sm: "50px", xs: "30px" },
                         fontWeight: "bold",
@@ -78,8 +83,9 @@ const Register = () => {
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Email</Typography>
                         <TextField
+                            required
                             value={email}
-                            placeholder="Email"
+                            placeholder="ex: myname@example.com"
                             onChange={(e) => setEmail(e.target.value)}
                             InputProps={{
                                 sx: {
@@ -91,9 +97,10 @@ const Register = () => {
                             type="email"
                             id="Email" />
                     </Box>
-                    <Box>
+                    <Box mb={3}>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Name</Typography>
                         <TextField
+                            required
                             value={full_name}
                             placeholder="Name"
                             onChange={(e) => setName(e.target.value)}
@@ -101,14 +108,16 @@ const Register = () => {
                                 sx: {
                                     backgroundColor: "white",
                                     width: { sm: "450px", xs: "320px" },
-                                    marginBottom: "30px",
+                                    marginBottom: "5px",
                                 }
                             }}
                             id="Name" />
+                        <Typography sx={{ color: "rgba(255,255,255,0.5)" }}>ex. Filbert Khouwira</Typography>
                     </Box>
-                    <Box>
+                    <Box mb={3}>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Password</Typography>
                         <TextField
+                            required
                             value={password}
                             placeholder="Password"
                             onChange={(e) => setPassword(e.target.value)}
@@ -116,7 +125,7 @@ const Register = () => {
                             InputProps={{
                                 sx: {
                                     backgroundColor: "white", width: { sm: "450px", xs: "320px" },
-                                    marginBottom: "30px"
+                                    marginBottom: "5px"
                                 },
                                 endAdornment:
                                     <InputAdornment position="end">
@@ -130,10 +139,12 @@ const Register = () => {
                                     </InputAdornment>
                             }}
                             id="Password" />
+                        <Typography sx={{ color: "rgba(255,255,255,0.5)" }}>minimum 6 characters</Typography>
                     </Box>
                     <Box>
                         <Typography component={"p"} variant="p" sx={{ marginBottom: "15px" }}>Confirm Password</Typography>
                         <TextField
+                            required
                             value={confirm_password}
                             placeholder="Confirm Password"
                             onChange={(e) => setCpassword(e.target.value)}
@@ -156,7 +167,7 @@ const Register = () => {
                             }}
                             id="CPassword" />
                     </Box>
-                    <Box sx={{ display: "flex" }}>
+                    <Box sx={{ display: "flex", width: { sm: "450px", xs: "300px" } }}>
                         <Typography variant="p" color={"red"} sx={{ marginRight: "auto" }}>{errorMessage}</Typography>
                     </Box>
                     <Box sx={{ textAlign: "center" }} mt={"30px"}>

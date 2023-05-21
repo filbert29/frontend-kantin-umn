@@ -4,6 +4,7 @@ import Star from "../assets/yellow-star.png"
 import NoImage from "../assets/No_Image_Available.jpg"
 
 const CardSearchMenu = ({ data }) => {
+    console.log(data)
     return (
         <Box display={"grid"} justifyContent={"center"}>
             <Box
@@ -19,7 +20,7 @@ const CardSearchMenu = ({ data }) => {
                     textDecoration: "none",
                     color: "#5F6C7B"
                 }}>
-                <img src={data?.profile_image || NoImage} alt="" width={"134px"} style={{ borderRadius: "15px", minHeight: "129px" }} />
+                <img src={data?.image || NoImage} alt="" width={"134px"} style={{ borderRadius: "15px", minHeight: "129px" }} />
                 <Box className="deskripsi" ml={"25px"} display={"grid"} gap={"2px"}>
                     <Typography variant="p"
                         sx={{
