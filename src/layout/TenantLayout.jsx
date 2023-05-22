@@ -49,6 +49,7 @@ const TenantLayout = () => {
         socketListener()
         return () => {
             socket.disconnect()
+            socket.off(`tenant/update/${accountData?._id}`)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

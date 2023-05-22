@@ -47,6 +47,7 @@ const CustomerLayout = () => {
         console.log("customer layout")
         return () => {
             socket.disconnect()
+            socket.off(`customer/update/${accountData?._id}`)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
