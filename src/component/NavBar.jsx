@@ -53,7 +53,7 @@ const NavBar = ({ navbar }) => {
 
     return (
         !location?.pathname?.includes("/account") ?
-            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: "10" }} >
+            <Paper className="navbar-customer" sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: "10" }} >
                 <BottomNavigation
                     showLabels
                     value={value}
