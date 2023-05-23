@@ -95,13 +95,13 @@ const MenuPage = () => {
         <>
             <Box>
                 <TableData
-                    title={"Orders"}
+                    title={"Menu"}
                     columns={menuColumns}
                     data={menu}
                     searchField={[
                         { id: 'tenant', label: 'Tenant Name' },
-                        { id: 'customer', label: 'Customer Name' },
-                        { id: 'id', label: 'Order Id' },
+                        { id: 'title', label: 'Menu Title' },
+                        { id: 'id', label: 'Menu Id' },
                     ]}
                 />
             </Box>
