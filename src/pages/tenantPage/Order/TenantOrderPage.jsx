@@ -4,7 +4,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import moment from "moment";
@@ -12,6 +12,7 @@ import ORDER_STATUS from "../../../config/order-status.config";
 import { useSearchParams } from "react-router-dom";
 import OnProgressOrderCard from "../../../component/tenant/OrderOnProgressCard";
 import OrderCard from "../../../component/tenant/OrderCard";
+import { setPriority } from "../../../store/Tenant";
 
 const customAccordionStyle = {
     boxShadow: "none",
@@ -46,7 +47,8 @@ const TenantOrderPage = () => {
 export default TenantOrderPage;
 
 const OnProgressOrder = () => {
-    const [priority, setPriority] = useState("fcfs")
+    const dispatch = useDispatch()
+    const { orderPriority: priority } = useSelector((state) => state.tenant)
     const { access_token } = useSelector((state) => state.auth.accountData)
     const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress?priority=${priority}`, (url) => fetcher(url, access_token), {
         revalidateOnFocus: false,
@@ -63,7 +65,7 @@ const OnProgressOrder = () => {
         <Box sx={{ mt: 2 }}>
             <Box my={2} >
                 <Typography component="p" variant="p" fontWeight={600} mb={1} >Prioritas</Typography>
-                <Select fullWidth={true} value={priority} onChange={(event) => { setPriority(event.target.value) }}>
+                <Select fullWidth={true} value={priority} onChange={(event) => { dispatch(setPriority(event.target.value)) }}>
                     <MenuItem value="fcfs">Pesanan paling dahulu</MenuItem>
                     <MenuItem value="sjf">Pesanan paling singkat</MenuItem>
                 </Select>
