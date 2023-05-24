@@ -30,8 +30,8 @@ const TenantOrderPage = () => {
         <Container>
             <Box>
                 <Tabs variant="fullWidth" value={value} onChange={handleChange} >
-                    <Tab value={"on-progress"} label="On Progress" />
-                    <Tab value={"history"} label="History" />
+                    <Tab value={"on-progress"} label="Dalam Proses" />
+                    <Tab value={"history"} label="Semua Pesanan" />
                 </Tabs>
             </Box>
             {value === "on-progress" && (
