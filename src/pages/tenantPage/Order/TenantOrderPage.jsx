@@ -196,7 +196,12 @@ const HistoryOrder = () => {
         <Box sx={{ mt: 2, display: "grid", rowGap: 3 }}>
             <Box sx={{ overflowX: "auto", display: "flex", gap: 2, pb: 2 }}>
                 <Chip sx={{ px: 1 }} onClick={() => setFilter("all")} label={"Semua"} variant={filter === "all" ? "filled" : "outlined"} />
-                {Object.entries(ORDER_STATUS).map(([key, value]) => (
+                {Object.entries({
+                    created: ORDER_STATUS.created,
+                    preparing: ORDER_STATUS.preparing,
+                    ready: ORDER_STATUS.ready,
+                    completed: ORDER_STATUS.completed
+                }).map(([key, value]) => (
                     <Chip sx={{ px: 1 }} onClick={() => setFilter(key)} color={value.color} label={value.label} variant={filter === key ? "filled" : "outlined"} key={key} />
                 ))}
             </Box>
