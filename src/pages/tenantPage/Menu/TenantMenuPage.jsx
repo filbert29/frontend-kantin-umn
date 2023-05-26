@@ -316,8 +316,8 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                     <TextField
                         variant="outlined"
                         name="title"
-                        label="Judul Menu"
-                        placeholder="Masukkan Judul Menu"
+                        label="Nama Menu"
+                        placeholder="Masukkan Nama Menu"
                         value={form?.title}
                         onChange={handleChange}
                         fullWidth
@@ -426,8 +426,8 @@ const ModalAddCategory = ({ open, handleClose }) => {
                     <TextField
                         variant="outlined"
                         name="title"
-                        label="Judul Kategori"
-                        placeholder="Masukkan Judul Kategori"
+                        label="Nama Kategori"
+                        placeholder="Masukkan Nama Kategori"
                         value={title}
                         onChange={handleChange}
                         fullWidth
