@@ -3,6 +3,11 @@ const ORDER_STATUS = {
         label: "Pending",
         color: "warning"
     },
+    confirm: {
+        label: "Dalam Proses",
+        color: "secondary"
+    },
+
     preparing: {
         label: "Dalam Proses",
         color: "secondary"
@@ -15,10 +20,14 @@ const ORDER_STATUS = {
         label: "Selesai",
         color: "primary"
     },
+    complete: {
+        label: "Selesai",
+        color: "primary"
+    },
     rejected: {
         label: "Dibatalkan",
         color: "error"
-    }
+    },
 }
 
 export default ORDER_STATUS;
