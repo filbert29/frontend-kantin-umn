@@ -39,7 +39,8 @@ const TenantLayout = () => {
             browserNotification(data?.message)
             dispatch(addNotification({
                 message: data?.message,
-                type: "info"
+                type: "info",
+                navigateTo: data?.message === "Ada Pesanan Baru" ? "/tenant/order" : undefined
             }))
         })
     }
@@ -49,6 +50,7 @@ const TenantLayout = () => {
         socketListener()
         return () => {
             socket.disconnect()
+            socket.off(`tenant/update/${accountData?._id}`)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

@@ -47,7 +47,7 @@ const AdminLayout = () => {
                                 fontSize="26px"
                                 padding="0 30px"
                             >
-                                Kantin UMN
+                                Kantin Online
                             </Typography>
                             <Typography
                                 variant="h4"

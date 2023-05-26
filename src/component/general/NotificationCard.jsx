@@ -3,14 +3,16 @@ import { useDispatch } from "react-redux"
 import { removeNotification } from "../../store/Notification"
 import { useEffect, useState } from "react"
 import moment from "moment"
+import { useNavigate } from "react-router-dom"
 
-const NotificationCard = ({ message, type = "success", id }) => {
+const NotificationCard = ({ message, type = "success", id, navigateTo }) => {
     const dispatch = useDispatch()
     const [open, setOpen] = useState(true)
+    const navigate = useNavigate()
 
     const handleClose = () => {
         setOpen(false)
-        
+
         setTimeout(() => {
             dispatch(removeNotification(id))
         }, 500)
@@ -26,9 +28,9 @@ const NotificationCard = ({ message, type = "success", id }) => {
     }, [])
 
     return (
-        <Snackbar sx={{position: "static"}} open={open}>
+        <Snackbar sx={{ position: "static" }} open={open}>
             <Alert variant="filled" onClose={handleClose} severity={type} sx={{ minWidth: '250px', maxWidth: "339px" }}>
-                <Box>
+                <Box onClick={() => { if (navigateTo !== undefined) { navigate(navigateTo) } }}>
                     <Typography variant="h6" fontWeight={400} fontSize={16} marginBottom={1} >
                         {message}
                     </Typography>

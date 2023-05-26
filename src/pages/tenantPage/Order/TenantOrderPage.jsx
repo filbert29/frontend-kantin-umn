@@ -4,7 +4,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import moment from "moment";
@@ -12,6 +12,7 @@ import ORDER_STATUS from "../../../config/order-status.config";
 import { useSearchParams } from "react-router-dom";
 import OnProgressOrderCard from "../../../component/tenant/OrderOnProgressCard";
 import OrderCard from "../../../component/tenant/OrderCard";
+import { setPriority } from "../../../store/Tenant";
 
 const customAccordionStyle = {
     boxShadow: "none",
@@ -29,8 +30,8 @@ const TenantOrderPage = () => {
         <Container>
             <Box>
                 <Tabs variant="fullWidth" value={value} onChange={handleChange} >
-                    <Tab value={"on-progress"} label="On Progress" />
-                    <Tab value={"history"} label="History" />
+                    <Tab value={"on-progress"} label="Dalam Proses" />
+                    <Tab value={"history"} label="Semua Pesanan" />
                 </Tabs>
             </Box>
             {value === "on-progress" && (
@@ -46,7 +47,8 @@ const TenantOrderPage = () => {
 export default TenantOrderPage;
 
 const OnProgressOrder = () => {
-    const [priority, setPriority] = useState("fcfs")
+    const dispatch = useDispatch()
+    const { orderPriority: priority } = useSelector((state) => state.tenant)
     const { access_token } = useSelector((state) => state.auth.accountData)
     const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress?priority=${priority}`, (url) => fetcher(url, access_token), {
         revalidateOnFocus: false,
@@ -63,7 +65,7 @@ const OnProgressOrder = () => {
         <Box sx={{ mt: 2 }}>
             <Box my={2} >
                 <Typography component="p" variant="p" fontWeight={600} mb={1} >Prioritas</Typography>
-                <Select fullWidth={true} value={priority} onChange={(event) => { setPriority(event.target.value) }}>
+                <Select fullWidth={true} value={priority} onChange={(event) => { dispatch(setPriority(event.target.value)) }}>
                     <MenuItem value="fcfs">Pesanan paling dahulu</MenuItem>
                     <MenuItem value="sjf">Pesanan paling singkat</MenuItem>
                 </Select>
@@ -194,7 +196,12 @@ const HistoryOrder = () => {
         <Box sx={{ mt: 2, display: "grid", rowGap: 3 }}>
             <Box sx={{ overflowX: "auto", display: "flex", gap: 2, pb: 2 }}>
                 <Chip sx={{ px: 1 }} onClick={() => setFilter("all")} label={"Semua"} variant={filter === "all" ? "filled" : "outlined"} />
-                {Object.entries(ORDER_STATUS).map(([key, value]) => (
+                {Object.entries({
+                    created: ORDER_STATUS.created,
+                    preparing: ORDER_STATUS.preparing,
+                    ready: ORDER_STATUS.ready,
+                    completed: ORDER_STATUS.completed
+                }).map(([key, value]) => (
                     <Chip sx={{ px: 1 }} onClick={() => setFilter(key)} color={value.color} label={value.label} variant={filter === key ? "filled" : "outlined"} key={key} />
                 ))}
             </Box>

@@ -1,18 +1,18 @@
-.MuiButtonBase-root svg {
+.navbar-customer .MuiButtonBase-root svg {
     fill: white;
     padding: 3px;
 }
 
-.MuiBottomNavigation-root .Mui-selected{
+.navbar-customer .MuiBottomNavigation-root .Mui-selected{
     background-color: white;
     padding: 3px;
 }
 
-.MuiBottomNavigation-root .Mui-selected svg {
+.navbar-customer .MuiBottomNavigation-root .Mui-selected svg {
     fill: #2F64F9;
     padding: 3px;
 }
 
-.Mui-unselected .MuiBottomNavigationAction-label {
+.navbar-customer .Mui-unselected .MuiBottomNavigationAction-label {
     background-color: #2F64F9;
 }
