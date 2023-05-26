@@ -39,7 +39,8 @@ const TenantLayout = () => {
             browserNotification(data?.message)
             dispatch(addNotification({
                 message: data?.message,
-                type: "info"
+                type: "info",
+                navigateTo: data?.message === "Ada Pesanan Baru" ? "/tenant/order" : undefined
             }))
         })
     }
