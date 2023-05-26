@@ -155,6 +155,7 @@ const MyAccount = () => {
                 },
             })
             setAmount(0)
+            mutate()
             setOpenBalance(false);
         } catch (err) {
             console.log(err)
@@ -389,7 +390,7 @@ const MyAccount = () => {
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={handleClose}>Cancel</Button>
-                                <Button onClick={handleChangeBalance}>Edit</Button>
+                                <Button onClick={handleChangeBalance}>Top Up</Button>
                             </DialogActions>
                         </Dialog>
                     </Box>
