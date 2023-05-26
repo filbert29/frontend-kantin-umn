@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Container, IconButton, Modal, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../../../store/Auth";
-import { Edit, Lock, Logout, Upload } from "@mui/icons-material";
+import { Close, Edit, Lock, Logout, Upload } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
@@ -68,12 +68,12 @@ const TenantProfilePage = () => {
                         <Typography variant="h5" fontSize={20}>{profile?.email}</Typography>
                     </Box>
                     <Box>
-                        <Typography variant="h6" fontWeight={600} fontSize={16} >Deskripsi</Typography>
-                        <Typography variant="h5" fontSize={20}>{profile?.description}</Typography>
+                        <Typography variant="h6" fontWeight={600} fontSize={16} >Lokasi</Typography>
+                        <Typography variant="h5" fontSize={20}>{profile?.location || "-"}</Typography>
                     </Box>
                     <Box>
-                        <Typography variant="h6" fontWeight={600} fontSize={16} >Lokasi</Typography>
-                        <Typography variant="h5" fontSize={20}>{profile?.location}</Typography>
+                        <Typography variant="h6" fontWeight={600} fontSize={16} >Deskripsi</Typography>
+                        <Typography variant="h5" fontSize={20}>{profile?.description || "-"}</Typography>
                     </Box>
                 </Box>
                 <Button onClick={() => setOpenChangePassword(true)} variant="contained" color="warning" endIcon={<Lock />}>
@@ -228,7 +228,8 @@ const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
         setForm((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         try {
             setLoading(true)
             const response = await axios.put(`${BASE_URL}/tenant/profile`, form, {
@@ -257,51 +258,57 @@ const ModalEditProfile = ({ open, mutate, handleClose, profile }) => {
     return (
         <Modal open={open} onClose={onClose}>
             <Box sx={{ ...ModalStyle, width: { xs: "280px", sm: "400px" } }}>
-                <Box sx={{ display: "grid", rowGap: 2 }}>
-                    <TextField
-                        fullWidth
-                        type="text"
-                        label="Nama Toko"
-                        variant="outlined"
-                        name="full_name"
-                        value={form.full_name}
-                        onChange={handleChangeForm}
-                    />
-                    <TextField
-                        fullWidth
-                        type="text"
-                        label="Lokasi"
-                        variant="outlined"
-                        name="location"
-                        value={form.location}
-                        onChange={handleChangeForm}
-                    />
-                    <TextField
-                        fullWidth
-                        label="Email"
-                        type="text"
-                        variant="outlined"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChangeForm}
-                    />
-                    <TextField
-                        fullWidth
-                        label="Deskripsi"
-                        variant="outlined"
-                        name="description"
-                        value={form.description}
-                        onChange={handleChangeForm}
-                        multiline={true}
-                        minRows={4}
-                    />
-                </Box>
-                {formError && <Typography color="red">{formError}</Typography>}
-                <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-                    <Button fullWidth color="error" onClick={onClose} variant="contained" sx={{ mr: 2 }}>Batal</Button>
-                    <Button fullWidth disabled={loading === true} onClick={handleSubmit} variant="contained">
-                        {loading ? <CircularProgress size={16} /> : "Submit"}
-                    </Button>
+                <IconButton onClick={onClose} sx={{ position: "absolute", top: 1, right: 1 }}><Close sx={{ fontSize: 30 }} /> </IconButton>
+                <Typography textAlign={"center"} variant="h5" mt={2} mb={5} >Ubah Profil</Typography>
+                <Box component={"form"} onSubmit={handleSubmit} >
+                    <Box sx={{ display: "grid", rowGap: 2 }}>
+                        <TextField
+                            fullWidth
+                            required={true}
+                            type="text"
+                            label="Nama Toko"
+                            variant="outlined"
+                            name="full_name"
+                            value={form.full_name}
+                            onChange={handleChangeForm}
+                        />
+                        <TextField
+                            required={true}
+                            fullWidth
+                            label="Email"
+                            type="email"
+                            variant="outlined"
+                            name="email"
+                            value={form.email}
+                            onChange={handleChangeForm}
+                        />
+                        <TextField
+                            fullWidth
+                            type="text"
+                            label="Lokasi"
+                            variant="outlined"
+                            name="location"
+                            value={form.location}
+                            onChange={handleChangeForm}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Deskripsi"
+                            variant="outlined"
+                            name="description"
+                            value={form.description}
+                            onChange={handleChangeForm}
+                            multiline={true}
+                            minRows={4}
+                        />
+                    </Box>
+                    {formError && <Typography color="red">{formError}</Typography>}
+                    <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                        <Button fullWidth color="error" onClick={onClose} variant="contained" sx={{ mr: 2 }}>Batal</Button>
+                        <Button fullWidth disabled={loading === true} type="submit" variant="contained">
+                            {loading ? <CircularProgress size={16} /> : "Submit"}
+                        </Button>
+                    </Box>
                 </Box>
             </Box>
         </Modal>

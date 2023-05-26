@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Card, Chip, Container, MenuItem, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Card, Chip, Container, IconButton, MenuItem, Modal, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
@@ -7,7 +7,7 @@ import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import DefaultImage from "../../../assets/No_Image_Available.jpg"
 import { formatThousand } from "../../../helper/number";
-import { Add, Delete, Edit, Upload } from "@mui/icons-material";
+import { Add, Close, Delete, Edit, Upload } from "@mui/icons-material";
 import DFlexJustifyContentBetween from "../../../component/general/DFlexJustifyContentBetween";
 import { useRef, useState } from "react";
 import { ModalStyle } from "../../admin/Tenant/TenantDetailPage";
@@ -271,7 +271,8 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
 
     return (
         <Modal open={open} onClose={handleClose}>
-            <Box sx={{ ...ModalStyle, overflowY: "auto", maxHeight: "80vh", width: { xs: 300, sm: 600 } }}>
+            <Box sx={{ ...ModalStyle, overflowY: "auto", maxHeight: "80vh", width: { xs: 300, sm: 600 }, position: "relative" }}>
+                <IconButton onClick={handleClose} sx={{position: "absolute", top: 1, right: 1}}><Close sx={{ fontSize: 30}} /> </IconButton>
                 <Typography textAlign={"center"} variant="h5" mb={2} >{menuSelected ? "Edit" : "Tambah"} Menu</Typography>
                 <Box component={"form"} sx={{ display: "flex", flexDirection: "column", rowGap: 2 }} onSubmit={handleSubmit}>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -313,7 +314,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                     </Box>
                     <input ref={imageFileRef} type="file" style={{ display: "none" }} onChange={handleChangeEditImage} />
                     <TextField
-                        variant="standard"
+                        variant="outlined"
                         name="title"
                         label="Judul Menu"
                         placeholder="Masukkan Judul Menu"
@@ -323,7 +324,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                         required
                     />
                     <TextField
-                        variant="standard"
+                        variant="outlined"
                         name="description"
                         label="Deskripsi Menu"
                         placeholder="Masukkan Deskripsi Menu"
@@ -332,7 +333,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                         fullWidth
                     />
                     <TextField
-                        variant="standard"
+                        variant="outlined"
                         name="price"
                         label="Harga Menu"
                         placeholder="Masukkan Harga Menu"
@@ -343,9 +344,9 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                         type="number"
                     />
                     <TextField
-                        variant="standard"
+                        variant="outlined"
                         name="prep_duration"
-                        label="Durasi Persiapan Menu (Menit)"
+                        label="Durasi Persiapan (Menit)"
                         placeholder="Masukkan Durasi Persiapan Menu"
                         value={form?.prep_duration}
                         onChange={handleChange}
@@ -356,7 +357,7 @@ const ModalAddEditMenu = ({ open, menuSelected, handleClose, mutate, addCategory
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <TextField
                             select
-                            variant="standard"
+                            variant="outlined"
                             name="category"
                             label="Kategori Menu"
                             placeholder="Pilih Kategori Menu"
@@ -423,7 +424,7 @@ const ModalAddCategory = ({ open, handleClose }) => {
                 <Typography textAlign={"center"} variant="h5" mb={2} >Add Category</Typography>
                 <Box component={"form"} sx={{ display: "flex", flexDirection: "column", rowGap: 2 }} onSubmit={handleSubmit}>
                     <TextField
-                        variant="standard"
+                        variant="outlined"
                         name="title"
                         label="Judul Kategori"
                         placeholder="Masukkan Judul Kategori"
