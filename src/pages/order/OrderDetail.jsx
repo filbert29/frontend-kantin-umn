@@ -14,6 +14,7 @@ import BASE_URL from "../../config/BASE_URL"
 import { useSelector } from "react-redux";
 import NoImage from "../../assets/No_Image_Available.jpg"
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 function OrderDetail() {
   const title = "Order Detail"
@@ -176,7 +177,7 @@ function OrderDetail() {
             }}>
             <Box>
               <Typography variant="p">Order time</Typography>
-              <Typography variant="p" sx={{ float: "right" }}>{cart?.createdAt}</Typography>
+              <Typography variant="p" sx={{ float: "right" }}>{moment(cart?.createdAt).format("DD MMMM YYYY, HH:mm:ss")}</Typography>
             </Box>
             <Box>
               <Typography variant="p">Estimated time</Typography>
