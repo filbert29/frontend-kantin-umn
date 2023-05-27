@@ -260,7 +260,7 @@ function OrderDetail() {
             display: "grid",
             gap: { sm: "25px", xs: "15px" },
           }}>
-            <Typography variant="p" sx={{ fontSize: { sm: "24px", xs: "20px" } }}>{cart?.payment_method}</Typography>
+            <Typography variant="p" sx={{ fontSize: { sm: "24px", xs: "20px" } }}>e-Kantin</Typography>
           </Box>
         </Box>
         <Box className="minuman" mt={"30px"} display={"grid"} gap={"15px"}>

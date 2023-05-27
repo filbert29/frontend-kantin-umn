@@ -35,10 +35,10 @@ const ListCart = () => {
     const url = `${BASE_URL}/cart`
 
     // const { data: cart, isLoading, error } = useSWR(url, (url) => fetcher(url, undefined))
-    const { data: cart, isLoading, error, mutate } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
+    const { data: cart, isLoading, error, isValidating, mutate } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
 
 
-    if (isLoading) return <div>loading...</div>
+    if (isLoading || isValidating) return <div>loading...</div>
     if (error) return <div>failed to load</div>
 
     const handleDeleteCart = async (id) => {
