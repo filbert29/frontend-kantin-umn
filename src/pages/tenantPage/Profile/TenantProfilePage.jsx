@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { ModalStyle } from "../../admin/Tenant/TenantDetailPage";
 import axios from "axios";
 import { addNotification } from "../../../store/Notification";
+import TenantHeader from "../../../component/tenant/TenantHeader";
 
 const TenantProfilePage = () => {
     const { access_token } = useSelector((state) => state.auth.accountData)
@@ -37,6 +38,7 @@ const TenantProfilePage = () => {
 
     return (
         <>
+            <TenantHeader title={"Profil"} />
             <Container sx={{ display: "grid", rowGap: 4 }}>
                 <Box sx={{ display: "flex", columnGap: 2, justifyContent: "center" }}>
                     <Box

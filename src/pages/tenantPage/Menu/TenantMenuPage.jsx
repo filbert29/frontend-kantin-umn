@@ -15,6 +15,7 @@ import axios from "axios";
 import { addNotification } from "../../../store/Notification";
 import { mutate as mutateGlobal } from "swr";
 import { ModalDelete } from "../../../component/admin/TableData";
+import TenantHeader from "../../../component/tenant/TenantHeader";
 
 const TenantMenuPage = () => {
     const { access_token } = useSelector((state) => state.auth.accountData)
@@ -78,6 +79,7 @@ const TenantMenuPage = () => {
 
     return (
         <>
+            <TenantHeader title={"Menu"} />
             <Container>
                 {allMenu?.length > 0 ? (
                     <>

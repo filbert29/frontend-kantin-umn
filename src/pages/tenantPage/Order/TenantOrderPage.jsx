@@ -13,6 +13,7 @@ import { useSearchParams } from "react-router-dom";
 import OnProgressOrderCard from "../../../component/tenant/OrderOnProgressCard";
 import OrderCard from "../../../component/tenant/OrderCard";
 import { setPriority } from "../../../store/Tenant";
+import TenantHeader from "../../../component/tenant/TenantHeader";
 
 const customAccordionStyle = {
     boxShadow: "none",
@@ -27,20 +28,23 @@ const TenantOrderPage = () => {
     };
 
     return (
-        <Container>
-            <Box>
-                <Tabs variant="fullWidth" value={value} onChange={handleChange} >
-                    <Tab value={"on-progress"} label="Dalam Proses" />
-                    <Tab value={"history"} label="Semua Pesanan" />
-                </Tabs>
-            </Box>
-            {value === "on-progress" && (
-                <OnProgressOrder />
-            )}
-            {value === "history" && (
-                <HistoryOrder />
-            )}
-        </Container>
+        <>
+            <TenantHeader title={"Pesanan"} />
+            <Container>
+                <Box>
+                    <Tabs variant="fullWidth" value={value} onChange={handleChange} >
+                        <Tab value={"on-progress"} label="Dalam Proses" />
+                        <Tab value={"history"} label="Semua Pesanan" />
+                    </Tabs>
+                </Box>
+                {value === "on-progress" && (
+                    <OnProgressOrder />
+                )}
+                {value === "history" && (
+                    <HistoryOrder />
+                )}
+            </Container>
+        </>
     );
 }
 

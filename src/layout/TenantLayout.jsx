@@ -63,7 +63,7 @@ const TenantLayout = () => {
             }}
         >
             <ThemeProvider theme={theme}>
-                <Box sx={{ minHeight: "87vh", mt: 2, mb: 4 }} >
+                <Box sx={{ minHeight: "87vh", mb: 4 }} >
                     <Outlet />
                 </Box>
             </ThemeProvider>

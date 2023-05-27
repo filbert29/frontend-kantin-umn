@@ -17,6 +17,7 @@ import axios from "axios";
 import ActionTimer from "../../../component/general/ActionTimer";
 import ItemCard from "../../../component/tenant/ItemCard";
 import { addNotification } from "../../../store/Notification";
+import TenantHeader from "../../../component/tenant/TenantHeader";
 
 const TenantOrderDetailPage = () => {
     const { id } = useParams();
@@ -59,140 +60,143 @@ const TenantOrderDetailPage = () => {
     if (error) return <ErrorApi />
 
     return (
-        <Container>
-            <Button sx={{ color: "black" }} startIcon={<ArrowBackIos />} onClick={() => navigate(-1)}>
-                Kembali ke histori pesanan
-            </Button>
+        <>
+            <TenantHeader title={"Detail Pesanan"} back={true} />
+            <Container>
+                <Button sx={{ color: "black" }} startIcon={<ArrowBackIos />} onClick={() => navigate(-1)}>
+                    Kembali ke histori pesanan
+                </Button>
 
-            <OrderProgress order={order} isMobile={isMobile} />
+                <OrderProgress order={order} isMobile={isMobile} />
 
-            <Grid container spacing={1} sx={{ mt: 0 }}>
-                <LabelValue
-                    labelSize={4.2}
-                    valueSize={7.8}
-                    label="Customer"
-                    value={order?.customer?.full_name}
-                    valueSx={{ textAlign: "right" }}
-                />
-                <LabelValue
-                    labelSize={4.2}
-                    valueSize={7.8}
-                    label="Tanggal Pesan"
-                    value={moment(order?.progress?.created).format("llll")}
-                    valueSx={{ textAlign: "right" }}
-                />
-                <LabelValue
-                    labelSize={4.2}
-                    valueSize={7.8}
-                    label="Order ID"
-                    value={order?._id}
-                    valueSx={{ textAlign: "right" }}
-                />
-                <LabelValue
-                    labelSize={4.2}
-                    valueSize={7.8}
-                    label="Durasi Persiapan"
-                    value={`${order?.total_prep_duration} Menit (Estimasi)`}
-                    valueSx={{ textAlign: "right" }}
-                />
-            </Grid>
-            <Divider sx={{ my: 2 }} />
-            <Box>
-                <Typography variant="h6" component="h6" fontWeight="bold">
-                    Detail Pesanan
-                </Typography>
-            </Box>
-            <Box sx={{ mt: 0, display: "grid", rowGap: 3 }}>
-                {order?.items?.map((item) => (
-                    <ItemCard key={item?.menu?.id} item={item} />
-                ))}
-                <DFlexJustifyContentBetween>
-                    <Typography variant="h6" fontSize={18} fontWeight="bold">
-                        Sub Total
-                    </Typography>
-                    <Typography variant="h6" fontSize={18} fontWeight="bold">
-                        Rp. {formatThousand(order?.total_price)}
-                    </Typography>
-                </DFlexJustifyContentBetween>
-                <Divider sx={{ my: 0 }} />
+                <Grid container spacing={1} sx={{ mt: 0 }}>
+                    <LabelValue
+                        labelSize={4.2}
+                        valueSize={7.8}
+                        label="Customer"
+                        value={order?.customer?.full_name}
+                        valueSx={{ textAlign: "right" }}
+                    />
+                    <LabelValue
+                        labelSize={4.2}
+                        valueSize={7.8}
+                        label="Tanggal Pesan"
+                        value={moment(order?.progress?.created).format("llll")}
+                        valueSx={{ textAlign: "right" }}
+                    />
+                    <LabelValue
+                        labelSize={4.2}
+                        valueSize={7.8}
+                        label="Order ID"
+                        value={order?._id}
+                        valueSx={{ textAlign: "right" }}
+                    />
+                    <LabelValue
+                        labelSize={4.2}
+                        valueSize={7.8}
+                        label="Durasi Persiapan"
+                        value={`${order?.total_prep_duration} Menit (Estimasi)`}
+                        valueSx={{ textAlign: "right" }}
+                    />
+                </Grid>
+                <Divider sx={{ my: 2 }} />
                 <Box>
-                    {order?.status === "created" && (
-                        <Box sx={{ display: "flex", gap: 1 }}>
+                    <Typography variant="h6" component="h6" fontWeight="bold">
+                        Detail Pesanan
+                    </Typography>
+                </Box>
+                <Box sx={{ mt: 0, display: "grid", rowGap: 3 }}>
+                    {order?.items?.map((item) => (
+                        <ItemCard key={item?.menu?.id} item={item} />
+                    ))}
+                    <DFlexJustifyContentBetween>
+                        <Typography variant="h6" fontSize={18} fontWeight="bold">
+                            Sub Total
+                        </Typography>
+                        <Typography variant="h6" fontSize={18} fontWeight="bold">
+                            Rp. {formatThousand(order?.total_price)}
+                        </Typography>
+                    </DFlexJustifyContentBetween>
+                    <Divider sx={{ my: 0 }} />
+                    <Box>
+                        {order?.status === "created" && (
+                            <Box sx={{ display: "flex", gap: 1 }}>
+                                <Button
+                                    onClick={() => handleAction("reject")}
+                                    sx={{ width: "30%" }}
+                                    size="large"
+                                    variant="contained"
+                                    color="error"
+                                    disabled={loading.state}
+                                >
+                                    {loading.state && loading.action === "reject" ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Tolak"}
+                                </Button>
+                                <Button
+                                    onClick={() => handleAction("confirm")}
+                                    sx={{ width: "70%" }}
+                                    size="large"
+                                    variant="contained"
+                                    color="success"
+                                    disabled={loading.state}
+                                >
+                                    {loading.state && loading.action === "confirm" ? (
+                                        <CircularProgress sx={{ color: "white" }} size={20} />
+                                    ) : (
+                                        <>
+                                            Terima &nbsp; <ActionTimer time={order?.progress?.created} onFinish={() => { mutate() }} />
+                                        </>
+                                    )}
+
+                                </Button>
+                            </Box>
+                        )}
+
+                        {order?.status === "preparing" && (
                             <Button
-                                onClick={() => handleAction("reject")}
-                                sx={{ width: "30%" }}
+                                onClick={() => handleAction("ready")}
+                                fullWidth={true}
                                 size="large"
                                 variant="contained"
-                                color="error"
+                                color="secondary"
                                 disabled={loading.state}
                             >
-                                {loading.state && loading.action === "reject" ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Tolak"}
+                                {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Siap diambil"}
                             </Button>
+                        )}
+
+                        {order?.status === "ready" && (
                             <Button
-                                onClick={() => handleAction("confirm")}
-                                sx={{ width: "70%" }}
+                                onClick={() => handleAction("complete")}
+                                fullWidth={true}
                                 size="large"
                                 variant="contained"
                                 color="success"
                                 disabled={loading.state}
                             >
-                                {loading.state && loading.action === "confirm" ? (
-                                    <CircularProgress sx={{ color: "white" }} size={20} />
-                                ) : (
-                                    <>
-                                        Terima &nbsp; <ActionTimer time={order?.progress?.created} onFinish={() => { mutate() }} />
-                                    </>
-                                )}
-
+                                {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Selesai"}
                             </Button>
-                        </Box>
-                    )}
-
-                    {order?.status === "preparing" && (
-                        <Button
-                            onClick={() => handleAction("ready")}
-                            fullWidth={true}
-                            size="large"
-                            variant="contained"
-                            color="secondary"
-                            disabled={loading.state}
-                        >
-                            {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Siap diambil"}
-                        </Button>
-                    )}
-
-                    {order?.status === "ready" && (
-                        <Button
-                            onClick={() => handleAction("complete")}
-                            fullWidth={true}
-                            size="large"
-                            variant="contained"
-                            color="success"
-                            disabled={loading.state}
-                        >
-                            {loading.state ? <CircularProgress sx={{ color: "white" }} size={20} /> : "Selesai"}
-                        </Button>
-                    )}
-                    {(order.status === "completed") && (
-                        order?.review ? (
-                            <>
-                            <DFlexJustifyContentBetween>
-                                <Rating name="read-only" value={order?.review?.rating} readOnly size="medium" precision={0.1} />
-                                <Typography component="p" variant="p" >
-                                    {moment(order?.review?.createdAt).format("llll")}
-                                </Typography>
-                            </DFlexJustifyContentBetween>
-                                <Typography component="p" variant="p" mt={2} >
-                                    "{order?.review?.content}"
-                                </Typography>
-                            </>
-                        ) : (
-                            <Typography component="h6" variant="h6" fontSize={18} fontWeight={500}>No review yet </Typography>
-                        )
-                    )}
+                        )}
+                        {(order.status === "completed") && (
+                            order?.review ? (
+                                <>
+                                <DFlexJustifyContentBetween>
+                                    <Rating name="read-only" value={order?.review?.rating} readOnly size="medium" precision={0.1} />
+                                    <Typography component="p" variant="p" >
+                                        {moment(order?.review?.createdAt).format("llll")}
+                                    </Typography>
+                                </DFlexJustifyContentBetween>
+                                    <Typography component="p" variant="p" mt={2} >
+                                        "{order?.review?.content}"
+                                    </Typography>
+                                </>
+                            ) : (
+                                <Typography component="h6" variant="h6" fontSize={18} fontWeight={500}>No review yet </Typography>
+                            )
+                        )}
+                    </Box>
                 </Box>
-            </Box>
-        </Container >
+            </Container >
+        </>
     );
 }
 

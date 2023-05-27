@@ -14,6 +14,7 @@ import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import BASE_URL from "../../../config/BASE_URL";
 import { formatThousand } from "../../../helper/number";
+import TenantHeader from "../../../component/tenant/TenantHeader";
 
 
 
@@ -26,111 +27,114 @@ const TenantHomePage = () => {
     if (error) return <ErrorApi />
 
     return (
-        <Container>
-            <Box
-                sx={{
-                    background: "black",
-                    borderRadius: "10px",
-                    color: "white",
-                    padding: "40px",
-                }}
-                component={Paper}
-                elevation={3}
-            >
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={8}>
-                        <Typography variant="h4" fontSize={28} fontWeight={"bold"}>{tenant?.full_name}</Typography>
-                        <Typography
-                            variant="p"
-                            sx={{
-                                mt: 1,
-                                display: maximizeDescription ? "block" : "-webkit-box",
-                                WebkitLineClamp: "1",
-                                WebkitBoxOrient: "vertical",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis"
-                            }}
-                        >
-                            {tenant?.description}
-                        </Typography>
-                        <Typography component={"span"} variant="p" sx={{ cursor: "pointer" }} onClick={() => setMaximizeDescription(!maximizeDescription)}>{maximizeDescription ? " Lihat Sedikit" : " Lihat Semua"}</Typography>
-                        <Typography
-                            variant="p"
-                            component="p"
-                            sx={{ display: "flex", alignItems: "center", mt: 2, fontSize: "18px" }}>
-                            <Star sx={{ color: "#FFDF00", fontSize: "30px" }} /> &nbsp; {tenant?.rating} ({tenant?.total_review})
-                        </Typography>
+        <>
+            <TenantHeader title={"Beranda"} />
+            <Container>
+                <Box
+                    sx={{
+                        background: "black",
+                        borderRadius: "10px",
+                        color: "white",
+                        padding: "40px",
+                    }}
+                    component={Paper}
+                    elevation={3}
+                >
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={8}>
+                            <Typography variant="h4" fontSize={28} fontWeight={"bold"}>{tenant?.full_name}</Typography>
+                            <Typography
+                                variant="p"
+                                sx={{
+                                    mt: 1,
+                                    display: maximizeDescription ? "block" : "-webkit-box",
+                                    WebkitLineClamp: "1",
+                                    WebkitBoxOrient: "vertical",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis"
+                                }}
+                            >
+                                {tenant?.description}
+                            </Typography>
+                            <Typography component={"span"} variant="p" sx={{ cursor: "pointer" }} onClick={() => setMaximizeDescription(!maximizeDescription)}>{maximizeDescription ? " Lihat Sedikit" : " Lihat Semua"}</Typography>
+                            <Typography
+                                variant="p"
+                                component="p"
+                                sx={{ display: "flex", alignItems: "center", mt: 2, fontSize: "18px" }}>
+                                <Star sx={{ color: "#FFDF00", fontSize: "30px" }} /> &nbsp; {tenant?.rating} ({tenant?.total_review})
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={4} sx={{ textAlign: "right" }}>
+                            <Box sx={{
+                                textAlign: { xs: "center", sm: "right" },
+                            }}>
+                                <Box
+                                    component={"img"}
+                                    // src="https://picsum.photos/id/292/600/600"
+                                    src={tenant?.profile_image}
+                                    alt=""
+                                    width={156}
+                                    height={156}
+                                    sx={{ borderRadius: "10px", border: "8px solid white", objectFit: "cover" }} />
+                            </Box>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={4} sx={{ textAlign: "right" }}>
-                        <Box sx={{
-                            textAlign: { xs: "center", sm: "right" },
-                        }}>
-                            <Box
-                                component={"img"}
-                                // src="https://picsum.photos/id/292/600/600"
-                                src={tenant?.profile_image}
-                                alt=""
-                                width={156}
-                                height={156}
-                                sx={{ borderRadius: "10px", border: "8px solid white", objectFit: "cover" }} />
-                        </Box>
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                    <Grid container spacing={2}>
+                        <Grid item md={12} sm={6} xs={12}>
+                            <CardStatistics
+                                title={"Jumlah Saldo"}
+                                value={`Rp. ${formatThousand(tenant?.balance)}`}
+                                handleClick={() => { }}
+                                clickLabel={"Withdraw"}
+                            />
+                        </Grid>
+                        <Grid item md={4} sm={6} xs={12}>
+                            <CardStatistics title={"Jumlah Pesanan"} value={tenant?.total_order} />
+                        </Grid>
+                        <Grid item md={4} sm={6} xs={12}>
+                            <CardStatistics title={"Pesanan Hari Ini"} value={tenant?.total_order_today} />
+                        </Grid>
+                        <Grid item md={4} sm={6} xs={12}>
+                            <CardStatistics title={"Total Penilaian"} value={tenant?.total_review} />
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Box>
-            <Box sx={{ mt: 2 }}>
-                <Grid container spacing={2}>
-                    <Grid item md={12} sm={6} xs={12}>
-                        <CardStatistics
-                            title={"Jumlah Saldo"}
-                            value={`Rp. ${formatThousand(tenant?.balance)}`}
-                            handleClick={() => { }}
-                            clickLabel={"Withdraw"}
-                        />
+                </Box>
+                <Box sx={{ mt: 8 }}>
+                    <Grid container spacing={2}>
+                        <Grid item md={3} xs={6}>
+                            <CardActionMenu
+                                title={"Menu"}
+                                image={MenuImage}
+                                path={"/tenant/menu"}
+                            />
+                        </Grid>
+                        <Grid item md={3} xs={6}>
+                            <CardActionMenu
+                                title={"Pesanan"}
+                                image={OrderImage}
+                                path={"/tenant/order"}
+                            />
+                        </Grid>
+                        <Grid item md={3} xs={6}>
+                            <CardActionMenu
+                                title={"Penilaian"}
+                                image={ReviewImage}
+                                path={"/tenant/review"}
+                            />
+                        </Grid>
+                        <Grid item md={3} xs={6}>
+                            <CardActionMenu
+                                title={"Profil"}
+                                image={ProfileImage}
+                                path={"/tenant/profile"}
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item md={4} sm={6} xs={12}>
-                        <CardStatistics title={"Jumlah Pesanan"} value={tenant?.total_order} />
-                    </Grid>
-                    <Grid item md={4} sm={6} xs={12}>
-                        <CardStatistics title={"Pesanan Hari Ini"} value={tenant?.total_order_today} />
-                    </Grid>
-                    <Grid item md={4} sm={6} xs={12}>
-                        <CardStatistics title={"Total Penilaian"} value={tenant?.total_review} />
-                    </Grid>
-                </Grid>
-            </Box>
-            <Box sx={{ mt: 8 }}>
-                <Grid container spacing={2}>
-                    <Grid item md={3} xs={6}>
-                        <CardActionMenu
-                            title={"Menu"}
-                            image={MenuImage}
-                            path={"/tenant/menu"}
-                        />
-                    </Grid>
-                    <Grid item md={3} xs={6}>
-                        <CardActionMenu
-                            title={"Pesanan"}
-                            image={OrderImage}
-                            path={"/tenant/order"}
-                        />
-                    </Grid>
-                    <Grid item md={3} xs={6}>
-                        <CardActionMenu
-                            title={"Penilaian"}
-                            image={ReviewImage}
-                            path={"/tenant/review"}
-                        />
-                    </Grid>
-                    <Grid item md={3} xs={6}>
-                        <CardActionMenu
-                            title={"Profil"}
-                            image={ProfileImage}
-                            path={"/tenant/profile"}
-                        />
-                    </Grid>
-                </Grid>
-            </Box>
-        </Container>
+                </Box>
+            </Container>
+        </>
     );
 }
 
