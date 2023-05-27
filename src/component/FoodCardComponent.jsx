@@ -2,17 +2,30 @@ import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import NoImage from "../assets/No_Image_Available.jpg"
 
 const FoodCardComponent = ({ menu, handleClick = undefined, width }) => {
+
+    console.log(menu)
+
     return (
         <Box
-            onClick={handleClick || null}
+            onClick={menu.is_available == true ? handleClick || null : ""}
             className="card-food"
             sx={{
                 // display: "grid",
+                position: "relative",
                 width: width,
                 boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
                 borderRadius: "15px",
-                cursor: "pointer"
+                cursor: menu.is_available ? "pointer" : "unset"
             }}>
+                {menu.is_available == false ? 
+                <Box
+                sx={{
+                    position: "absolute",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    height: {md: "58%", xs: "59.5%"},
+                    width: "100%",
+                    borderRadius: "15px 15px 0px 0px"
+                }}></Box> : <></>}
 
             <Card sx={{ maxWidth: 345, borderRadius: "15px", boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)", }}>
                 <CardMedia
@@ -20,7 +33,6 @@ const FoodCardComponent = ({ menu, handleClick = undefined, width }) => {
                     component="img"
                     height="194"
                     image={menu?.image || NoImage}
-                    alt="Paella dish"
                 />
                 <CardContent>
                     <Box sx={{
@@ -35,7 +47,8 @@ const FoodCardComponent = ({ menu, handleClick = undefined, width }) => {
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
-                                textAlign: "left"
+                                textAlign: "left",
+                                color: menu.is_available == false ? "grey" : "black"
                             }}
                         >{menu?.title}</Typography>
                         <Typography variant="p"
@@ -44,11 +57,13 @@ const FoodCardComponent = ({ menu, handleClick = undefined, width }) => {
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
-                                textAlign: "left"
+                                textAlign: "left",
+                                color: menu.is_available == false ? "grey" : "black"
                             }}
                         >{menu?.description}</Typography>
                         <Box display={"flex"} alignItems={"center"} gap={"3px"}>
-                            <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}>Rp. {menu?.price.toLocaleString("id-ID")}</Typography>
+                            <Typography variant="p" fontSize={"14px"} fontWeight={"bold"}
+                                sx={{ color: menu.is_available == false ? "grey" : "black" }}>Rp. {menu?.price.toLocaleString("id-ID")}</Typography>
                         </Box>
                     </Box>
                 </CardContent>
