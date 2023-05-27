@@ -7,7 +7,7 @@ const FoodCardComponent = ({ menu, handleClick = undefined, width }) => {
 
     return (
         <Box
-            onClick={menu.is_available == true ? handleClick || null : ""}
+            onClick={menu.is_available == true ? handleClick || null : null}
             className="card-food"
             sx={{
                 // display: "grid",
