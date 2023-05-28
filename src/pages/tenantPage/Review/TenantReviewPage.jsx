@@ -61,12 +61,12 @@ const TenantReviewPage = () => {
                     <Typography variant="h6">Rata-rata : {reviewData?.average_rating}</Typography>
                 </Box> */}
                 <Box sx={{ display: "flex", py: 2, gap: 2, overflowX: "auto", mb: 2 }}>
-                    <Chip variant={activeFilter === "all" ? "filled" : "outlined"} onClick={() => setActiveFilter("all")} sx={{ px: 1 }} label={`All (${reviewData?.total_review})`}/>
-                    <Chip variant={activeFilter === "5" ? "filled" : "outlined"} onClick={() => setActiveFilter("5")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`5 (${reviewData?.total_5_rating})`} />
-                    <Chip variant={activeFilter === "4" ? "filled" : "outlined"} onClick={() => setActiveFilter("4")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`4 (${reviewData?.total_4_rating})`}/>
-                    <Chip variant={activeFilter === "3" ? "filled" : "outlined"} onClick={() => setActiveFilter("3")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`3 (${reviewData?.total_3_rating})`}/>
-                    <Chip variant={activeFilter === "2" ? "filled" : "outlined"} onClick={() => setActiveFilter("2")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`2 (${reviewData?.total_2_rating})`}/>
-                    <Chip variant={activeFilter === "1" ? "filled" : "outlined"} onClick={() => setActiveFilter("1")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`1 (${reviewData?.total_1_rating})`}/>
+                    <Chip variant={activeFilter === "all" ? "filled" : "outlined"} onClick={() => setActiveFilter("all")} sx={{ px: 1 }} label={`All (${reviewData?.total_review || 0})`}/>
+                    <Chip variant={activeFilter === "5" ? "filled" : "outlined"} onClick={() => setActiveFilter("5")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`5 (${reviewData?.total_5_rating || 0})`} />
+                    <Chip variant={activeFilter === "4" ? "filled" : "outlined"} onClick={() => setActiveFilter("4")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`4 (${reviewData?.total_4_rating || 0})`}/>
+                    <Chip variant={activeFilter === "3" ? "filled" : "outlined"} onClick={() => setActiveFilter("3")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`3 (${reviewData?.total_3_rating || 0})`}/>
+                    <Chip variant={activeFilter === "2" ? "filled" : "outlined"} onClick={() => setActiveFilter("2")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`2 (${reviewData?.total_2_rating || 0})`}/>
+                    <Chip variant={activeFilter === "1" ? "filled" : "outlined"} onClick={() => setActiveFilter("1")} sx={{ px: 1 }} icon={<Star sx={{ color: "#faaf00 !important" }} />} label={`1 (${reviewData?.total_1_rating || 0})`}/>
                 </Box>
 
                 <Box sx={{ display: "grid", rowGap: 3 }}>
