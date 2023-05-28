@@ -240,7 +240,7 @@ export const ModalDelete = ({ open, handleClose, submitDelete }) => {
             open={open}
             onClose={handleClose}
         >
-            <Box sx={ModalStyle}>
+            <Box sx={{...ModalStyle, width: 340}}>
                 <Typography id="modal-modal-title" variant="h5" fontWeight={500} component="h2">
                     Delete Data
                 </Typography>
@@ -249,7 +249,7 @@ export const ModalDelete = ({ open, handleClose, submitDelete }) => {
                 </Typography>
                 <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={() => {
+                    <Button color='error' onClick={() => {
                         handleClose()
                         submitDelete()
                     }
