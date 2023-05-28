@@ -13,6 +13,7 @@ import { ModalStyle } from "../../admin/Tenant/TenantDetailPage";
 import axios from "axios";
 import { addNotification } from "../../../store/Notification";
 import TenantHeader from "../../../component/tenant/TenantHeader";
+import DefaultImage from "../../../assets/No_Image_Available.jpg"
 
 const TenantProfilePage = () => {
     const { access_token } = useSelector((state) => state.auth.accountData)
@@ -51,7 +52,7 @@ const TenantProfilePage = () => {
                         </IconButton>
                         <Box
                             component={"img"}
-                            src={profile?.profile_image}
+                            src={profile?.profile_image || DefaultImage}
                             width={"100%"}
                             sx={{ objectFit: "cover", borderRadius: 2 }}
                         />

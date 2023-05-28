@@ -15,6 +15,7 @@ import ErrorApi from "../../../component/state/ErrorApi";
 import BASE_URL from "../../../config/BASE_URL";
 import { formatThousand } from "../../../helper/number";
 import TenantHeader from "../../../component/tenant/TenantHeader";
+import DefaultImage from "../../../assets/No_Image_Available.jpg"
 
 
 
@@ -71,7 +72,7 @@ const TenantHomePage = () => {
                                 <Box
                                     component={"img"}
                                     // src="https://picsum.photos/id/292/600/600"
-                                    src={tenant?.profile_image}
+                                    src={tenant?.profile_image || DefaultImage}
                                     alt=""
                                     width={156}
                                     height={156}
