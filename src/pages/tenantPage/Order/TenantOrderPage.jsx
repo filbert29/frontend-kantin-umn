@@ -1,10 +1,10 @@
 import { ExpandMore } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Chip, Container, Divider, MenuItem, Select, Tab, Tabs, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Chip, Container, Divider, Tab, Tabs, Typography } from "@mui/material";
 import { useState } from "react";
 import useSWR from "swr";
 import BASE_URL from "../../../config/BASE_URL";
 import fetcher from "../../../helper/fetcher";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Loading from "../../../component/state/Loading";
 import ErrorApi from "../../../component/state/ErrorApi";
 import moment from "moment";
@@ -12,7 +12,6 @@ import ORDER_STATUS from "../../../config/order-status.config";
 import { useSearchParams } from "react-router-dom";
 import OnProgressOrderCard from "../../../component/tenant/OrderOnProgressCard";
 import OrderCard from "../../../component/tenant/OrderCard";
-import { setPriority } from "../../../store/Tenant";
 import TenantHeader from "../../../component/tenant/TenantHeader";
 
 const customAccordionStyle = {
@@ -51,10 +50,8 @@ const TenantOrderPage = () => {
 export default TenantOrderPage;
 
 const OnProgressOrder = () => {
-    const dispatch = useDispatch()
-    const { orderPriority: priority } = useSelector((state) => state.tenant)
     const { access_token } = useSelector((state) => state.auth.accountData)
-    const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress?priority=${priority}`, (url) => fetcher(url, access_token), {
+    const { data: order, isLoading, error, mutate } = useSWR(`${BASE_URL}/order/on-progress`, (url) => fetcher(url, access_token), {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         refreshWhenOffline: false,
@@ -67,13 +64,6 @@ const OnProgressOrder = () => {
 
     return (
         <Box sx={{ mt: 2 }}>
-            <Box my={2} >
-                <Typography component="p" variant="p" fontWeight={600} mb={1} >Prioritas</Typography>
-                <Select fullWidth={true} value={priority} onChange={(event) => { dispatch(setPriority(event.target.value)) }}>
-                    <MenuItem value="fcfs">Pesanan paling dahulu</MenuItem>
-                    <MenuItem value="sjf">Pesanan paling singkat</MenuItem>
-                </Select>
-            </Box>
             <Accordion defaultExpanded={true} sx={customAccordionStyle}>
                 <AccordionSummary
                     expandIcon={<ExpandMore />}
