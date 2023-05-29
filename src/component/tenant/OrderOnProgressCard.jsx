@@ -50,7 +50,7 @@ const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
                         #{index + 1}
                     </Typography>
                     <Typography sx={{ color: "gray" }} variant="p" fontSize={14} textAlign={"right"} >
-                        {order?.customer?._id}
+                        {order?._id}
                     </Typography>
                 </DFlexJustifyContentBetween>
 
