@@ -20,17 +20,39 @@ import { addNotification } from "../../store/Notification"
 function DetailTenant() {
     const title = "Detail Tenant"
     const [rating, setRating] = useState('4.7 (12)')
-    const [age, setAge] = useState('');
 
     const [selectedMenu, setSelectedMenu] = useState()
 
     const [amount, setAmount] = useState(1)
+
+    const [searchKeyword, setSearchKeyword] = useState('')
+    // const [searchResults, setSearchResults] = useState([]);
+
+    const [valueCategory, setValueCategory] = useState('')
 
     const { accountData } = useSelector((state) => state.auth)
 
     const [open, setOpen] = useState(false)
 
     const dispatch = useDispatch()
+
+    const handleInputChange = (event) => {
+        const keyword = event.target.value;
+        setSearchKeyword(keyword);
+        setValueCategory('')
+        // performSearch(keyword);
+    };
+
+    // const performSearch = (keyword) => {
+    //     const searchData = tenant_menus.filter((item) =>
+    //         item.menu.some((menu) =>
+    //             menu.title.toLowerCase().includes(keyword.toLowerCase())
+    //         )
+    //     );
+    //     setSearchResults(searchData);
+    // };
+
+    // console.log(searchResults)
 
     const handleOpen = (menu) => {
         setOpen(true)
@@ -43,7 +65,8 @@ function DetailTenant() {
     }
 
     const handleChange = (event) => {
-        setAge(event.target.value);
+        setValueCategory(event.target.value);
+        setSearchKeyword('')
     };
 
     const { id } = useParams();
@@ -57,6 +80,8 @@ function DetailTenant() {
 
     const tenant_menus = tenant?.tenant_menu
     const tenant_reviews = tenant?.reviews
+
+    // console.log(tenant_menus)
 
     const handleAddtoCart = async (e) => {
         e.preventDefault();
@@ -108,6 +133,8 @@ function DetailTenant() {
         },
     }));
 
+    const searchResult = Object.values(tenant_menus).map(item => item.menu).flat()
+
     const styleModal = {
         position: 'absolute',
         top: '50%',
@@ -121,7 +148,7 @@ function DetailTenant() {
         borderRadius: "10px"
     };
 
-    console.log(tenant)
+    console.log(tenant_menus)
 
     return (
         <>
@@ -158,7 +185,7 @@ function DetailTenant() {
                         backgroundColor: "#fffffe",
                         boxShadow: { md: "1px 1px 20px -10px rgba(109, 109, 109, 0.5)" },
                         minHeight: "97.5vh",
-                        padding: {md: "20px 20px 100px 20px", xs: "20px 0px 100px 0px"},
+                        padding: { md: "20px 20px 100px 20px", xs: "20px 0px 100px 0px" },
                         color: "#5F6C7B"
                     }}>
                     <Header title={title} />
@@ -175,17 +202,17 @@ function DetailTenant() {
                                 backgroundColor: "rgba(0,0,0,0.8)",
                                 display: "grid",
                                 borderRadius: "10px",
-                                padding: {md: "40px 60px", xs: "30px 30px"}
+                                padding: { md: "40px 60px", xs: "30px 30px" }
                             }}>
-                            <Typography variant="p" 
-                            sx={{
-                                fontSize: {md: "36px", xs: "30px"},
-                                fontWeight: "bold"
-                            }}>{tenant?.full_name}</Typography>
                             <Typography variant="p"
-                            sx={{
-                                fontSize: {md: "24px", xs: "18px"}
-                            }}
+                                sx={{
+                                    fontSize: { md: "36px", xs: "30px" },
+                                    fontWeight: "bold"
+                                }}>{tenant?.full_name}</Typography>
+                            <Typography variant="p"
+                                sx={{
+                                    fontSize: { md: "24px", xs: "18px" }
+                                }}
                             >{tenant?.description}</Typography>
                             <Box sx={{
                                 display: "flex",
@@ -210,15 +237,16 @@ function DetailTenant() {
                                 <Select
                                     labelId="demo-customized-select-label"
                                     id="demo-customized-select"
-                                    value={age}
+                                    value={valueCategory}
                                     onChange={handleChange}
                                     input={<BootstrapInput />}
                                 >
-                                    <MenuItem value="">
-                                        <em className="list-category">None</em>
+                                    <MenuItem value={0}>
+                                        <em className="list-category">All</em>
                                     </MenuItem>
-                                    <MenuItem value={10}><span className="list-category">Nasi Goreng</span></MenuItem>
-                                    <MenuItem value={20}><span className="list-category">Minuman</span></MenuItem>
+                                    {tenant_menus.map(category => (
+                                        <MenuItem value={category.category.title}><span className="list-category">{category.category.title}</span></MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -228,103 +256,181 @@ function DetailTenant() {
                             alignItems: "center",
                             boxShadow: "inset 0px 0px 4px 2px rgba(0,0,0,0.1)",
                             borderRadius: "50px",
-                            height: {xs: "57px", md: "70px"},
+                            height: { xs: "57px", md: "70px" },
                             marginTop: "32px",
                             paddingLeft: "20px"
                         }}>
                             <img className="img-search" src={SearchIcon} alt="" />
-                            <TextField className="search-detail" placeholder="Cari">Cari</TextField>
+                            <TextField value={searchKeyword} onChange={handleInputChange} className="search-detail" placeholder="Cari">Cari</TextField>
                         </Box>
                     </Box>
-                    <Box className="foods" mt={"10px"}>
-                        <Box width={"100%"} mb="10px">
-                            <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
-                                {tenant_menus[0]?.category?.title || `No Category`}
-                            </Typography>
-                        </Box>
+                    <Box className="list-menus" mt={"10px"}>
+                        {valueCategory ?
+                            tenant_menus.map((menus) =>{
+                                if(menus.category.title === valueCategory){
+                                    return (
+                                        <>
+                                            <Box width={"100%"} mb="10px" mt={"30px"}>
+                                                <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
+                                                    {menus?.category?.title || `No Category`}
+                                                </Typography>
+                                            </Box>
+                                            <Box sx={{
+                                                display: "flex",
+                                                flexWrap: "wrap",
+                                                gap: "30px"
+                                            }}>
+                                                {menus?.menu.map(menu => (
+                                                    <Box className="card-lebar"
+                                                        onClick={() => handleOpen(menu)}
+                                                        sx={{
+                                                            boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
+                                                            padding: { md: "30px", xs: "0px" },
+                                                            borderRadius: "10px",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            width: "50%",
+                                                            flex: "50"
+                                                        }}>
+                                                        <img src={menu?.image || NoImage} alt="" />
+                                                        <Box className="deskripsi" ml={"25px"} display={"grid"}>
+                                                            <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu.title}</Typography>
+                                                            <Typography variant="p" fontSize={"14px"}>{menu.description}</Typography>
+                                                            <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. {menu?.price.toLocaleString("id-ID")}</Typography>
+                                                        </Box>
+                                                    </Box>
+                                                ))}
+                                            </Box>
+                                        </>
+                                    )
+                                }
+                            })
+                            : 
+                            searchKeyword != '' ?
+                            <>
+                            {searchResult ? searchResult.map(menu => (
+                                <Box sx={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    gap: "30px"
+                                }}>
+                                    {menu.title.toLowerCase().includes(searchKeyword.toLowerCase()) ?
+                                        <Box className="card-lebar"
+                                            onClick={() => handleOpen(menu)}
+                                            sx={{
+                                                boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
+                                                padding: { md: "30px", xs: "0px" },
+                                                borderRadius: "10px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                width: "50%",
+                                                flex: "50",
+                                                marginBottom: "20px"
+                                            }}>
+                                            <img src={menu?.image || NoImage} alt="" />
+                                            <Box className="deskripsi" ml={"25px"} display={"grid"}>
+                                                <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu.title}</Typography>
+                                                <Typography variant="p" fontSize={"14px"}>{menu.description}</Typography>
+                                                <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. {menu?.price.toLocaleString("id-ID")}</Typography>
+                                            </Box>
+                                        </Box> : <></>}
+                                </Box>
+                            )) : <Typography variant="h1">No Data</Typography>}</>
+                            : <>
+                                <Box width={"100%"} mb="10px">
+                                    <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
+                                        {tenant_menus[0]?.category?.title || `No Category`}
+                                    </Typography>
+                                </Box>
+                                <Grid className="list-food" container spacing={2}>
+                                    {tenant_menus[0]?.menu ? tenant_menus[0].menu.map(menu => (
+                                        <Grid item xs={6} sm={4} md={3}><FoodCardComponent menu={menu} handleClick={() => handleOpen(menu)} /></Grid>
+                                    )) : <Typography variant="h1">No Data</Typography>}
+                                </Grid>
 
-                        <Grid className="list-food" container spacing={2}>
-                            {tenant_menus[0]?.menu ? tenant_menus[0].menu.map(menu => (
-                                <Grid item xs={6} sm={4} md={3}><FoodCardComponent menu={menu} handleClick={() => handleOpen(menu)} /></Grid>
-                            )) : <Typography variant="h1">No Data</Typography>}
-                        </Grid>
-                        <Box
-                            sx={{
-                                marginTop: "20px",
-                                padding: "20px",
-                                borderRadius: "8px",
-                                backgroundColor: "#D8EEFE"
-                            }}>
-                            <Typography variant="p" sx={{ fontSize: "28px", fontWeight: "bold", color: "#094067" }}>Review</Typography>
-                            <Box className="section-review" sx={{
-                                overflow: "auto",
-                                whiteSpace: "nowrap",
-                                paddingBottom: "10px"
-                            }}>
-                                {tenant_reviews ? tenant_reviews.map(review => (
-                                    <Box className="box-review"
+                                {/* tenant_reviews.map(review => (
+                                    
+                                    )) */}
+                                {tenant_reviews == [] ?
+                                    <Box
                                         sx={{
-                                            backgroundImage: `url(${BoxReview})`,
-                                            // border: "1px solid black",
-                                            backgroundRepeat: "no-repeat",
-                                            backgroundSize: "cover",
-                                            minHeight: {md: "110px", xs: "78px"},
-                                            width: {md: "280px", xs: "190px"},
-                                            padding: {md: "40px 30px 10px 40px", xs: "30px 40px 10px 30px"},
-                                            display: "inline-block",
-                                            marginRight: "15px"
+                                            marginTop: "20px",
+                                            padding: "20px",
+                                            borderRadius: "8px",
+                                            backgroundColor: "#D8EEFE"
                                         }}>
-                                        <Typography variant="p" color={"#094067"}>{review.content}</Typography>
-                                        <Box sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            paddingTop: "5px",
-                                            gap: "5px"
+                                        <Typography variant="p" sx={{ fontSize: "28px", fontWeight: "bold", color: "#094067" }}>Review</Typography>
+                                        <Box className="section-review" sx={{
+                                            overflow: "auto",
+                                            whiteSpace: "nowrap",
+                                            paddingBottom: "10px"
                                         }}>
-                                            <img src={YellowStar} alt="" width={"30px"} />
-                                            <Typography variant="p">{review.rating} . {review.customer.full_name}</Typography>
+                                            {tenant_reviews.map(review => (
+                                                <Box className="box-review"
+                                                    sx={{
+                                                        backgroundImage: `url(${BoxReview})`,
+                                                        // border: "1px solid black",
+                                                        backgroundRepeat: "no-repeat",
+                                                        backgroundSize: "cover",
+                                                        minHeight: { md: "110px", xs: "78px" },
+                                                        width: { md: "280px", xs: "190px" },
+                                                        padding: { md: "40px 30px 10px 40px", xs: "30px 40px 10px 30px" },
+                                                        display: "inline-block",
+                                                        marginRight: "15px"
+                                                    }}>
+                                                    <Typography variant="p" color={"#094067"}>{review.content}</Typography>
+                                                    <Box sx={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        paddingTop: "5px",
+                                                        gap: "5px"
+                                                    }}>
+                                                        <img src={YellowStar} alt="" width={"30px"} />
+                                                        <Typography variant="p">{review.rating} . {review.customer.full_name}</Typography>
+                                                    </Box>
+                                                </Box>
+                                            ))}
                                         </Box>
                                     </Box>
-                                )): <Typography>No Review</Typography>}
-                            </Box>
-                        </Box>
-                        <Box className="minuman" mt={"25px"}>
-                            {tenant_menus ? tenant_menus.slice(1).map(menus => (
-                                <>
-                                    <Box width={"100%"} mb="10px" mt={"30px"}>
-                                        <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
-                                            {menus?.category?.title || `No Category`}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{
-                                        display: "flex",
-                                        flexWrap: "wrap",
-                                        gap: "30px"
-                                    }}>
-                                        {menus?.menu.map(menu => (
-                                            <Box className="card-lebar"
-                                                onClick={() => handleOpen(menu)}
-                                                sx={{
-                                                    boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
-                                                    padding: {md: "30px", xs: "0px"},
-                                                    borderRadius: "10px",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    width: "50%",
-                                                    flex: "50"
-                                                }}>
-                                                <img src={menu?.image || NoImage} alt="" />
-                                                <Box className="deskripsi" ml={"25px"} display={"grid"}>
-                                                    <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu.title}</Typography>
-                                                    <Typography variant="p" fontSize={"14px"}>{menu.description}</Typography>
-                                                    <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. {menu?.price.toLocaleString("id-ID")}</Typography>
-                                                </Box>
+                                    : <></>}
+                                <Box className="minuman" mt={"25px"}>
+                                    {tenant_menus ? tenant_menus.slice(1).map(menus => (
+                                        <>
+                                            <Box width={"100%"} mb="10px" mt={"30px"}>
+                                                <Typography variant="p" fontSize={"32px"} fontWeight={"bold"} pl={"20px"} color={"#094067"}>
+                                                    {menus?.category?.title || `No Category`}
+                                                </Typography>
                                             </Box>
-                                        ))}
-                                    </Box>
-                                </>
-                            )) : <Typography variant="h1">No Data</Typography>}
-                        </Box>
+                                            <Box sx={{
+                                                display: "flex",
+                                                flexWrap: "wrap",
+                                                gap: "30px"
+                                            }}>
+                                                {menus?.menu.map(menu => (
+                                                    <Box className="card-lebar"
+                                                        onClick={() => handleOpen(menu)}
+                                                        sx={{
+                                                            boxShadow: "0px 0px 4px 2px rgba(0,0,0,0.1)",
+                                                            padding: { md: "30px", xs: "0px" },
+                                                            borderRadius: "10px",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            width: "50%",
+                                                            flex: "50"
+                                                        }}>
+                                                        <img src={menu?.image || NoImage} alt="" />
+                                                        <Box className="deskripsi" ml={"25px"} display={"grid"}>
+                                                            <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>{menu.title}</Typography>
+                                                            <Typography variant="p" fontSize={"14px"}>{menu.description}</Typography>
+                                                            <Typography variant="p" fontSize={"18px"} fontWeight={"bold"}>Rp. {menu?.price.toLocaleString("id-ID")}</Typography>
+                                                        </Box>
+                                                    </Box>
+                                                ))}
+                                            </Box>
+                                        </>
+                                    )) : <Typography variant="h1">No Data</Typography>}
+                                </Box>
+                            </>}
                     </Box>
                 </Box>
             </Container>

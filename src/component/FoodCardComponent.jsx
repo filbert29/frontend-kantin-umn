@@ -3,8 +3,6 @@ import NoImage from "../assets/No_Image_Available.jpg"
 
 const FoodCardComponent = ({ menu, handleClick = undefined, width }) => {
 
-    console.log(menu)
-
     return (
         <Box
             onClick={menu.is_available == true ? handleClick || null : null}
