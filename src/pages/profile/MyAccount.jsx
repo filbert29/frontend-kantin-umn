@@ -1,7 +1,7 @@
-import { Box, Button, Chip, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal, TextField, Typography } from "@mui/material";
 import Header from "../../component/Header";
 import ProfilePicture from "../../assets/profile-picture.png"
-import { useState } from "react";
+import { useRef, useState } from "react";
 import IconEdit from "../../assets/icon-edit.png"
 import IconPlus from "../../assets/icon-plus.png"
 import IconLogout from "../../assets/icon-logout.png"
@@ -12,6 +12,8 @@ import BASE_URL from "../../config/BASE_URL";
 import useSWR from 'swr'
 import fetcher from "../../helper/fetcher";
 import "../../assets/style/styleProfile.css"
+import { Upload } from "@mui/icons-material";
+import { addNotification } from "../../store/Notification";
 
 
 const MyAccount = () => {
@@ -25,6 +27,7 @@ const MyAccount = () => {
     const [openname, setOpenName] = useState(false);
     const [openemail, setOpenEmail] = useState(false);
     const [openpassword, setOpenPassword] = useState(false);
+    const [openPP, setOpenPP] = useState(false);
 
     const { accountData } = useSelector((state) => state.auth)
 
@@ -34,6 +37,27 @@ const MyAccount = () => {
 
     const [openbalance, setOpenBalance] = useState(false);
     const [amount, setAmount] = useState()
+
+    const [imagePreview, setImagePreview] = useState()
+    const [newImage, setNewImage] = useState()
+    const [loading, setLoading] = useState(false)
+    const imageFileRef = useRef()
+
+    const handleClickEditImage = () => {
+        imageFileRef.current.click()
+    }
+
+    const handleChangeEditImage = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                setNewImage(file)
+                setImagePreview(e.target.result)
+            }
+            reader.readAsDataURL(file)
+        }
+    }
 
     const handleClickOpenName = () => {
         setOpenName(true);
@@ -56,6 +80,7 @@ const MyAccount = () => {
         setOpenName(false);
         setOpenEmail(false);
         setOpenPassword(false);
+        setOpenPP(false)
     };
 
     const dispatch = useDispatch()
@@ -148,7 +173,7 @@ const MyAccount = () => {
         e.preventDefault();
 
         try {
-            const balance = {amount}
+            const balance = { amount }
             const response = await axios.patch(BASE_URL + "/customer/balance", balance, {
                 headers: {
                     Authorization: `Bearer ${accountData?.access_token}`
@@ -163,6 +188,44 @@ const MyAccount = () => {
             setAmount(0)
         }
     }
+
+    const handleSubmitPP = async () => {
+        try {
+            setLoading(true)
+            const formData = new FormData()
+            formData.append("profile_image", newImage)
+
+            const response = await axios.put(`${BASE_URL}/customer/profile-image`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${accountData?.access_token}`
+                }
+            })
+
+            if (response?.status === 200) {
+                dispatch(addNotification({ message: "Berhasil ubah foto profil", type: "success" }))
+                mutate()
+                handleClose()
+            }
+        } catch (error) {
+            console.log(error)
+            dispatch(addNotification({ message: "Gagal mengubah foto profil", type: "error" }))
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const ModalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 600,
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+        borderRadius: 2
+    };
 
     console.log(customer)
 
@@ -188,14 +251,59 @@ const MyAccount = () => {
                         alignItems: "center",
                         gap: "20px"
                     }}>
-                    <Box className="profile-ficture">
-                        <img src={ProfilePicture} alt="" width={"160px"} />
+                    <Box className="profile-picture" sx={{cursor: "pointer"}}>
+                        <Box onClick={() => setOpenPP(true)}>
+                            <img style={{borderRadius: "15px"}} src={customer.profile_image || ProfilePicture} alt="" width={"160px"} borderRadius={"15px"} />
+                        </Box>
                     </Box>
                     <Box className="name-tag" display={"grid"} gap={"10px"}>
                         <Typography variant="p" sx={{ fontSize: { md: "24px", xs: "20px" }, fontWeight: "bold" }}>{customer.full_name}</Typography>
                         <Chip label="Customer" sx={{ fontWeight: "bold", backgroundColor: "#094067", color: "white", width: "100px", paddingY: "17px" }} />
                     </Box>
+                    <Modal open={openPP} onClose={handleClose}>
+                        <Box sx={{ ...ModalStyle, width: { xs: "280px", sm: "400px" } }}>
+                            {!imagePreview ? (
+                                <Box
+                                    onClick={handleClickEditImage}
+                                    sx={{
+                                        width: "98%",
+                                        height: 300,
+                                        borderRadius: 2,
+                                        border: "4px dashed rgba(0,0,0,0.2)",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        cursor: "pointer"
+                                    }}
+                                >
+                                    <Box>
 
+                                        <Typography variant="h5" sx={{ textAlign: "center" }}>
+                                            <Upload sx={{ fontSize: 80, color: "gray" }} />
+                                            <br />
+                                            Unggah foto profil
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            ) : (
+                                <Box sx={{
+                                    width: "98%",
+                                    height: 300,
+                                    borderRadius: 2,
+                                    border: "4px dashed rgba(0,0,0,0.2)",
+                                    objectFit: "contain"
+                                }} component={"img"} src={imagePreview}></Box>
+                            )}
+                            <input ref={imageFileRef} type="file" style={{ display: "none" }} onChange={handleChangeEditImage} />
+
+                            <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                                <Button fullWidth color="error" onClick={handleClose} variant="contained" sx={{ mr: 2 }}>Batal</Button>
+                                <Button fullWidth disabled={!newImage || loading === true} onClick={handleSubmitPP} variant="contained">
+                                    {loading ? <CircularProgress size={16} /> : "Submit"}
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Modal>
                 </Box>
                 <Box className="data diri shadow-box"
                     sx={{

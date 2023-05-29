@@ -1,3 +1,7 @@
 * {
     color: white;
 }
+
+.profile-picture img {
+    border-radius: 15px;
+}
