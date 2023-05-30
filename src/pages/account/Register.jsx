@@ -34,7 +34,7 @@ const Register = () => {
 
     useEffect(() => {
         setName(capitalizeFirstLetter(temp_full_name))
-        console.log(full_name)
+        // console.log(full_name)
     }, [temp_full_name])
 
     const handleSubmit = async (e) => {
@@ -50,7 +50,7 @@ const Register = () => {
                 const message = `We have sent  email to ` + email + ` to confirm the validity of your email address. After receiving the email follow link provided to complete your registration`
                 navigate("/account/email-confirmation", { state: { title: title, message: message } })
             } catch (err) {
-                console.log(err.response.data.error)
+                // console.log(err.response.data.error)
                 setErrorMessage(err.response.data.error);
                 setEmail("")
                 setTempName("")

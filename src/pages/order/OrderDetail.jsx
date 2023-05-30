@@ -122,7 +122,7 @@ function OrderDetail() {
 
   const steps = ['Pending', 'Preparing', 'Ready', final];
 
-  console.log(final)
+  // console.log(final)
 
   return (
     <Container

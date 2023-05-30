@@ -129,7 +129,7 @@ function SearchPage() {
 
     // const { data: search, isLoading, error } = useSWR(url, (url) => fetcher(url, undefined))
 
-    console.log(result)
+    // console.log(result)
 
     return (
         <Container

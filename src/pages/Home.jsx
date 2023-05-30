@@ -47,7 +47,7 @@ function Home() {
     if (errorRandomMenus) return <div>failed to load</div>
     if (isLoadingRandomMenus) return <div>loading...</div>
 
-    console.log(menus)
+    // console.log(menus)
 
     return (
         <Container

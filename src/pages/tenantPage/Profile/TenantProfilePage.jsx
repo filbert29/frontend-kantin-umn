@@ -152,7 +152,7 @@ const ModalEditProfileImage = ({ open, mutate, handleClose }) => {
                 onClose()
             }
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             dispatch(addNotification({ message: "Gagal mengubah foto profil", type: "error" }))
         } finally {
             setLoading(false)

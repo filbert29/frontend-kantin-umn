@@ -161,7 +161,7 @@ const MyAccount = () => {
             setConfirmPassword("")
             setOpenPassword(false);
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             setErrorMessage('*' + err.response.data.message);
             setPassword("")
             setNewPassword("")
@@ -183,7 +183,7 @@ const MyAccount = () => {
             mutate()
             setOpenBalance(false);
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             setErrorMessage('*' + err.response.data.message);
             setAmount(0)
         }
@@ -208,7 +208,7 @@ const MyAccount = () => {
                 handleClose()
             }
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             dispatch(addNotification({ message: "Gagal mengubah foto profil", type: "error" }))
         } finally {
             setLoading(false)
@@ -227,7 +227,7 @@ const MyAccount = () => {
         borderRadius: 2
     };
 
-    console.log(customer)
+    // console.log(customer)
 
     return (
         <Container

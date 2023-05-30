@@ -26,7 +26,7 @@ const History = () => {
     const handleOpen = (id) => {
         setIdOrder(id)
         setOpen(true);
-        console.log(id)
+        // console.log(id)
     };
 
     const handleChange = (event, newValue) => {
@@ -160,7 +160,7 @@ const History = () => {
         setIdOrder(undefined)
     };
 
-    console.log(order)
+    // console.log(order)
 
     return (
         <div>

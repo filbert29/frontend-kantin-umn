@@ -64,7 +64,7 @@ function OrderConfirmation() {
     const menu_id = selectedMenu?.menu?._id;
     const quantity = amount;
 
-    console.log(menu_id)
+    // console.log(menu_id)
 
     if (amount === 0) {
       try {
@@ -112,7 +112,7 @@ function OrderConfirmation() {
     }
   }
 
-  console.log(message)
+  // console.log(message)
 
   return (
     <>

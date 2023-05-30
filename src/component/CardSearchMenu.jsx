@@ -4,7 +4,7 @@ import Star from "../assets/yellow-star.png"
 import NoImage from "../assets/No_Image_Available.jpg"
 
 const CardSearchMenu = ({ data }) => {
-    console.log(data)
+    // console.log(data)
     return (
         <Box display={"grid"} justifyContent={"center"}>
             <Box

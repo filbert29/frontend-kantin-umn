@@ -148,7 +148,7 @@ function DetailTenant() {
         borderRadius: "10px"
     };
 
-    console.log(tenant_menus)
+    // console.log(tenant_menus)
 
     return (
         <>

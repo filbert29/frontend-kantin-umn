@@ -56,7 +56,7 @@ const ListCart = () => {
         }
     }
 
-    console.log(tempId)
+    // console.log(tempId)
 
     return (
         <div>
