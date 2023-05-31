@@ -5,11 +5,12 @@ import useSWR from 'swr'
 import fetcher from "../../helper/fetcher"
 import BASE_URL from "../../config/BASE_URL"
 import { useNavigate, useParams } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useState } from "react"
 import NoImage from "../../assets/No_Image_Available.jpg"
 import axios from "axios"
 import "../../assets/style/styleOrderConfirmation.css"
+import { addNotification } from "../../store/Notification"
 
 function OrderConfirmation() {
   const title = "Order Confirmation"
@@ -20,6 +21,8 @@ function OrderConfirmation() {
   const [message, setMessage] = useState('')
 
   const navigate = useNavigate()
+
+  const dispatch = useDispatch()
 
   const handleOpen = (menu) => {
     setOpen(true)
@@ -38,7 +41,7 @@ function OrderConfirmation() {
 
   const url = `${BASE_URL}/cart/${id}`
 
-  const { data: cart, isLoading, error } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
+  const { data: cart, isLoading, error, mutate } = useSWR(url, (url) => fetcher(url, accountData?.access_token))
 
   if (isLoading) return <div>loading...</div>
   if (error) return <div>failed to load</div>
@@ -76,6 +79,7 @@ function OrderConfirmation() {
           data: remove_item
         })
         handleClose();
+        mutate()
         setMessage('*Success remove from cart');
       } catch (err) {
         setMessage('*Cannot remove from cart');
@@ -89,6 +93,7 @@ function OrderConfirmation() {
           },
         })
         handleClose();
+        mutate()
         setMessage('*Success change amount');
       } catch (err) {
         setMessage('*Cannot change amount');
@@ -106,8 +111,10 @@ function OrderConfirmation() {
         },
       })
       setMessage('*Success add to order');
+      dispatch(addNotification({ message: "Berhasil melakukan pesanan", type: "success" }))
       navigate('/customer/transaction/history')
     } catch (err) {
+      dispatch(addNotification({ message: "Saldo Kurang, silahkan Top Up terlebih dahulu", type: "error" }))
       setMessage('*Cannot add to order');
     }
   }

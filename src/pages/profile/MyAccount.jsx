@@ -159,6 +159,7 @@ const MyAccount = () => {
             setPassword("")
             setNewPassword("")
             setConfirmPassword("")
+            dispatch(addNotification({ message: "Berhasil mengubah password", type: "success" }))
             setOpenPassword(false);
         } catch (err) {
             // console.log(err)
@@ -182,6 +183,7 @@ const MyAccount = () => {
             setAmount(0)
             mutate()
             setOpenBalance(false);
+            dispatch(addNotification({ message: "Berhasil melakukan Top Up", type: "success" }))
         } catch (err) {
             // console.log(err)
             setErrorMessage('*' + err.response.data.message);
