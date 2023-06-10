@@ -74,6 +74,18 @@ const OnProgressOrderCard = ({ order, index, mutate = undefined }) => {
                         <Typography variant="p" fontSize={14} fontWeight={600}>Durasi Persiapan</Typography>
                         <Typography variant="p" fontSize={14} fontWeight={600}>{order?.total_prep_duration} Menit</Typography>
                     </DFlexJustifyContentBetween>
+                    {order?.waiting_time !== undefined && (
+                        <DFlexJustifyContentBetween sx={{ mt: 1 }}>
+                            <Typography variant="p" fontSize={14} fontWeight={600}>Waktu Tunggu</Typography>
+                            <Typography variant="p" fontSize={14} fontWeight={600}>{Math.floor(order?.waiting_time / 60 / 1000)} Menit</Typography>
+                        </DFlexJustifyContentBetween>
+                    )}
+                    {order?.turnaround_time !== undefined && (
+                        <DFlexJustifyContentBetween sx={{ mt: 1 }}>
+                            <Typography variant="p" fontSize={14} fontWeight={600}>Waktu Penyelesaian</Typography>
+                            <Typography variant="p" fontSize={14} fontWeight={600}>{Math.floor(order?.turnaround_time / 60 / 1000)} Menit</Typography>
+                        </DFlexJustifyContentBetween>
+                    )}
                 </Box>
                 <Divider sx={{ mt: 2 }} />
             </Box>
