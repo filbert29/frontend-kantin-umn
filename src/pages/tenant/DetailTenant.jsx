@@ -148,7 +148,7 @@ function DetailTenant() {
         borderRadius: "10px"
     };
 
-    // console.log(tenant_menus)
+    console.log(tenant_reviews)
 
     return (
         <>
@@ -351,7 +351,7 @@ function DetailTenant() {
                                 {/* tenant_reviews.map(review => (
                                     
                                     )) */}
-                                {tenant_reviews == [] ?
+                                {tenant_reviews ?
                                     <Box
                                         sx={{
                                             marginTop: "20px",
