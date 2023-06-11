@@ -194,7 +194,8 @@ const HistoryOrder = () => {
                     created: ORDER_STATUS.created,
                     preparing: ORDER_STATUS.preparing,
                     ready: ORDER_STATUS.ready,
-                    completed: ORDER_STATUS.completed
+                    completed: ORDER_STATUS.completed,
+                    rejected: ORDER_STATUS.rejected,
                 }).map(([key, value]) => (
                     <Chip sx={{ px: 1 }} onClick={() => setFilter(key)} color={value.color} label={value.label} variant={filter === key ? "filled" : "outlined"} key={key} />
                 ))}

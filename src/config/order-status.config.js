@@ -24,6 +24,10 @@ const ORDER_STATUS = {
         label: "Selesai",
         color: "primary"
     },
+    reject: {
+        label: "Dibatalkan",
+        color: "error"
+    },
     rejected: {
         label: "Dibatalkan",
         color: "error"
